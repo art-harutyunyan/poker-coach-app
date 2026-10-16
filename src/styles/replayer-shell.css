@@ -1,0 +1,1236 @@
+/* Approved study-shell language. Table/seat geometry stays in poker-seats.css. */
+.appShell[data-replayer-screen="true"] {
+  --study-bg: #101815;
+  --study-surface: #19231e;
+  --study-raised: #26382b;
+  --study-line: #334238;
+  --study-text: #efece2;
+  --study-muted: #a1ada5;
+  --study-gold: #d5bf90;
+  --study-green: #8fc3a5;
+  grid-template-columns: 214px minmax(0, 1fr);
+  background: var(--study-bg);
+  color: var(--study-text);
+  font-family: "Seat Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.appShell[data-replayer-screen="true"] :where(h1, h2, h3, button, select) {
+  font-family: inherit;
+  letter-spacing: 0;
+}
+.appShell[data-replayer-screen="true"] :where(button, select, summary):focus-visible {
+  outline: 2px solid var(--study-gold);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+.appShell[data-replayer-screen="true"] .sidebar {
+  background: #131d17;
+  border-right: 1px solid var(--study-line);
+  padding: 30px 18px 16px;
+  backdrop-filter: none;
+}
+.appShell[data-replayer-screen="true"] .brandLockup {
+  gap: 10px;
+  border: 0;
+  padding: 0 5px;
+  margin-bottom: 36px;
+}
+.appShell[data-replayer-screen="true"] .brandMark {
+  width: 28px;
+  height: 28px;
+  color: var(--study-gold);
+  text-shadow: none;
+  flex-shrink: 0;
+}
+.appShell[data-replayer-screen="true"] .brandName {
+  color: var(--study-gold);
+  font-size: 17px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.appShell[data-replayer-screen="true"] .brandMeta {
+  font-size: 9px;
+  line-height: 1.5;
+  color: var(--study-muted);
+  letter-spacing: 0;
+}
+.appShell[data-replayer-screen="true"] .navList {
+  gap: 6px;
+}
+.appShell[data-replayer-screen="true"] .navButton {
+  gap: 13px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 5px;
+  color: #bcc5bd;
+  font-size: 13px;
+  font-weight: 400;
+}
+.appShell[data-replayer-screen="true"] .navButton:hover {
+  background: #202c24;
+}
+.appShell[data-replayer-screen="true"] .navButton[data-active="true"] {
+  background: #283a2d;
+  color: var(--study-gold);
+  box-shadow: none;
+}
+.sidebarUpload,
+.sidebarSettings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  margin-top: 28px;
+  border: 1px solid #485846;
+  border-radius: 5px;
+  color: #c7d2c8;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+}
+.sidebarUpload:hover,
+.sidebarSettings:hover {
+  background: #26352b;
+}
+.sidebarSettings {
+  justify-content: flex-start;
+  border-color: transparent;
+  margin: 10px 0;
+  padding: 10px;
+}
+.appShell[data-replayer-screen="true"] .sidebarGoal {
+  display: block;
+  padding: 20px 10px 10px;
+  border: 0;
+  font-size: 12px;
+}
+.appShell[data-replayer-screen="true"] .sidebarGoal > svg {
+  display: none;
+}
+.appShell[data-replayer-screen="true"] .sidebarGoal strong,
+.appShell[data-replayer-screen="true"] .sidebarGoal span {
+  color: var(--study-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+.appShell[data-replayer-screen="true"] .sidebarAccount {
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 9px;
+  border-top: 1px solid var(--study-line);
+  padding-top: 18px;
+}
+.appShell[data-replayer-screen="true"] .accountAvatar {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: #2d3c30;
+  font-size: 11px;
+  color: var(--study-gold);
+}
+.appShell[data-replayer-screen="true"] .sidebarAccount strong {
+  font-size: 12px;
+}
+.appShell[data-replayer-screen="true"] .sidebarAccount span {
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.demoBadge {
+  color: #b3c1b1;
+  border: 1px solid #334238;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.appShell[data-replayer-screen="true"] .mainSurface {
+  padding: 0 24px 24px;
+}
+.workspaceChrome {
+  height: 68px;
+  margin: 0 -24px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--study-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #111a15;
+  font-size: 12px;
+}
+.workspaceChrome > div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.workspaceChrome strong {
+  font-weight: 500;
+}
+.workspaceChrome span {
+  color: var(--study-muted);
+}
+.workspaceChrome .iconButton {
+  background: transparent;
+  border: 0;
+  color: var(--study-muted);
+}
+.tournamentTabs[data-active-screen="replayer"] {
+  display: block;
+}
+.tournamentTabs[data-active-screen="replayer"] > .tabList {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow-x: auto;
+  clip: auto;
+  clip-path: none;
+  display: flex;
+  gap: 26px;
+  padding: 0;
+  margin: 0 0 26px;
+  border: 0;
+  border-bottom: 1px solid var(--study-line);
+  border-radius: 0;
+  background: transparent;
+}
+.tournamentTabs[data-active-screen="replayer"] > .tabList .tabTrigger {
+  min-height: 48px;
+  padding: 10px 0 14px;
+  position: relative;
+  font-size: 13px;
+  font-weight: 400;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--study-muted);
+  box-shadow: none;
+}
+.tournamentTabs[data-active-screen="replayer"]
+  > .tabList
+  .tabTrigger[data-state="active"] {
+  color: var(--study-gold);
+}
+.tournamentTabs[data-active-screen="replayer"]
+  > .tabList
+  .tabTrigger[data-state="active"]::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--study-gold);
+}
+.tournamentTabs[data-active-screen="replayer"] > .tabList .tabTrigger:hover {
+  color: var(--study-text);
+}
+.replayerPageHeader {
+  flex-direction: row;
+  align-items: center;
+  padding: 24px 8px 16px;
+  margin: 0;
+}
+.replayerTitleBlock {
+  min-width: 0;
+  gap: 8px;
+}
+.replayerBackLink {
+  font-size: 12px;
+  color: var(--study-gold);
+  min-height: 32px;
+  gap: 7px;
+}
+.replayerTitleBlock h1 {
+  font-size: 28px;
+  font-weight: 550;
+  line-height: 1.3;
+}
+.replayerMetaLine {
+  font-size: 12px;
+  color: var(--study-muted);
+  margin: 0;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tournamentReviewGrade {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+.tournamentReviewGrade > strong {
+  font-size: 36px;
+  font-weight: 450;
+  color: var(--study-green);
+}
+.tournamentReviewGrade small {
+  display: block;
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.tournamentReviewScreen {
+  gap: 24px;
+}
+.tournamentReviewScreen .replayerLayout {
+  grid-template-columns: 64px minmax(0, 1fr) 300px;
+  align-items: start;
+  gap: 18px;
+}
+.keyHandsRail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-right: 1px solid var(--study-line);
+  padding-right: 10px;
+  align-self: stretch;
+}
+.keyHandsRail h2 {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--study-muted);
+  margin: 4px 0;
+  line-height: 1.7;
+}
+.keyHandsRail button {
+  position: relative;
+  min-height: 62px;
+  padding: 8px;
+  text-align: left;
+  background: #293c2e;
+  border: 1px solid #597253;
+  border-radius: 4px;
+  color: var(--study-text);
+  cursor: pointer;
+}
+.keyHandsRail button:hover {
+  background: #354c39;
+}
+.keyHandsRail small,
+.keyHandsRail strong {
+  display: block;
+}
+.keyHandsRail small {
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.keyHandsRail strong {
+  font-size: 14px;
+  font-weight: 550;
+}
+.handGradeMark {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 3px;
+  height: 16px;
+  background: #e99685;
+}
+.keyHandsRail button > svg {
+  position: absolute;
+  right: 2px;
+  bottom: 3px;
+  color: var(--study-green);
+}
+.railCount {
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.tableSection {
+  overflow: visible;
+}
+.handStudyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.handStudyHeader h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.handStudyHeader h2 span {
+  font-size: 12px;
+  color: var(--study-muted);
+  margin-left: 5px;
+  font-weight: 400;
+}
+.handStudyHeader p {
+  margin: 4px 0 0;
+  color: var(--study-muted);
+  font-size: 11px;
+}
+.tournamentReviewScreen :is(.primaryButton, .secondaryButton),
+.prototypeDialog .secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid #526055;
+  border-radius: 5px;
+  background: #1a261f;
+  color: #efece2;
+  box-shadow: none;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.tournamentReviewScreen .primaryButton {
+  background: var(--study-gold);
+  color: #1b221a;
+  border-color: #e2ceab;
+}
+.tournamentReviewScreen .secondaryButton:hover:not(:disabled) {
+  background: #2a382f;
+  border-color: #8a9b8d;
+}
+.tournamentReviewScreen .primaryButton:hover:not(:disabled) {
+  background: #e0cda6;
+}
+.tournamentReviewScreen button:disabled {
+  cursor: not-allowed;
+}
+.tournamentReviewScreen .visualPreviewControl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 18px;
+  width: 100%;
+  padding: 0;
+}
+.visualPreviewDisclosure {
+  margin-bottom: 8px;
+}
+.visualPreviewDisclosure > summary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--study-muted);
+  font-size: 11px;
+  cursor: pointer;
+  min-height: 36px;
+  width: fit-content;
+}
+.visualPreviewDisclosure > summary:hover {
+  color: var(--study-gold);
+}
+.visualPreviewDisclosure[open] > summary {
+  margin-bottom: 8px;
+  color: var(--study-gold);
+}
+.tournamentReviewScreen .previewField {
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+  gap: 5px;
+}
+.tournamentReviewScreen .previewField > span {
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.tournamentReviewScreen .previewField select {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px;
+  border: 1px solid #435348;
+  background: #131d17;
+  border-radius: 5px;
+  color: var(--study-text);
+  font-size: 11px;
+  font-weight: 400;
+}
+.tournamentReviewScreen .replayerCommandDeck {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 0;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.tournamentReviewScreen .decisionRibbon {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  order: -1;
+  width: 100%;
+  text-align: center;
+  border: 0;
+  border-top: 1px solid var(--study-line);
+  border-bottom: 1px solid var(--study-line);
+  padding: 14px 8px;
+  background: transparent;
+  border-radius: 0;
+  min-width: 0;
+}
+.tournamentReviewScreen .decisionRibbon > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.tournamentReviewScreen .decisionRibbon span {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--study-muted);
+}
+.tournamentReviewScreen .decisionRibbon strong {
+  font-family: inherit;
+  color: var(--study-text);
+  font-size: 14px;
+  font-weight: 550;
+}
+.tournamentReviewScreen .decisionRibbon p {
+  margin: 4px 0 0;
+  color: var(--study-muted);
+  font-size: 12px;
+}
+.tournamentReviewScreen .replayControls {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 8px 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 16px 0 10px;
+}
+.streetNavigation {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  min-width: 0;
+}
+.streetNavigation button {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #a1ada5;
+  font-size: 10px;
+  text-transform: uppercase;
+  position: relative;
+  cursor: pointer;
+}
+.streetNavigation button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  height: 2px;
+  background: #35483a;
+}
+.streetNavigation button[aria-current] {
+  color: var(--study-gold);
+}
+.streetNavigation button[aria-current]::after {
+  background: var(--study-gold);
+}
+.streetNavigation button:hover {
+  color: var(--study-text);
+}
+.tournamentReviewScreen .switchLabel {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  width: auto;
+  min-height: 44px;
+  gap: 10px;
+  color: var(--study-muted);
+  font-size: 12px;
+}
+.tournamentReviewScreen .switchRoot {
+  background: #334238;
+  width: 34px;
+  height: 20px;
+  border: 1px solid #526055;
+}
+.tournamentReviewScreen .switchRoot[data-state="checked"] {
+  background: #425a46;
+  border-color: #8fc3a5;
+}
+.tournamentReviewScreen .switchThumb {
+  width: 14px;
+  height: 14px;
+  background: #d5bf90;
+  transform: translateX(2px);
+}
+.tournamentReviewScreen .switchRoot[data-state="checked"] .switchThumb {
+  transform: translateX(16px);
+}
+.actionHistory {
+  min-width: 0;
+  max-width: 100%;
+  border-top: 1px solid var(--study-line);
+  color: var(--study-muted);
+  font-size: 12px;
+}
+.actionHistory summary {
+  cursor: pointer;
+  padding: 12px 0;
+  min-height: 44px;
+}
+.tournamentReviewScreen .actionTimeline {
+  display: flex;
+  overflow-x: auto;
+  max-width: 100%;
+  gap: 22px;
+  border: 0;
+  padding: 0 0 16px;
+  background: transparent;
+  border-radius: 0;
+}
+.tournamentReviewScreen .timelineStreet {
+  flex: 0 0 auto;
+  border: 0;
+  padding: 0;
+}
+.tournamentReviewScreen .timelineActions {
+  overflow: visible;
+  flex-wrap: nowrap;
+}
+.tournamentReviewScreen .timelineAction {
+  min-width: 38px;
+}
+.reviewFinish {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--study-line);
+  padding: 12px 0;
+}
+.reviewFinish > span {
+  color: var(--study-muted);
+  font-size: 11px;
+}
+.reviewFinish button[aria-pressed="true"] {
+  color: var(--study-green);
+}
+.tournamentReviewScreen .analysisPanel {
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  padding: 0 18px 18px;
+  border: 1px solid var(--study-line);
+  border-radius: 6px;
+  background: var(--study-surface);
+  box-shadow: none;
+  color: var(--study-text);
+}
+.analysisTabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--study-line);
+  margin-bottom: 18px;
+}
+.analysisTabs button {
+  position: relative;
+  min-height: 48px;
+  border: 0;
+  padding: 8px 0;
+  background: transparent;
+  color: var(--study-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+.analysisTabs button[data-state="active"] {
+  color: var(--study-gold);
+}
+.analysisTabs button[data-state="active"]::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  height: 2px;
+  left: 0;
+  right: 0;
+  background: var(--study-gold);
+}
+.analysisDecisionHeading {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  font-size: 10px;
+  color: var(--study-muted);
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.analysisDecisionHeading > span:first-child {
+  text-transform: uppercase;
+}
+.analysisGrade {
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  background: #3e2c29;
+  color: #eda695;
+}
+.analysisGrade[data-grade="INACCURATE"] {
+  background: #3c3425;
+  color: #e7c88e;
+}
+.analysisGrade[data-grade="GOOD"],
+.analysisGrade[data-grade="EXCELLENT"] {
+  background: #253d30;
+  color: #a3d2b5;
+}
+.tournamentReviewScreen .analysisSection {
+  border: 0;
+  border-bottom: 1px solid var(--study-line);
+  padding: 0 0 16px;
+  margin: 0;
+  background: transparent;
+  border-radius: 0;
+}
+.tournamentReviewScreen .decisionCompare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16px minmax(0, 1fr);
+  gap: 10px;
+  margin: 0;
+}
+.tournamentReviewScreen .decisionCompare > div {
+  border: 0;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+.tournamentReviewScreen .decisionCompare span {
+  color: var(--study-muted);
+  font-size: 11px;
+}
+.tournamentReviewScreen .decisionCompare strong {
+  color: var(--study-text);
+  font-size: 22px;
+  font-weight: 550;
+  margin: 6px 0;
+}
+.tournamentReviewScreen .decisionCompare > div:last-child strong {
+  color: var(--study-green);
+}
+.tournamentReviewScreen .decisionCompare small {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--study-muted);
+  display: block;
+}
+.compareArrow {
+  align-self: center;
+  color: #849786;
+}
+.tournamentReviewScreen .analysisStatusGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--study-line);
+}
+.tournamentReviewScreen .analysisStatusCard {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.tournamentReviewScreen .analysisStatusCard h3 {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--study-muted);
+  margin: 0;
+}
+.tournamentReviewScreen .analysisStatusCard h3 svg {
+  display: none;
+}
+.tournamentReviewScreen .analysisStatusCard strong {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+}
+.tournamentReviewScreen .analysisStatusCard > span {
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.tournamentReviewScreen .analysisStatusCard[data-grade="MISTAKE"] strong {
+  color: #eda695;
+}
+.tournamentReviewScreen .analysisStatusCard[data-tone="confidence"] strong {
+  color: var(--study-green);
+}
+.tournamentReviewScreen .reasonBlock {
+  margin: 0;
+  padding: 18px 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+}
+.tournamentReviewScreen .reasonBlock h3 {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--study-text);
+  margin: 0 0 10px;
+}
+.tournamentReviewScreen .reasonBlock h3 svg {
+  display: none;
+}
+.tournamentReviewScreen .reasonBlock p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #c9d3cb;
+  padding: 0;
+  margin: 0;
+}
+.tournamentReviewScreen .mutedBlock {
+  border-top: 1px solid var(--study-line);
+}
+.analysisFacts {
+  margin: 0 0 18px;
+}
+.analysisFacts > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  border-bottom: 1px solid var(--study-line);
+  padding: 10px 0;
+  font-size: 11px;
+}
+.analysisFacts dt {
+  color: var(--study-muted);
+  flex-shrink: 0;
+}
+.analysisFacts dd {
+  margin: 0;
+  text-align: right;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.tournamentReviewScreen .frequencyBlock {
+  border: 0;
+  background: transparent;
+  padding: 0 0 18px;
+  border-radius: 0;
+  margin: 0;
+}
+.tournamentReviewScreen .frequencyHeader {
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.tournamentReviewScreen .frequencyHeader h3 {
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--study-text);
+  margin: 0;
+}
+.tournamentReviewScreen .frequencyHeader h3 svg {
+  display: none;
+}
+.tournamentReviewScreen .frequencyHeader > span {
+  display: inline;
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.tournamentReviewScreen .frequencyRows {
+  gap: 10px;
+}
+.tournamentReviewScreen .frequencyRow {
+  grid-template-columns: 42px minmax(0, 1fr) 32px;
+  gap: 9px;
+  font-size: 11px;
+}
+.tournamentReviewScreen .frequencyRow strong {
+  font-size: 11px;
+  font-weight: 500;
+}
+.tournamentReviewScreen .frequencyTrack {
+  height: 4px;
+  border-radius: 2px;
+  background: #334338;
+}
+.tournamentReviewScreen .frequencyFill {
+  background: #8bb89e;
+  border-radius: 2px;
+}
+.tournamentReviewScreen .frequencyRow:nth-child(n) .frequencyFill {
+  background: #8bb89e;
+}
+.tournamentReviewScreen .coachButton {
+  width: 100%;
+  font-size: 11px;
+}
+.coachUnavailable {
+  color: var(--study-muted);
+  font-size: 10px;
+  line-height: 1.6;
+  margin: 7px 0 0;
+}
+.tournamentReviewScreen .provenanceCard {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 14px 0 0;
+  margin: 0;
+  color: var(--study-muted);
+  gap: 8px;
+  align-items: flex-start;
+}
+.tournamentReviewScreen .provenanceCard strong {
+  font-size: 11px;
+  font-weight: 500;
+  color: #b9c7bb;
+}
+.tournamentReviewScreen .provenanceCard span,
+.tournamentReviewScreen .provenanceCard p {
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--study-muted);
+  margin: 3px 0;
+}
+.tournamentReviewScreen .provenanceCard svg {
+  width: 14px;
+  flex-shrink: 0;
+}
+.tournamentReviewScreen .resultNote {
+  color: var(--study-muted);
+  background: none;
+  padding: 10px 0 0;
+  border: 0;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.analysisContext h3 {
+  font-size: 13px;
+  font-weight: 550;
+}
+.analysisContext p,
+.analysisContext li {
+  color: #c9d3cb;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.analysisContext ul {
+  padding-left: 18px;
+}
+.studyFooter {
+  border-top: 1px solid var(--study-line);
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--study-muted);
+  font-size: 10px;
+}
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.prototypeDialog {
+  color: #efece2;
+  background: #19231e;
+  border: 1px solid #526055;
+  border-radius: 8px;
+  padding: 24px;
+  width: min(440px, calc(100% - 32px));
+  font-family: "Seat Inter", sans-serif;
+}
+.prototypeDialog::backdrop {
+  background: #0009;
+}
+.prototypeDialog header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.prototypeDialog h2 {
+  font-size: 18px;
+  font-weight: 550;
+}
+.prototypeDialog p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #c9d3cb;
+}
+@media (min-width: 1600px) {
+  .tournamentReviewScreen .replayerLayout {
+    grid-template-columns: 68px minmax(0, 1fr) 330px;
+  }
+  .appShell[data-replayer-screen="true"] .mainSurface {
+    padding-right: 32px;
+    padding-left: 32px;
+  }
+  .workspaceChrome {
+    margin-left: -32px;
+    margin-right: -32px;
+  }
+}
+@media (min-width: 1180px) and (max-width: 1439px) {
+  .appShell[data-replayer-screen="true"] {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+  .appShell[data-replayer-screen="true"] .sidebar {
+    padding: 24px 12px 16px;
+  }
+  .appShell[data-replayer-screen="true"] .brandLockup {
+    justify-content: center;
+    padding: 0;
+  }
+  .appShell[data-replayer-screen="true"]
+    :is(
+      .brandLockup > div:not(.brandMark),
+      .navButton span,
+      .sidebarUpload span,
+      .sidebarSettings span,
+      .sidebarGoal,
+      .sidebarAccount > div:not(.accountAvatar),
+      .sidebarAccount > small
+    ) {
+    display: none;
+  }
+  .appShell[data-replayer-screen="true"] .navButton {
+    justify-content: center;
+    padding: 10px;
+  }
+  .appShell[data-replayer-screen="true"] .sidebarSettings {
+    margin-top: auto;
+    justify-content: center;
+  }
+  .appShell[data-replayer-screen="true"] .sidebarAccount {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media (max-width: 1250px) {
+  .tournamentReviewScreen .replayerLayout {
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 16px;
+  }
+  .tournamentReviewScreen .analysisPanel {
+    grid-column: 2;
+    grid-row: auto;
+    padding: 0 22px 22px;
+  }
+  .keyHandsRail {
+    grid-row: 1 / 3;
+  }
+}
+@media (max-width: 1179px) {
+  .appShell[data-replayer-screen="true"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .appShell[data-replayer-screen="true"] .sidebar {
+    display: none;
+  }
+  .appShell[data-replayer-screen="true"] .mobileNav {
+    display: flex;
+    background: #131d17;
+    border-bottom: 1px solid var(--study-line);
+    padding: 10px 24px;
+    min-height: 60px;
+  }
+  .appShell[data-replayer-screen="true"] .mobileBrand {
+    color: var(--study-gold);
+    gap: 10px;
+  }
+  .appShell[data-replayer-screen="true"] .mobileBrand strong {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .appShell[data-replayer-screen="true"] .mobileBrand small {
+    display: none;
+  }
+  .appShell[data-replayer-screen="true"] .mobileNavSelect select {
+    background: #131d17;
+    border: 1px solid #435348;
+    min-height: 44px;
+    font-size: 12px;
+    color: var(--study-text);
+  }
+  .workspaceChrome {
+    display: none;
+  }
+  .replayerPageHeader {
+    padding-top: 20px;
+  }
+}
+@media (max-width: 700px) {
+  .appShell[data-replayer-screen="true"] .mainSurface {
+    padding: 0 10px 24px;
+  }
+  .appShell[data-replayer-screen="true"] .mobileNav {
+    padding: 8px 16px;
+  }
+  .replayerPageHeader {
+    padding: 14px 6px 8px;
+  }
+  .replayerTitleBlock {
+    gap: 4px;
+  }
+  .replayerTitleBlock h1 {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  .replayerMetaLine {
+    font-size: 11px;
+    gap: 7px;
+  }
+  .replayerBackLink,
+  .tournamentReviewGrade {
+    display: none;
+  }
+  .tournamentTabs[data-active-screen="replayer"] > .tabList {
+    gap: 24px;
+    margin-bottom: 14px;
+    padding: 0 6px;
+  }
+  .tournamentTabs[data-active-screen="replayer"] > .tabList .tabTrigger {
+    font-size: 12px;
+    min-height: 44px;
+  }
+  .tournamentReviewScreen .replayerLayout {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .keyHandsRail {
+    flex-direction: row;
+    border: 0;
+    gap: 10px;
+    padding: 0 6px;
+    align-items: center;
+  }
+  .keyHandsRail h2 {
+    font-size: 10px;
+    margin-right: auto;
+  }
+  .keyHandsRail button {
+    min-height: 44px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 12px;
+  }
+  .railCount {
+    display: none;
+  }
+  .tableSection {
+    width: 100%;
+  }
+  .handStudyHeader {
+    display: none;
+  }
+  .handStudyHeader h2 {
+    font-size: 15px;
+  }
+  .handStudyHeader h2 span {
+    font-size: 11px;
+  }
+  .tournamentReviewScreen .visualPreviewControl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 6px;
+    gap: 8px 12px;
+    margin-bottom: 14px;
+  }
+  .visualPreviewDisclosure > summary {
+    min-height: 44px;
+    margin-left: 6px;
+  }
+  .tournamentReviewScreen .previewField {
+    gap: 3px;
+  }
+  .tournamentReviewScreen .previewField select {
+    min-height: 44px;
+    font-size: 12px;
+  }
+  .tournamentReviewScreen .decisionRibbon {
+    padding: 12px 6px;
+  }
+  .tournamentReviewScreen .decisionRibbon strong {
+    font-size: 13px;
+  }
+  .tournamentReviewScreen .decisionRibbon p {
+    font-size: 12px;
+  }
+  .tournamentReviewScreen .replayControls {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 12px 6px 0;
+  }
+  .streetNavigation {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .streetNavigation button {
+    flex: 1;
+    font-size: 11px;
+  }
+  .tournamentReviewScreen .switchLabel {
+    justify-content: center;
+    margin: 0;
+  }
+  .actionHistory,
+  .reviewFinish {
+    margin: 0 6px;
+  }
+  .reviewFinish > span {
+    max-width: 160px;
+  }
+  .tournamentReviewScreen .analysisPanel {
+    width: 100%;
+    padding: 0 18px 20px;
+    margin-top: 8px;
+  }
+  .tournamentReviewScreen .decisionCompare {
+    grid-template-columns: minmax(0, 1fr) 16px minmax(0, 1fr);
+  }
+  .studyFooter {
+    margin: 0 6px;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .appShell[data-replayer-screen="true"]
+    :where(
+      .navButton,
+      .primaryButton,
+      .secondaryButton,
+      .tabTrigger,
+      .keyHandsRail button,
+      .streetNavigation button
+    ) {
+    transition:
+      color 180ms,
+      background 180ms,
+      border-color 180ms;
+  }
+}
