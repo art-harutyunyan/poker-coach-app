@@ -1,16 +1,76 @@
-/* Approved seat anatomy: mounted cards, integrated action/position header, name, stack. */
+@font-face {
+  font-family: "Seat Inter";
+  src: url("../assets/seat-inter-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Local presentation tokens; the application shell and state engine are independent. */
+.pokerTableWrap {
+  --table-bg: #171d1b;
+  --table-felt: #344e43;
+  --table-edge: #58705e;
+  --table-text: #f1efe8;
+  --table-muted: #acbdb0;
+  --table-accent: #c5a77b;
+  min-width: 0;
+  background: var(--table-bg);
+}
+.pokerStage {
+  position: relative;
+  height: 480px;
+  min-width: 0;
+  container-type: size;
+  isolation: isolate;
+  font-family: "Seat Inter", var(--font-ui), sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: var(--table-text);
+}
+/* An ellipse with an inset rail stays vector sharp at every viewport. */
+.table-felt {
+  position: absolute;
+  width: 88%;
+  height: min(66%, 47cqw);
+  left: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 1px solid var(--table-edge);
+  border-radius: 50%;
+  background: var(--table-felt);
+  box-shadow: inset 0 0 0 5px #283e33;
+  z-index: -1;
+  pointer-events: none;
+}
+.table-felt::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid #71867466;
+  border-radius: 50%;
+}
+.pokerStage[data-table-theme="graphite-emerald"] {
+  --table-felt: #2e4038;
+}
+.pokerStage[data-table-theme="felt-texture"] .table-felt {
+  background-image: repeating-linear-gradient(
+    115deg,
+    #ffffff03 0 1px,
+    transparent 1px 4px
+  );
+}
 .player-seat {
-  --plate-w: 94px;
-  --plate-h: 70px;
-  --card-w: 23px;
-  --card-h: 30px;
+  --plate-w: 116px;
+  --plate-h: 68px;
+  --card-w: 28px;
+  --card-h: 38px;
   position: absolute;
   left: var(--seat-x);
   top: var(--seat-y);
   width: var(--plate-w);
   height: var(--plate-h);
   transform: translate(-50%, -50%);
-  text-align: center;
+  text-align: left;
   z-index: 2;
 }
 .player-nameplate {
@@ -19,181 +79,159 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: flex-end;
-  padding: 3px 4px 4px;
-  border: 1px solid #647365;
-  border-radius: 10px;
-  background: #17231c;
-  color: #efece2;
-  line-height: 1.1;
-  isolation: isolate;
+  padding: 7px 9px;
+  border: 1px solid #637764;
+  border-radius: 5px;
+  background: #29392e;
+  color: var(--table-text);
+  line-height: 1.2;
 }
 .player-cards {
   position: absolute;
   left: 50%;
-  bottom: calc(100% - 1px);
+  bottom: calc(100% + 5px);
   transform: translateX(-50%);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2px;
+  gap: 4px;
   pointer-events: none;
-}
-.player-cards .playingCard {
-  width: var(--card-w);
-  height: var(--card-h);
-  margin: 0;
 }
 .player-name {
   display: block;
   max-width: 100%;
+  margin-top: 3px;
   font-size: 13px;
   font-weight: 500;
-  line-height: 15px;
+  line-height: 17px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #d9e1d7;
 }
 .player-stack {
-  font-size: 15px;
-  font-weight: 650;
-  line-height: 17px;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 600;
   white-space: nowrap;
 }
 .player-stack small {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
+  color: var(--table-muted);
 }
 .player-nameplate .player-position-badge {
   position: absolute;
-  top: 3px;
-  right: 3px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-width: 27px;
-  padding: 3px 2px;
-  border: 1px solid #536a59;
-  border-radius: 4px;
-  background: #304335;
-  color: #dbe8dc;
-  font-size: 12px;
+  top: 5px;
+  right: 7px;
+  font-size: 10px;
   line-height: 12px;
-  font-weight: 650;
-  z-index: 2;
+  font-weight: 600;
+  color: #c0cebb;
+  white-space: nowrap;
 }
 .player-action-slot {
   position: absolute;
-  top: 4px;
-  left: 3px;
-  right: 34px;
-  min-height: 29px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 5px;
+  left: 9px;
+  right: 42px;
+  min-height: 12px;
 }
 .player-action-text {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 27px;
-  font-size: 13px;
-  line-height: 14px;
-  font-weight: 600;
-  border: 0;
-  border-radius: 3px;
-  background: transparent;
-  color: #b9c7bd;
-  padding: 1px 0;
-}
-.player-action-text > span {
-  white-space: nowrap;
-}
-.player-action-text b {
-  font-weight: 650;
-  white-space: nowrap;
-}
-.player-action-text small {
+  gap: 4px;
+  align-items: baseline;
   font-size: 10px;
+  line-height: 12px;
+  font-weight: 500;
+  color: var(--table-muted);
+  white-space: nowrap;
 }
-.player-action-text.action-call,
-.player-action-text.action-check {
-  background: rgba(106, 153, 121, 0.1);
-  color: #c7dfce;
+/* Commitment amounts have a dedicated lane; keep the action header compact. */
+.player-action-text b {
+  display: none;
 }
-.player-action-text.action-bet,
-.player-action-text.action-raise {
-  background: rgba(205, 188, 138, 0.12);
-  color: #e5d5ad;
+.player-action-text.action-raise,
+.player-action-text.action-bet {
+  color: #ead1a6;
 }
 .player-action-text.action-all-in {
-  background: rgba(209, 158, 93, 0.18);
   color: #f0cd97;
-  font-weight: 700;
+}
+.is-hero {
+  --card-w: 38px;
+  --card-h: 52px;
+}
+.is-hero .player-nameplate {
+  background: #344e3c;
+  border-color: #9bb493;
 }
 .is-folded .player-nameplate {
-  background: #162019;
-  border-color: #47594b;
+  background: #253229;
+  border-color: #4e6252;
+  color: #b5c2b0;
 }
 .is-folded .player-name {
-  color: #bdc9be;
+  font-weight: 400;
+}
+.is-all-in .player-nameplate {
+  border-color: #c99b67;
 }
 .is-acting .player-nameplate {
-  background: #344434;
-  border: 2px solid #e4cc94;
+  background: #45533d;
+  border-color: #e4cc9f;
   box-shadow:
-    0 0 0 2px rgba(213, 191, 144, 0.16),
-    0 0 12px rgba(213, 191, 144, 0.12);
+    0 0 0 2px #c5a77b30,
+    0 0 12px #c5a77b16;
+  color: #fff5df;
 }
-.is-acting .player-name,
-.is-acting .player-stack {
-  color: #fff8e8;
+.is-acting .player-position-badge,
+.is-acting .player-stack small {
+  color: #f0dfbf;
 }
-.is-acting .player-position-badge {
-  background: #ddc99d;
-  color: #17241b;
-  border-color: #eddbb4;
+.is-acting .deckAssetCard {
+  border-color: var(--table-accent);
 }
 .player-seat > .seat-dealer {
   position: absolute;
-  top: auto;
-  bottom: -7px;
-  left: -7px;
-  right: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: calc(100% + 5px);
+  top: calc(100% - 20px);
+  display: grid;
+  place-items: center;
   width: 21px;
   height: 21px;
-  padding: 0;
-  border: 1px solid #b7a785;
+  border: 1px solid #c5a77b;
   border-radius: 50%;
-  background: #e2d7bd;
-  color: #1b241b;
+  background: #f3f0e7;
+  color: #25322b;
   font-size: 11px;
   font-weight: 700;
-  z-index: 3;
+}
+/* Right rail buttons face outward on the left, keeping them inside the canvas. */
+.archetype-right-side > .seat-dealer,
+.archetype-upper-right > .seat-dealer,
+.archetype-lower-right > .seat-dealer {
+  left: auto;
+  right: calc(100% + 5px);
+}
+.seat-dealer img {
+  width: 100%;
+  height: 100%;
 }
 .player-committed {
   position: absolute;
+  left: calc(50% + var(--bet-dx));
+  top: calc(50% + var(--bet-dy));
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
+  gap: 5px;
   width: max-content;
-  padding: 1px 3px;
-  font-size: 13px;
-  line-height: 17px;
-  color: #e1e8df;
-  font-weight: 600;
+  padding: 3px 5px;
+  border-radius: 4px;
+  background: #20372dd9;
+  color: #f0d8ad;
+  font-size: 14px;
+  line-height: 18px;
   white-space: nowrap;
-  background: rgba(13, 32, 22, 0.45);
-  border-radius: 3px;
 }
 .player-committed b {
   font-weight: 600;
@@ -202,325 +240,73 @@
   font-size: 10px;
   font-weight: 500;
 }
-.player-committed svg {
-  width: 13px;
-  height: 13px;
-  color: #d5bf90;
-}
-.archetype-top-center .player-committed,
-.archetype-upper-left .player-committed,
-.archetype-upper-right .player-committed {
-  top: calc(100% + 9px);
-  left: 50%;
-  transform: translateX(-50%);
-}
-.archetype-upper-left .player-committed {
-  left: 65%;
-}
-.archetype-upper-right .player-committed {
-  left: 35%;
-}
-.archetype-left-side .player-committed {
-  left: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%);
-}
-.archetype-right-side .player-committed {
-  right: calc(100% + 8px);
-  top: 50%;
-  transform: translateY(-50%);
-}
-.archetype-lower-left .player-committed {
-  left: calc(100% + 6px);
-  bottom: calc(100% + 3px);
-}
-.archetype-lower-right .player-committed {
-  right: calc(100% + 6px);
-  bottom: calc(100% + 3px);
-}
-.archetype-hero .player-committed {
-  right: calc(50% + var(--card-w) + 7px);
-  bottom: calc(100% + 4px);
-}
-.is-hero {
-  --plate-w: 98px;
-  --card-w: 35px;
-  --card-h: 46px;
-}
-
-@media (min-width: 1600px) {
-  .player-seat {
-    --plate-w: 100px;
-    --plate-h: 72px;
-    --card-w: 25px;
-    --card-h: 32px;
-  }
-  .player-name {
-    font-size: 14px;
-    line-height: 16px;
-  }
-  .player-stack {
-    font-size: 16px;
-    line-height: 18px;
-  }
-  .is-hero {
-    --plate-w: 104px;
-    --card-w: 39px;
-    --card-h: 52px;
-  }
-}
-@media (max-width: 700px) {
-  .player-seat {
-    --plate-w: 72px;
-    --plate-h: 66px;
-    --card-w: 18px;
-    --card-h: 24px;
-    left: var(--seat-mx);
-    top: var(--seat-my);
-  }
-  .player-nameplate {
-    padding: 2px 1px 3px;
-    border-radius: 8px;
-  }
-  .player-name {
-    font-size: 12px;
-    line-height: 14px;
-    letter-spacing: 0;
-  }
-  .player-stack {
-    font-size: 14px;
-    line-height: 16px;
-  }
-  .player-stack small {
-    font-size: 10px;
-  }
-  .player-nameplate .player-position-badge {
-    top: 3px;
-    right: 2px;
-    min-width: 25px;
-    font-size: 11px;
-    line-height: 11px;
-    padding: 2px;
-  }
-  .player-action-slot {
-    top: 3px;
-    left: 2px;
-    right: 29px;
-    min-height: 27px;
-  }
-  .player-action-text {
-    font-size: 12px;
-    line-height: 13px;
-    min-height: 27px;
-  }
-  .player-action-text .raise-to {
-    display: none;
-  }
-  .player-action-text small {
-    font-size: 9px;
-  }
-  .player-committed {
-    font-size: 12px;
-    line-height: 15px;
-    gap: 3px;
-    padding: 0 2px;
-  }
-  .player-committed svg {
-    width: 11px;
-    height: 11px;
-  }
-  .archetype-left-side .player-committed {
-    left: calc(100% + 4px);
-  }
-  .archetype-right-side .player-committed {
-    right: calc(100% + 4px);
-  }
-  .player-seat > .seat-dealer {
-    width: 18px;
-    height: 18px;
-    font-size: 10px;
-    bottom: -5px;
-    left: -4px;
-  }
-  .is-hero {
-    --plate-w: 78px;
-    --card-w: 27px;
-    --card-h: 36px;
-  }
-  .has-board .table-center {
-    top: 40%;
-  }
-  .has-board .table-brand {
-    display: none;
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .player-nameplate {
-    transition:
-      border-color 180ms,
-      background 180ms,
-      box-shadow 180ms;
-  }
-  .player-cards {
-    animation: seat-reveal 180ms ease-out;
-  }
-  @keyframes seat-reveal {
-    from {
-      opacity: 0.4;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-}
-
-/* Approved table skin is decorative only; all state/seat geometry remains live DOM. */
-.pokerStage {
-  position: relative;
-  height: 415px;
-  min-width: 0;
-  container-type: inline-size;
-  isolation: isolate;
-  font-variant-numeric: tabular-nums;
-  font-family: "Seat Inter", var(--font-ui), sans-serif;
-}
-.approvedTableArt {
-  position: absolute;
-  left: 0;
-  top: 14%;
-  width: 100%;
-  height: 74%;
-  object-fit: fill;
-  z-index: -1;
-  pointer-events: none;
-  mix-blend-mode: lighten;
-  clip-path: inset(0 round 27% / 50%);
-}
-.pokerStage[data-table-theme="graphite-emerald"] .approvedTableArt {
-  filter: saturate(0.4) brightness(0.75);
-}
-.pokerStage[data-table-theme="felt-texture"] .approvedTableArt {
-  filter: contrast(1.12);
-}
-.table-center {
-  position: absolute;
-  top: 42%;
-  left: 50%;
-  transform: translate(-50%, -15%);
-  text-align: center;
-  min-width: 180px;
-}
-.table-brand {
-  font-size: 9px;
-  color: #8da594;
-  opacity: 0.5;
-  margin-bottom: 11px;
-  text-transform: uppercase;
-}
-.table-pot {
-  color: #efece2;
-  white-space: nowrap;
-  font-size: 28px;
-  line-height: 1.4;
-}
-.table-pot strong {
-  font-weight: 600;
-}
-.table-pot small {
-  font-size: 15px;
-  font-weight: 600;
-}
-.table-pot > span {
-  color: #a1ada5;
-  font-size: 13px;
-}
-.preflop-label {
-  font-size: 10px;
-  color: #93ad98;
-  margin-top: 9px;
-}
-.table-board {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-  margin-top: 13px;
-}
-.table-board .playingCard {
-  width: 32px;
-  height: 45px;
-}
-.pokerStage .playingCard {
-  border-radius: 4px;
-}
-.pokerStage .cardBack {
-  background: #314639;
-  border: 2px solid #bbc9b4;
-  box-shadow:
-    inset 0 0 0 1px #52705b,
-    0 2px 3px #0003;
-}
-.pokerStage .cardBack > span {
-  inset: 3px;
-  border-color: #8b9e84;
-}
-.pokerStage .cardCorner {
-  top: 3px;
-  left: 4px;
-}
-.pokerStage .cardCorner strong {
-  font-size: 18px;
-}
-.pokerStage .cardCorner small {
-  display: none;
-}
-.pokerStage .cardSuit {
-  font-size: 20px;
-  right: 4px;
-  bottom: 2px;
-}
-.pokerStage .player-cards .playingCard {
-  width: var(--card-w);
-  height: var(--card-h);
-}
-.pokerStage .player-cards .cardCorner strong {
-  font-size: 20px;
-}
-.pokerStage .player-cards .cardSuit {
-  font-size: 20px;
-}
-@font-face {
-  font-family: "Seat Inter";
-  src: url("../assets/seat-inter-latin.woff2") format("woff2");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-.player-nameplate {
-  font-family: "Seat Inter", var(--font-ui), sans-serif;
-}
-.player-stack {
-  font-variant-numeric: tabular-nums;
-}
-.seat-dealer img {
-  width: 100%;
-  height: 100%;
-}
+.player-committed svg,
 .player-committed .seat-chip {
   width: 13px;
   height: 13px;
   object-fit: contain;
+  color: var(--table-accent);
 }
-.is-all-in .player-nameplate {
-  border-color: #c99b67;
+.table-center {
+  position: absolute;
+  top: 49%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
-.is-acting.is-all-in .player-nameplate {
-  border-color: #e4cc94;
+.table-brand {
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  color: #c0ceb6;
+  margin-bottom: 12px;
 }
-.player-action-text.action-fold {
-  color: #b9c7bd;
+.table-pot {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+  white-space: nowrap;
 }
-.pokerTableWrap {
-  min-width: 0;
+.table-pot > span {
+  font-size: 11px;
+  color: #c2cdbf;
+}
+.table-pot strong {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 600;
+}
+.table-pot small {
+  font-size: 11px;
+  font-weight: 500;
+  color: #c2cdbf;
+}
+.table-board {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 12px;
+}
+.table-street {
+  margin-top: 8px;
+  font-size: 10px;
+  letter-spacing: 0.09em;
+  color: #c2cdbf;
+}
+.preflop-label {
+  margin-top: 10px;
+  font-size: 10px;
+  color: #c2cdbf;
+  white-space: nowrap;
+}
+.pokerStage .deckAssetCard {
+  width: 38px;
+  height: 53px;
+  flex-shrink: 0;
+}
+.pokerStage .player-cards .deckAssetCard {
+  width: var(--card-w);
+  height: var(--card-h);
 }
 
 /* Integration constraint: the existing shell/inspector must not impose an 820px table minimum. */
@@ -543,38 +329,31 @@
   overflow: visible;
   text-overflow: clip;
 }
-@media (min-width: 1600px) {
-  .pokerStage {
-    height: 470px;
+
+@container (max-width: 620px) {
+  .player-seat {
+    --plate-w: 100px;
   }
-  .table-board .playingCard {
-    width: 40px;
-    height: 55px;
+  .player-name {
+    font-size: 13px;
   }
-  .table-pot {
-    font-size: 30px;
-  }
-  .tournamentReviewScreen .replayerLayout {
-    grid-template-columns: minmax(0, 1fr) 330px;
+  .table-board .deckAssetCard {
+    width: 32px;
+    height: 46px;
   }
 }
-@media (max-width: 1250px) {
-  .tournamentReviewScreen .replayerLayout {
-    grid-template-columns: minmax(0, 1fr);
-  }
+@media (min-width: 1600px) {
   .pokerStage {
-    height: 440px;
+    height: 520px;
   }
-  .approvedTableArt {
-    top: 12%;
-    height: 80%;
+  .player-seat {
+    --plate-w: 124px;
   }
-  .table-center {
-    top: 43%;
+  .player-name {
+    font-size: 14px;
   }
-  .table-board .playingCard {
-    width: 36px;
-    height: 50px;
+  .tournamentReviewScreen .replayerLayout {
+    grid-template-columns: 68px minmax(0, 1fr) 330px;
   }
 }
 @media (max-width: 700px) {
@@ -582,75 +361,112 @@
     grid-template-columns: 1fr;
   }
   .pokerStage {
-    height: 307px;
-    margin-top: 28px;
+    height: 470px;
     width: 100%;
+    margin-top: 12px;
   }
-  .approvedTableArt {
-    top: 19%;
-    height: 69%;
+  .table-felt {
+    width: 96%;
+    left: 2%;
+    height: 56cqw;
   }
-  .table-center {
-    top: 45%;
-    min-width: 150px;
-    transform: translate(-50%, -12%);
+  .table-felt::before {
+    inset: 8px;
   }
-  .table-brand {
-    font-size: 9px;
-    margin-bottom: 8px;
+  .player-seat {
+    --plate-w: 84px;
+    --plate-h: 62px;
+    --card-w: 22px;
+    --card-h: 30px;
+    left: var(--seat-mx);
+    top: var(--seat-my);
   }
-  .table-pot {
-    font-size: 24px;
+  .player-nameplate {
+    padding: 5px 6px;
   }
-  .table-pot > span {
+  .player-name {
     font-size: 12px;
+    line-height: 16px;
   }
-  .table-pot small {
-    font-size: 13px;
-  }
-  .table-board {
-    gap: 3px;
-    margin-top: 10px;
-  }
-  .table-board .playingCard {
-    width: 24px;
-    height: 34px;
-    border-radius: 3px;
-  }
-  .pokerStage .cardCorner strong {
-    font-size: 15px;
-  }
-  .pokerStage .cardSuit {
+  .player-stack {
     font-size: 16px;
+    line-height: 21px;
   }
-  .pokerStage .player-cards .cardCorner strong {
-    font-size: 18px;
+  .player-stack small {
+    font-size: 10px;
   }
-  .pokerStage .player-cards .cardSuit {
-    font-size: 17px;
+  .player-nameplate .player-position-badge {
+    top: 5px;
+    right: 5px;
+    font-size: 10px;
   }
+  .player-action-slot {
+    left: 6px;
+    right: 35px;
+  }
+  .player-action-text {
+    font-size: 10px;
+  }
+  .player-action-text .raise-to {
+    display: none;
+  }
+  .player-cards {
+    gap: 3px;
+    bottom: calc(100% + 4px);
+  }
+  .is-hero {
+    --card-w: 32px;
+    --card-h: 44px;
+  }
+  .player-committed {
+    left: calc(50% + var(--bet-mdx));
+    top: calc(50% + var(--bet-mdy));
+    font-size: 13px;
+    line-height: 17px;
+    gap: 3px;
+    padding: 2px 3px;
+  }
+  .player-committed svg,
   .player-committed .seat-chip {
     width: 11px;
     height: 11px;
   }
-  .has-board .table-center {
-    top: 40%;
+  .player-seat > .seat-dealer {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    left: auto;
+    right: 0;
+    top: calc(100% + 4px);
   }
-  .has-board .table-brand {
-    display: none;
+  .table-center {
+    top: 49%;
   }
-  .has-board .table-board {
-    margin-top: 6px;
+  .table-brand {
+    margin-bottom: 8px;
+    font-size: 8px;
+  }
+  .table-pot strong {
+    font-size: 22px;
+    line-height: 28px;
+  }
+  .table-board {
+    gap: 3px;
+    margin-top: 9px;
+  }
+  .table-board .deckAssetCard {
+    width: 27px;
+    height: 39px;
   }
   .preflop-label {
-    visibility: hidden;
+    font-size: 9px;
   }
 }
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: no-preference) {
   .player-nameplate {
-    transition: none;
-  }
-  .player-cards {
-    animation: none;
+    transition:
+      border-color 180ms,
+      background 180ms,
+      box-shadow 180ms;
   }
 }

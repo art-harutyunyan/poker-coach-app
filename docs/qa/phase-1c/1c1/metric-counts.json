@@ -1,0 +1,260 @@
+[
+  {
+    "room": "GGPoker",
+    "tournamentId": "309704619",
+    "summary": {
+      "definitionVersion": "phase1c-v1",
+      "importedHands": 233,
+      "metrics": {
+        "vpip": {
+          "numerator": 48,
+          "denominator": 232,
+          "percentage": 20.689655172413794,
+          "excluded": 1,
+          "notOpportunity": 0,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        },
+        "pfr": {
+          "numerator": 38,
+          "denominator": 232,
+          "percentage": 16.379310344827587,
+          "excluded": 1,
+          "notOpportunity": 0,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        },
+        "threeBet": {
+          "numerator": 13,
+          "denominator": 96,
+          "percentage": 13.541666666666666,
+          "excluded": 2,
+          "notOpportunity": 135,
+          "reasons": {
+            "short_open": 1,
+            "zero_stack_fold": 1
+          }
+        },
+        "sawFlop": {
+          "numerator": 29,
+          "denominator": 232,
+          "percentage": 12.5,
+          "excluded": 1,
+          "notOpportunity": 0,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        },
+        "wtsd": {
+          "numerator": 11,
+          "denominator": 29,
+          "percentage": 37.93103448275862,
+          "excluded": 1,
+          "notOpportunity": 203,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        },
+        "wsd": {
+          "numerator": 8,
+          "denominator": 11,
+          "percentage": 72.72727272727273,
+          "excluded": 1,
+          "notOpportunity": 221,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        }
+      }
+    }
+  },
+  {
+    "room": "GGPoker",
+    "tournamentId": "314729652",
+    "summary": {
+      "definitionVersion": "phase1c-v1",
+      "importedHands": 222,
+      "metrics": {
+        "vpip": {
+          "numerator": 52,
+          "denominator": 222,
+          "percentage": 23.423423423423422,
+          "excluded": 0,
+          "notOpportunity": 0,
+          "reasons": {}
+        },
+        "pfr": {
+          "numerator": 38,
+          "denominator": 222,
+          "percentage": 17.117117117117118,
+          "excluded": 0,
+          "notOpportunity": 0,
+          "reasons": {}
+        },
+        "threeBet": {
+          "numerator": 7,
+          "denominator": 84,
+          "percentage": 8.333333333333334,
+          "excluded": 0,
+          "notOpportunity": 138,
+          "reasons": {}
+        },
+        "sawFlop": {
+          "numerator": 30,
+          "denominator": 222,
+          "percentage": 13.513513513513514,
+          "excluded": 0,
+          "notOpportunity": 0,
+          "reasons": {}
+        },
+        "wtsd": {
+          "numerator": 13,
+          "denominator": 30,
+          "percentage": 43.333333333333336,
+          "excluded": 0,
+          "notOpportunity": 192,
+          "reasons": {}
+        },
+        "wsd": {
+          "numerator": 11,
+          "denominator": 13,
+          "percentage": 84.61538461538461,
+          "excluded": 0,
+          "notOpportunity": 209,
+          "reasons": {}
+        }
+      }
+    }
+  },
+  {
+    "room": "GGPoker",
+    "tournamentId": "314806258",
+    "summary": {
+      "definitionVersion": "phase1c-v1",
+      "importedHands": 191,
+      "metrics": {
+        "vpip": {
+          "numerator": 42,
+          "denominator": 190,
+          "percentage": 22.105263157894736,
+          "excluded": 1,
+          "notOpportunity": 0,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        },
+        "pfr": {
+          "numerator": 31,
+          "denominator": 190,
+          "percentage": 16.31578947368421,
+          "excluded": 1,
+          "notOpportunity": 0,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        },
+        "threeBet": {
+          "numerator": 8,
+          "denominator": 78,
+          "percentage": 10.256410256410257,
+          "excluded": 2,
+          "notOpportunity": 111,
+          "reasons": {
+            "short_open": 1,
+            "zero_stack_fold": 1
+          }
+        },
+        "sawFlop": {
+          "numerator": 33,
+          "denominator": 190,
+          "percentage": 17.36842105263158,
+          "excluded": 1,
+          "notOpportunity": 0,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        },
+        "wtsd": {
+          "numerator": 22,
+          "denominator": 33,
+          "percentage": 66.66666666666667,
+          "excluded": 1,
+          "notOpportunity": 157,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        },
+        "wsd": {
+          "numerator": 13,
+          "denominator": 22,
+          "percentage": 59.09090909090909,
+          "excluded": 1,
+          "notOpportunity": 168,
+          "reasons": {
+            "zero_stack_fold": 1
+          }
+        }
+      }
+    }
+  },
+  {
+    "room": "GGPoker",
+    "tournamentId": "317697722",
+    "summary": {
+      "definitionVersion": "phase1c-v1",
+      "importedHands": 28,
+      "metrics": {
+        "vpip": {
+          "numerator": 6,
+          "denominator": 28,
+          "percentage": 21.428571428571427,
+          "excluded": 0,
+          "notOpportunity": 0,
+          "reasons": {}
+        },
+        "pfr": {
+          "numerator": 6,
+          "denominator": 28,
+          "percentage": 21.428571428571427,
+          "excluded": 0,
+          "notOpportunity": 0,
+          "reasons": {}
+        },
+        "threeBet": {
+          "numerator": 2,
+          "denominator": 11,
+          "percentage": 18.181818181818183,
+          "excluded": 0,
+          "notOpportunity": 17,
+          "reasons": {}
+        },
+        "sawFlop": {
+          "numerator": 5,
+          "denominator": 28,
+          "percentage": 17.857142857142858,
+          "excluded": 0,
+          "notOpportunity": 0,
+          "reasons": {}
+        },
+        "wtsd": {
+          "numerator": 2,
+          "denominator": 5,
+          "percentage": 40,
+          "excluded": 0,
+          "notOpportunity": 23,
+          "reasons": {}
+        },
+        "wsd": {
+          "numerator": 1,
+          "denominator": 2,
+          "percentage": 50,
+          "excluded": 0,
+          "notOpportunity": 26,
+          "reasons": {}
+        }
+      }
+    }
+  }
+]

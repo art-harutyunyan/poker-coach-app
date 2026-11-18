@@ -4,22 +4,37 @@ import type { SeatSnapshot } from "../../domain/replay";
 import type { Hand } from "../../domain/schemas";
 import type { ChipTheme, VisualPreviewSelection } from "../design/visualThemes";
 import { block52ChipUrl, block52DealerUrl } from "../design/visualThemes";
-import { formatChips } from "../format";
+import { formatChips, playerDisplayName } from "../format";
 import { PlayingCard } from "./PlayingCard";
 import { positionLabel, type SeatAnchor } from "./seatLayout";
+import type { OpponentAliases } from "../opponentAliases";
 
 export function PlayerSeat({
   seat,
   anchor,
   hand,
   visualPreview,
+  resultHidden = true,
+  opponentAliases,
 }: {
   seat: SeatSnapshot;
   anchor: SeatAnchor;
   hand: Hand;
   visualPreview?: VisualPreviewSelection;
+  resultHidden?: boolean;
+  opponentAliases?: OpponentAliases;
 }) {
   const position = positionLabel(seat.position);
+  const importedOpponent = hand.replayMode === "source-events" && !seat.isHero;
+  const name = playerDisplayName(
+    seat,
+    hand.replayMode === "source-events",
+    opponentAliases,
+  );
+  const identity = importedOpponent
+    ? `${name}, anonymized opponent, source ID ${seat.name}`
+    : name;
+  const revealed = !resultHidden ? seat.revealedCards : undefined;
   const action = seat.displayAction;
   const allIn = seat.isAllIn && !seat.isFolded;
   const type = seat.isFolded
@@ -38,6 +53,10 @@ export function PlayerSeat({
             ALL_IN: "All-in",
             FOLD: "Fold",
             WIN: "Win",
+            RETURN_UNCALLED: "Returned",
+            SHOW: "Shows",
+            SHOWDOWN: "Showdown",
+            DEAL_BOARD: "Deal",
           }[action.type]
         : undefined;
   const amount =
@@ -63,6 +82,10 @@ export function PlayerSeat({
     "--seat-y": `${anchor.y}%`,
     "--seat-mx": `${anchor.mx}%`,
     "--seat-my": `${anchor.my}%`,
+    "--bet-dx": `${anchor.betX - anchor.x}cqw`,
+    "--bet-dy": `${anchor.betY - anchor.y}cqh`,
+    "--bet-mdx": `${anchor.mbetX - anchor.mx}cqw`,
+    "--bet-mdy": `${anchor.mbetY - anchor.my}cqh`,
   } as CSSProperties;
 
   return (
@@ -77,19 +100,24 @@ export function PlayerSeat({
         className="player-nameplate"
         role="group"
         aria-current={seat.isActive ? "true" : undefined}
-        title={`${seat.name} · ${formatChips(seat.stackChips)} chips`}
-        aria-label={`${position}, ${seat.name}, ${seat.stackBB.toFixed(1)} BB${seat.isHero ? ", Hero" : ""}${seat.isActive ? ", Current actor" : ""}${type ? `, ${type}${type === "Raise" ? " to" : ""}${amount ? ` ${amount} BB` : ""}` : ""}`}
+        title={`${identity} · ${formatChips(seat.stackChips)} chips`}
+        aria-label={`${position}, ${identity}, ${seat.stackBB.toFixed(1)} BB${seat.isHero ? ", Hero" : ""}${seat.isActive ? ", Current actor" : ""}${type ? `, ${type}${type === "Raise" ? " to" : ""}${amount ? ` ${amount} BB` : ""}` : ""}`}
       >
-        {!seat.isFolded && (
+        {(!seat.isFolded || !!revealed?.length) && (
           <span
             className="player-cards"
-            aria-label={seat.isHero ? "Hero hole cards" : `${seat.name} hidden cards`}
+            aria-label={
+              seat.isHero
+                ? "Hero hole cards"
+                : `${name} ${revealed?.length ? "revealed" : "hidden"} cards`
+            }
           >
             {[0, 1].map((index) => (
               <PlayingCard
                 key={index}
-                card={seat.isHero ? hand.heroHoleCards[index] : undefined}
-                concealed={!seat.isHero}
+                card={seat.isHero ? hand.heroHoleCards[index] : revealed?.[index]}
+                concealed={!seat.isHero && !revealed?.[index]}
+                variant="table"
                 context={seat.isHero ? "hero" : "compact"}
                 theme={visualPreview?.cardTheme}
               />
@@ -97,8 +125,7 @@ export function PlayerSeat({
           </span>
         )}
         <span className="player-position-badge" aria-label={`Position ${position}`}>
-          <span>{position.split("+")[0]}</span>
-          {position.includes("+") && <span>+{position.split("+")[1]}</span>}
+          {position}
         </span>
         <span className="player-action-slot">
           {type && (
@@ -115,8 +142,11 @@ export function PlayerSeat({
             </span>
           )}
         </span>
-        <span className="player-name" title={seat.name}>
-          {seat.name}
+        <span
+          className={`player-name${importedOpponent ? " importedOpponentName" : ""}`}
+          title={identity}
+        >
+          {name}
         </span>
         <b className="player-stack">
           {seat.stackBB.toFixed(1)} <small>BB</small>
@@ -130,7 +160,7 @@ export function PlayerSeat({
       {seat.committedThisStreetChips > 0 && (
         <span
           className="player-committed"
-          aria-label={`${seat.name}: ${(seat.committedThisStreetChips / hand.blindLevel.bigBlindChips).toFixed(1)} BB committed`}
+          aria-label={`${name}: ${(seat.committedThisStreetChips / hand.blindLevel.bigBlindChips).toFixed(1)} BB committed`}
         >
           <Chip theme={chipTheme} />
           <b>

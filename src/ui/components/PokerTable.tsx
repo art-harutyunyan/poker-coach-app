@@ -6,7 +6,7 @@ import { PlayingCard } from "./PlayingCard";
 import type { ReactNode } from "react";
 import { PlayerSeat } from "./PlayerSeat";
 import { layoutPlayers } from "./seatLayout";
-import approvedTableArt from "../../assets/approved-poker-table.png";
+import type { OpponentAliases } from "../opponentAliases";
 
 export function PokerTable({
   controls,
@@ -14,35 +14,51 @@ export function PokerTable({
   replayState,
   resultHidden,
   visualPreview,
+  opponentAliases,
 }: {
   controls?: ReactNode;
   hand: Hand;
   replayState: ReplayState;
   resultHidden: boolean;
   visualPreview?: VisualPreviewSelection;
+  opponentAliases?: OpponentAliases;
 }) {
   const displaySeats = layoutPlayers(replayState.seats, hand.tableSize);
   const allActions = flattenActions(hand);
+  const sourceEvents = hand.replayMode === "source-events";
   // Replay cursor semantics: the table shows state after actions [0, cursor)
   // have happened; `nextAction` is the action about to happen.
   const currentAction =
-    replayState.nextAction?.type !== "WIN" ? replayState.nextAction : undefined;
+    replayState.nextAction?.type !== "WIN" &&
+    (!sourceEvents ||
+      !["RETURN_UNCALLED", "SHOW", "SHOWDOWN", "DEAL_BOARD"].includes(
+        replayState.nextAction?.type ?? "",
+      ))
+      ? replayState.nextAction
+      : undefined;
   const currentActor = currentAction
     ? hand.players.find((player) => player.id === currentAction.actorPlayerId)
     : undefined;
   const currentSummary = currentActor
     ? actorToActLabel(currentActor, replayState)
-    : "Hand complete";
-  const actingContext = currentAction
-    ? facingContext(hand, replayState)
-    : replayState.lastAction
-      ? `Final action: ${actionLine(
-          replayState.lastAction,
-          hand.players,
-          hand.blindLevel.bigBlindChips,
-          allActions,
-        )}`
-      : "Hand ready.";
+    : sourceEvents && replayState.nextAction
+      ? "Replay transition"
+      : "Hand complete";
+  const actingContext =
+    sourceEvents &&
+    resultHidden &&
+    ["SHOW", "WIN"].includes(replayState.lastAction?.type ?? "")
+      ? "Result hidden."
+      : currentAction
+        ? facingContext(hand, replayState)
+        : replayState.lastAction
+          ? `Final action: ${actionLine(
+              replayState.lastAction,
+              hand.players,
+              hand.blindLevel.bigBlindChips,
+              allActions,
+            )}`
+          : "Hand ready.";
 
   return (
     <div className="pokerTableWrap">
@@ -53,9 +69,9 @@ export function PokerTable({
         role="group"
         aria-label={`Poker table state for hand ${hand.handNumber}`}
       >
-        <img className="approvedTableArt" src={approvedTableArt} alt="" />
+        <div className="table-felt" aria-hidden="true" />
         <div className="table-center">
-          <div className="table-brand">Poker Coach</div>
+          <div className="table-brand">THE STUDY</div>
           <div
             className="table-pot"
             title={`${formatChips(replayState.potChips)} chips`}
@@ -71,6 +87,7 @@ export function PokerTable({
               {replayState.board.map((card, index) => (
                 <PlayingCard
                   card={card}
+                  variant="board"
                   context="board"
                   key={`${card.rank}${card.suit}-${index}`}
                   theme={visualPreview?.cardTheme}
@@ -87,6 +104,9 @@ export function PokerTable({
               TOTAL ANTES
             </div>
           )}
+          {replayState.board.length > 0 && (
+            <div className="table-street">{streetLabel(replayState.currentStreet)}</div>
+          )}
         </div>
 
         {displaySeats.map(({ anchor, seat }) => (
@@ -96,6 +116,8 @@ export function PokerTable({
             key={seat.id}
             anchor={anchor}
             seat={seat}
+            resultHidden={resultHidden}
+            opponentAliases={opponentAliases}
           />
         ))}
       </div>
@@ -120,6 +142,7 @@ export function PokerTable({
           cursor={replayState.cursor}
           players={hand.players}
           resultHidden={resultHidden}
+          sourceEvents={sourceEvents}
         />
       </details>
     </div>
@@ -132,12 +155,14 @@ function ActionTimeline({
   cursor,
   players,
   resultHidden,
+  sourceEvents,
 }: {
   actions: Action[];
   bigBlindChips: number;
   cursor: number;
   players: Player[];
   resultHidden: boolean;
+  sourceEvents: boolean;
 }) {
   const streets: Street[] = ["PREFLOP", "FLOP", "TURN", "RIVER"];
 
@@ -158,12 +183,17 @@ function ActionTimeline({
                 const isCurrent = action.sequence === cursor;
                 const isCompleted = action.sequence < cursor;
                 const shouldHide =
-                  resultHidden && (action.sequence > cursor || action.type === "WIN");
+                  resultHidden &&
+                  (sourceEvents
+                    ? action.sequence >= cursor ||
+                      action.type === "WIN" ||
+                      action.type === "SHOW"
+                    : action.sequence > cursor || action.type === "WIN");
                 const actorLabel = actorNameForTimeline(action, players);
                 const label = shouldHide ? "?" : actorLabel;
                 const fullLabel = shouldHide
                   ? "Hidden action"
-                  : isCurrent
+                  : isCurrent && !sourceEvents
                     ? `${actorLabel} to act`
                     : actionLine(action, players, bigBlindChips, actions);
 
@@ -215,6 +245,14 @@ function actionSummary(action: Action, bigBlindChips: number): string {
       return resultVerb(action, bigBlindChips);
     case "ANTE":
       return `antes${amount}`;
+    case "RETURN_UNCALLED":
+      return `returned${amount}`;
+    case "SHOW":
+      return `shows ${action.cards?.map((c) => c.rank + c.suit).join(" ") ?? "cards"}`;
+    case "SHOWDOWN":
+      return "showdown";
+    case "DEAL_BOARD":
+      return `deal ${action.street.toLowerCase()}`;
   }
 }
 
@@ -260,9 +298,12 @@ function actionLine(
   bigBlindChips: number,
   actions: Action[],
 ): string {
+  if (action.type === "DEAL_BOARD") return `Deal ${streetLabel(action.street)}`;
+  if (action.type === "SHOWDOWN") return "Showdown";
   const player = players.find((candidate) => candidate.id === action.actorPlayerId);
   const amountChips =
-    action.type === "RAISE" || action.type === "ALL_IN"
+    action.raiseToChips ??
+    (action.type === "RAISE" || action.type === "ALL_IN"
       ? actions
           .filter(
             (candidate) =>
@@ -273,11 +314,13 @@ function actionLine(
               candidate.type !== "WIN",
           )
           .reduce((total, candidate) => total + candidate.amountChips, 0)
-      : action.amountChips;
+      : action.amountChips);
   return `${positionLabel(player?.position)} ${actionSummary({ ...action, amountChips }, bigBlindChips)}`;
 }
 
 function actorNameForTimeline(action: Action, players: Player[]): string {
+  if (action.type === "DEAL_BOARD") return streetLabel(action.street);
+  if (action.type === "SHOWDOWN") return "Showdown";
   const player = players.find((candidate) => candidate.id === action.actorPlayerId);
 
   return player?.isHero ? "Hero" : positionLabel(player?.position);

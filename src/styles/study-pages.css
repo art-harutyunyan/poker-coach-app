@@ -1,0 +1,469 @@
+/* Presentation migration only. Values come from the approved Tournaments shell. */
+.studyPage {
+  --bg-0: var(--study-bg);
+  --bg-1: var(--study-bg);
+  --bg-2: var(--study-surface);
+  --surface-1: var(--study-surface);
+  --surface-2: var(--study-raised);
+  --border-1: var(--study-line);
+  --border-2: #526055;
+  --text-1: var(--study-text);
+  --text-2: var(--study-muted);
+  --text-3: var(--study-muted);
+  --champagne: var(--study-gold);
+  --action: var(--study-green);
+  --radius-md: 6px;
+  background: var(--study-bg);
+  color: var(--study-text);
+  font-family: "Seat Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.studyPage :where(h1, h2, h3, button, input, select) {
+  font-family: inherit;
+  letter-spacing: 0;
+}
+.studyPage :where(button, input, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--study-gold);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+.studyPage .mainSurface {
+  --font-ui: "Seat Inter", sans-serif;
+  --font-display: var(--font-ui);
+  --font-num: var(--font-ui);
+  padding: 24px;
+}
+.studyPage .topBar {
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 26px;
+  padding: 0 8px 16px;
+  border-bottom: 1px solid var(--study-line);
+}
+.studyPage .topBar h1 {
+  font-size: 28px;
+  font-weight: 550;
+  line-height: 1.3;
+}
+.studyPage .topBar .mobileOnly {
+  display: none;
+}
+.studyPage .eyebrow {
+  color: var(--study-muted);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+}
+.studyPage :is(.topBarStatus, .pill) {
+  padding: 3px 6px;
+  border: 1px solid var(--study-line);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--study-muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+.studyPage .statusDot {
+  width: 5px;
+  height: 5px;
+  background: var(--study-green);
+}
+.studyPage :is(.pageGrid, .dashboardGrid) {
+  gap: 18px;
+  align-items: start;
+}
+.studyPage .dashboardGrid {
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+}
+.studyPage
+  :is(
+    .heroBand,
+    .overviewBand,
+    .developmentBand,
+    .reviewQueue,
+    .placeholderBand,
+    .stateBlock
+  ) {
+  min-width: 0;
+  border: 1px solid var(--study-line);
+  border-radius: 6px;
+  background: var(--study-surface);
+  box-shadow: none;
+  padding: 18px;
+}
+.studyPage .heroPrimary {
+  gap: 18px;
+}
+.studyPage .heroBand h2 {
+  color: var(--study-text);
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 550;
+}
+.studyPage .sectionHeader {
+  gap: 12px;
+  align-items: start;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.studyPage :is(.sectionHeader, .placeholderBand) h2 {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.studyPage .tournamentMetaLine {
+  gap: 10px;
+  margin-top: 8px;
+  color: var(--study-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.studyPage .tournamentMetaLine span + span::before {
+  background: var(--study-muted);
+}
+.studyPage .priorityCallout {
+  border-left: 2px solid var(--study-gold);
+  background: var(--study-raised);
+  padding: 12px;
+}
+.studyPage :is(.priorityCallout span, .scorePanel span) {
+  color: var(--study-muted);
+  font-size: 10px;
+  font-weight: 500;
+}
+.studyPage .priorityCallout strong {
+  color: var(--study-text);
+  font-size: 13px;
+  font-weight: 550;
+}
+.studyPage .scorePanel {
+  min-width: 130px;
+  border-color: var(--study-line);
+}
+.studyPage .scorePanel strong {
+  color: var(--study-green);
+  font-size: 36px;
+  font-weight: 450;
+  line-height: 1;
+}
+.studyPage .scorePanel small {
+  color: var(--study-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+.studyPage :is(.primaryButton, .secondaryButton, .iconButton) {
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid #526055;
+  border-radius: 5px;
+  background: #1a261f;
+  color: var(--study-text);
+  box-shadow: none;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  transform: none;
+}
+.studyPage .primaryButton {
+  background: var(--study-gold);
+  border-color: #e2ceab;
+  color: #1b221a;
+}
+.studyPage .primaryButton:hover:not(:disabled) {
+  background: #e0cda6;
+  border-color: #e2ceab;
+  transform: none;
+}
+.studyPage :is(.secondaryButton, .iconButton):hover:not(:disabled) {
+  background: #2a382f;
+  border-color: #8a9b8d;
+  transform: none;
+}
+.studyPage .mainSurface :is(input, select) {
+  min-height: 44px;
+  border: 1px solid #435348;
+  border-radius: 5px;
+  background: #131d17;
+  color: var(--study-text);
+  font: inherit;
+  padding: 8px 10px;
+}
+.studyPage .tabList {
+  gap: 26px;
+  border: 0;
+  border-bottom: 1px solid var(--study-line);
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+.studyPage .tabTrigger {
+  min-height: 48px;
+  padding: 10px 0 14px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--study-muted);
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 400;
+}
+.studyPage .tabTrigger[data-state="active"] {
+  color: var(--study-gold);
+  border-bottom-color: var(--study-gold);
+}
+.studyPage .tabTrigger:hover {
+  color: var(--study-text);
+}
+.studyPage .metricsRail {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-color: var(--study-line);
+}
+.studyPage .metricBlock {
+  min-width: 0;
+  border-color: var(--study-line);
+  padding: 12px;
+}
+.studyPage .metricBlock span {
+  color: var(--study-muted);
+  font-size: 11px;
+}
+.studyPage .metricBlock strong {
+  color: var(--study-text);
+  font-size: 24px;
+  font-weight: 550;
+}
+.studyPage .dimensionRow {
+  gap: 16px;
+  border-color: var(--study-line);
+  padding: 14px 0;
+}
+.studyPage :is(.dimensionRow h3, .reviewMain strong, .reviewMeta b) {
+  color: var(--study-text);
+  font-size: 13px;
+  font-weight: 550;
+}
+.studyPage :is(.dimensionRow p, .placeholderBand p:not(.eyebrow)) {
+  color: var(--study-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.studyPage .dimensionScore strong {
+  color: var(--study-text);
+  font-size: 16px;
+  font-weight: 550;
+}
+.studyPage :is(.scoreBar, .dimensionTrack) {
+  background: var(--study-bg);
+  border-radius: 3px;
+}
+.studyPage :is(.scoreBar span, .dimensionTrack span) {
+  background: var(--study-green);
+}
+.studyPage .insightStrip {
+  gap: 18px;
+  border-color: var(--study-line);
+}
+.studyPage .insightStrip span {
+  color: var(--study-muted);
+  font-size: 10px;
+}
+.studyPage .insightStrip strong {
+  color: var(--study-text);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.7;
+}
+.studyPage .reviewItem {
+  gap: 12px;
+  padding: 14px 0;
+  border-color: var(--study-line);
+  background: transparent;
+  color: var(--study-text);
+  transform: none;
+}
+.studyPage .reviewItem:hover {
+  border-color: var(--study-line);
+  background: #202c24;
+  transform: none;
+}
+.studyPage :is(.reviewMain, .reviewMeta) {
+  min-width: 0;
+}
+.studyPage :is(.reviewMain small, .reviewMeta small) {
+  color: var(--study-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.studyPage .reviewMain small {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+.studyPage .reviewItem > svg {
+  flex-shrink: 0;
+  color: var(--study-muted);
+}
+.studyPage .reviewIcon {
+  background: transparent;
+  border-color: var(--study-line);
+}
+.studyPage .reviewItem:is([data-grade="GOOD"], [data-grade="EXCELLENT"]) .reviewIcon {
+  color: #a3d2b5;
+}
+.studyPage .reviewItem[data-grade="INACCURATE"] .reviewIcon {
+  color: #e7c88e;
+}
+.studyPage
+  .reviewItem:is([data-grade="MISTAKE"], [data-grade="MAJOR_MISTAKE"])
+  .reviewIcon {
+  color: #eda695;
+}
+.studyPage .chartShell {
+  min-width: 0;
+  color: var(--study-muted);
+}
+.studyPage .stateBlock strong {
+  color: var(--study-text);
+  font-size: 13px;
+  font-weight: 550;
+}
+.studyPage .stateBlock span {
+  color: var(--study-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.studyPage .stateBlock > svg {
+  color: var(--study-gold);
+}
+.studyPage .warningState > svg {
+  color: #eda695;
+}
+/* The complete queue keeps its existing rows and data, using analysis-panel badges. */
+.studyPage .tournamentTabs .reviewMeta b {
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: #3e2c29;
+  color: #eda695;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.studyPage .tournamentTabs .reviewItem[data-grade="INACCURATE"] .reviewMeta b {
+  background: #3c3425;
+  color: #e7c88e;
+}
+.studyPage
+  .tournamentTabs
+  .reviewItem:is([data-grade="GOOD"], [data-grade="EXCELLENT"])
+  .reviewMeta
+  b {
+  background: #253d30;
+  color: #a3d2b5;
+}
+.studyPage .tournamentTabs .reviewItem:active {
+  background: #283a2d;
+}
+.studyPage .tournamentTabs .reviewItem:focus-visible {
+  outline-offset: -2px;
+  background: #202c24;
+}
+.studyPage .placeholderBand {
+  align-items: start;
+  gap: 16px;
+}
+.studyPage .placeholderBand > svg {
+  flex-shrink: 0;
+  color: var(--study-gold);
+}
+.studyPage .placeholderBand p:last-child {
+  margin-bottom: 0;
+}
+.studyPage :is(.sectionHeader, .tournamentSummaryTop, .placeholderBand) > div {
+  min-width: 0;
+}
+@media (min-width: 1600px) {
+  .studyPage .mainSurface {
+    padding-inline: 32px;
+  }
+}
+@media (max-width: 1180px) {
+  .studyPage .dashboardGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .studyPage .mainSurface {
+    padding: 20px 10px 24px;
+  }
+  .studyPage .topBar {
+    margin-bottom: 18px;
+    padding: 0 6px 14px;
+  }
+  .studyPage .topBar h1 {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  .studyPage .topBarStatus {
+    display: none;
+  }
+  .studyPage :is(.pageGrid, .dashboardGrid) {
+    gap: 14px;
+  }
+  .studyPage
+    :is(.heroBand, .overviewBand, .developmentBand, .reviewQueue, .placeholderBand) {
+    padding: 16px;
+  }
+  .studyPage .heroBand h2 {
+    font-size: 20px;
+  }
+  .studyPage .tournamentSummaryTop {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .studyPage .scorePanel {
+    grid-template-columns: auto auto;
+    justify-content: start;
+    padding-top: 14px;
+  }
+  .studyPage .metricsRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .studyPage .metricBlock:nth-child(2) {
+    border-top: 0;
+    border-left: 1px solid var(--study-line);
+  }
+  .studyPage .metricBlock:nth-child(4) {
+    border-left: 1px solid var(--study-line);
+  }
+  .studyPage .dimensionRow {
+    gap: 12px;
+  }
+  .studyPage .heroActions > button {
+    flex: 1;
+  }
+  .studyPage .reviewItem {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .studyPage .reviewMain {
+    flex: 1;
+  }
+  .studyPage .reviewMeta {
+    flex-basis: calc(100% - 28px);
+    text-align: left;
+    padding-left: 28px;
+  }
+  .studyPage .insightStrip {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .studyPage .placeholderBand {
+    gap: 12px;
+  }
+  .studyPage .tournamentTabs .reviewMeta {
+    justify-items: start;
+  }
+}

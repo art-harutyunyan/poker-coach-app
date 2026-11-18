@@ -1,0 +1,4 @@
+﻿38fc0e0fd3ee9320830c1383dc59783c5b18a9198edd3b837e9c7a76d60aa1a0  tests/fixtures/gg/GG20261011-1700 - GGMasters 150, 1M GTD [2-Day Event].txt
+ddb42ab8cc06a3e833b990803ab92d24ef5a0448d6553cebc152c5b0c83bafbd  tests/fixtures/gg/GG20260928-1905 - Fifty Stack 5.50.txt
+c966062804091b0ebca39576f78c67f59414a67b4474ccde33e4ef24bb66c427  tests/fixtures/gg/GG20260928-1307 - Daily Monster Stack 2.50.txt
+3e5c4693d2c3a80b2434187dffc9e6c7a8f2660e8af177af691ce738e51b36dc  tests/fixtures/gg/GG20260905-2102 - Daily Classic 10.txt

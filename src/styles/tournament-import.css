@@ -1,0 +1,442 @@
+/* Imported-data surfaces reuse the approved Study system; demo geometry stays intact. */
+.tournamentImport,
+.importedTournament {
+  color: var(--study-text);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.prototypeDialog:has(.tournamentImport) {
+  background: var(--study-surface);
+  border: 1px solid var(--study-line);
+  color: var(--study-text);
+  width: min(600px, calc(100vw - 24px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+}
+.tournamentImport p,
+.importedEmpty p,
+.importMetadataGrid dt {
+  color: var(--study-muted);
+  line-height: 1.6;
+}
+.importFileLabel {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+}
+.importFileLabel input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--study-line);
+  border-radius: 5px;
+  padding: 12px;
+  color: var(--study-text);
+  background: var(--study-bg);
+}
+.importFileLabel input::file-selector-button {
+  margin-right: 8px;
+  border: 1px solid var(--study-line);
+  border-radius: 4px;
+  padding: 8px;
+  background: var(--study-raised);
+  color: var(--study-gold);
+}
+.tournamentImport .primaryButton {
+  background: var(--study-gold);
+  color: var(--study-bg);
+}
+.importSummary,
+.importError,
+.importInfo,
+.importWarnings {
+  margin-block: 16px;
+  padding: 16px;
+  border: 1px solid var(--study-line);
+  border-radius: 6px;
+  background: var(--study-surface);
+}
+.importError {
+  border-color: var(--champagne);
+}
+.importWarnings summary {
+  cursor: pointer;
+  color: var(--study-gold);
+}
+.importWarnings ul,
+.importInfo ul {
+  max-height: 260px;
+  overflow: auto;
+  padding-left: 20px;
+}
+.importWarnings li,
+.importInfo li {
+  margin-top: 10px;
+  line-height: 1.6;
+  color: var(--study-muted);
+}
+.importStatus {
+  margin-block: 16px;
+}
+.importStatus h3 {
+  font-size: 14px;
+  color: var(--study-muted);
+}
+.importInfo summary {
+  cursor: pointer;
+  color: var(--study-muted);
+}
+.importTechnical {
+  margin-top: 4px;
+  font-size: 12px;
+}
+.importStatus .importTechnical summary {
+  color: var(--study-muted);
+}
+.importTechnical pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.importWorkspaceEmpty,
+.importedEmpty,
+.importedMetadata,
+.importedResults,
+.importedHandList {
+  padding: 24px;
+}
+.importedEmpty h2 {
+  color: var(--study-gold);
+  font-size: 18px;
+  line-height: 1.5;
+}
+.importMetadataGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  margin: 24px 0;
+}
+.importMetadataGrid dd {
+  margin: 6px 0 0;
+}
+.importedTournamentContext {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.importedTournamentContext .replayerTitleBlock {
+  min-width: 0;
+}
+.importedTournamentContext h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+.importedReimport {
+  flex-shrink: 0;
+}
+.importedOpponentName {
+  font-size: 11px;
+  line-height: 16px;
+}
+.importedHandRows {
+  min-width: 0;
+  display: grid;
+  grid-auto-rows: max-content;
+  gap: 8px;
+}
+.importedHandList .importedHandRows {
+  max-height: min(65dvh, 640px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.importedHandRow {
+  min-width: 0;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  border: 1px solid var(--study-line);
+  border-radius: 4px;
+  color: var(--study-text);
+  background: var(--study-surface);
+  cursor: pointer;
+}
+.importedHandRow strong,
+.importedHandRow small {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.importedHandRow small {
+  margin-top: 4px;
+  color: var(--study-muted);
+}
+.importedHandRow:hover {
+  background: var(--study-raised);
+}
+.importedHandRow[aria-current="true"] {
+  border-color: var(--study-gold);
+}
+.importedHandIdentity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.importedHeroCards {
+  display: flex;
+  flex-shrink: 0;
+  gap: 3px;
+}
+.importedHandRow .importedHandId {
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.importedTournament .replayerLayout {
+  min-width: 0;
+  width: 100%;
+  grid-template-columns: 160px minmax(0, 1fr) 250px;
+}
+.importedHandRail {
+  min-width: 0;
+  max-height: 620px;
+}
+.importedHandRail .handFilterControls {
+  display: grid;
+  gap: 6px;
+  flex-shrink: 0;
+  min-width: 0;
+  font-size: 10px;
+}
+.importedHandRail .handFilterOptions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding-bottom: 2px;
+}
+.importedHandRail .handFilterControls button {
+  min-height: 28px;
+  min-width: 0;
+  padding: 4px 5px;
+  flex-shrink: 0;
+  background: var(--study-surface);
+  border: 1px solid var(--study-line);
+  color: var(--study-text);
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: normal;
+}
+.importedHandRail .handFilterControls button[aria-pressed="true"] {
+  border-color: var(--study-gold);
+  color: var(--study-gold);
+}
+.importedHandRail .handFilterLabel,
+.importedHandRail .handFilterCount {
+  display: block;
+}
+.importedHandRail .handFilterControls button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.importedHandRail .handFilterUnknown,
+.importedHandRail .importedHandEmpty {
+  margin: 0;
+  color: var(--study-muted);
+  line-height: 1.4;
+}
+.importedHandRail .handFilterUnknown {
+  min-height: 14px;
+}
+.importedHandRail .handFilterUnknown details {
+  position: relative;
+}
+.importedHandRail .handFilterUnknown summary {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.importedHandRail .handFilterReviewPanel {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 6px;
+  background: var(--study-surface);
+  border: 1px solid var(--study-line);
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.2);
+}
+.importedHandRail .handFilterReviewHand {
+  display: grid;
+  gap: 4px;
+  overflow-wrap: anywhere;
+}
+.importedHandRail .handFilterReviewHand + .handFilterReviewHand {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--study-line);
+}
+.importedHandRail .handFilterReviewHand p {
+  margin: 0;
+}
+.importedHandRail .handFilterReviewHand code {
+  font-size: inherit;
+}
+.importedHandRail .handFilterReviewHand button {
+  width: 100%;
+}
+.importedHandRail .handFilterNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3px;
+  white-space: nowrap;
+  color: var(--study-muted);
+}
+.importedHandRail .handFilterPosition {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  text-align: center;
+  white-space: normal;
+}
+.importedHandRail .handFilterPosition button {
+  color: var(--study-gold);
+}
+.importedHandRail .importedHandRows {
+  min-height: 0;
+}
+.importedHandRail .importedHandRows {
+  overflow-y: auto;
+}
+.importedHandRail h2 {
+  flex-shrink: 0;
+}
+.importedHandRail .importedHandRow strong {
+  font-size: 12px;
+}
+.importedHandRail .importedHandRow {
+  display: block;
+}
+.importedTournament .handStudyHeader p {
+  overflow-wrap: anywhere;
+}
+.importedTournament .tournamentTabs > [role="tabpanel"] {
+  min-width: 0;
+}
+@media (max-width: 1250px) {
+  .importedTournament .replayerLayout {
+    grid-template-columns: 140px minmax(0, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .importedTournament .player-stack {
+    line-height: 17px;
+  }
+  .importedTournamentContext {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .importMetadataGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .importedTournament .importedHandRail {
+    display: grid;
+    position: relative;
+    width: 100%;
+    grid-template-columns: 145px minmax(0, 1fr);
+    grid-template-rows: 17px 88px;
+    column-gap: 8px;
+    row-gap: 10px;
+    max-height: none;
+  }
+  .importedHandRail h2 {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+  .importedHandRail .handFilterControls {
+    grid-column: 1;
+    grid-row: 2;
+    gap: 4px;
+    height: 88px;
+    overflow: visible;
+  }
+  .importedHandRail .handFilterOptions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px;
+    padding: 0;
+    overflow: visible;
+  }
+  .importedHandRail .handFilterControls .handFilterOption {
+    display: block;
+    min-height: 26px;
+    padding: 2px;
+    font-size: 9px;
+    line-height: 1.05;
+  }
+  .importedHandRail .handFilterUnknown:empty {
+    display: none;
+  }
+  .importedHandRail .handFilterUnknown:not(:empty) {
+    position: static;
+    min-height: 0;
+    font-size: 9px;
+    line-height: 12px;
+    white-space: nowrap;
+  }
+  .importedTournament .importedHandRail:has(.handFilterUnknown:not(:empty)) {
+    grid-template-columns: 165px minmax(0, 1fr);
+  }
+  .importedHandRail:has(.handFilterUnknown:not(:empty)) .handFilterControls {
+    gap: 2px;
+    align-content: start;
+  }
+  .importedHandRail:has(.handFilterUnknown:not(:empty)) .handFilterOption {
+    min-height: 24px;
+    padding: 1px 2px;
+  }
+  .importedHandRail:has(.handFilterUnknown:not(:empty)) .handFilterNavigation button {
+    min-height: 20px;
+    padding: 0 2px;
+  }
+  .importedHandRail .handFilterNavigation {
+    gap: 2px;
+    font-size: 9px;
+  }
+  .importedHandRail .handFilterNavigation button {
+    min-height: 26px;
+    padding: 2px;
+    font-size: 9px;
+  }
+  .importedHandRail .handFilterPosition:has(button) {
+    position: absolute;
+    top: 0;
+    left: 74px;
+    right: 6px;
+    height: 26px;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    white-space: nowrap;
+  }
+  .importedHandRail .importedHandRows {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    overflow-x: auto;
+  }
+  .importedHandRail .importedHandRow {
+    min-width: 145px;
+    width: 145px;
+    flex-shrink: 0;
+  }
+  .importedHandList,
+  .importedMetadata,
+  .importedEmpty {
+    padding: 16px;
+  }
+}

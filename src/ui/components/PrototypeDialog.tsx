@@ -1,12 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
 
 export function PrototypeDialog({
   kind,
   onClose,
+  children,
 }: {
   kind: "upload" | "profile";
   onClose: () => void;
+  children?: ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
@@ -38,20 +40,21 @@ export function PrototypeDialog({
           <X size={18} />
         </button>
       </header>
-      {kind === "upload" ? (
-        <p>
-          Tournament imports are not connected in Phase 0. Continue reviewing the
-          included Daily Classic sample; no files are uploaded or processed.
-        </p>
-      ) : (
-        <>
-          <p>Jacob S. · Demo profile</p>
+      {children ??
+        (kind === "upload" ? (
           <p>
-            This review uses mock data. Accounts and saved profile preferences are not
-            connected in Phase 0.
+            Tournament imports are not connected in Phase 0. Continue reviewing the
+            included Daily Classic sample; no files are uploaded or processed.
           </p>
-        </>
-      )}
+        ) : (
+          <>
+            <p>Jacob S. · Demo profile</p>
+            <p>
+              This review uses mock data. Accounts and saved profile preferences are not
+              connected in Phase 0.
+            </p>
+          </>
+        ))}
       <button className="secondaryButton" type="button" onClick={onClose}>
         Return to review
       </button>

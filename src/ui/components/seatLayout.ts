@@ -9,7 +9,6 @@ export type SeatArchetype =
   | "lower-left"
   | "lower-right"
   | "hero";
-type Facing = "up" | "down" | "left" | "right";
 
 export interface SeatAnchor {
   x: number;
@@ -17,6 +16,10 @@ export interface SeatAnchor {
   mx: number;
   my: number;
   archetype: SeatArchetype;
+  betX: number;
+  betY: number;
+  mbetX: number;
+  mbetY: number;
 }
 
 export const positionSets: Record<number, readonly Player["position"][]> = {
@@ -26,66 +29,70 @@ export const positionSets: Record<number, readonly Player["position"][]> = {
   9: ["BTN", "SB", "BB", "UTG", "UTG_PLUS_1", "UTG_PLUS_2", "LJ", "HJ", "CO"],
 };
 
-function slot(x: number, y: number, facing: Facing, mx = x, my = y): SeatAnchor {
+// Each profile describes a plate center and an independent inward bet center.
+// Compact profiles stagger the rail seats vertically instead of shrinking poker data.
+type SeatPoint = readonly [x: number, y: number, betX: number, betY: number];
+function slot(desktop: SeatPoint, compact: SeatPoint = desktop): SeatAnchor {
+  const [x, y, betX, betY] = desktop;
+  const [mx, my, mbetX, mbetY] = compact;
   const archetype: SeatArchetype =
-    facing === "down"
+    y < 35
       ? x === 50
         ? "top-center"
         : x < 50
           ? "upper-left"
           : "upper-right"
-      : facing === "right"
-        ? "left-side"
-        : facing === "left"
-          ? "right-side"
-          : x === 50
-            ? "hero"
-            : x < 50
-              ? "lower-left"
-              : "lower-right";
-  return { x, y, mx, my, archetype };
+      : y < 65
+        ? x < 50
+          ? "left-side"
+          : "right-side"
+        : x === 50
+          ? "hero"
+          : x < 50
+            ? "lower-left"
+            : "lower-right";
+  return { x, y, mx, my, betX, betY, mbetX, mbetY, archetype };
 }
 
-const hero = slot(50, 85, "up");
-// Approved prototype coordinates locate plates only. Cards/actions never get table coordinates.
+const hero = slot([50, 89, 50, 67], [50, 91, 50, 66]);
 export const seatLayouts: Record<number, readonly SeatAnchor[]> = {
   6: [
     hero,
-    slot(15, 78, "up", 14, 79),
-    slot(24, 22, "down", 24, 23),
-    slot(50, 13, "down", 50, 14),
-    slot(76, 22, "down", 76, 23),
-    slot(85, 78, "up", 86, 79),
+    slot([13, 70, 28, 60], [14, 76, 31, 65]),
+    slot([22, 25, 28, 38], [15, 30, 35, 37]),
+    slot([50, 15, 50, 28], [50, 15, 50, 28]),
+    slot([78, 25, 72, 38], [85, 30, 65, 37]),
+    slot([87, 70, 72, 60], [86, 76, 69, 65]),
   ],
   7: [
     hero,
-    slot(15, 78, "up", 14, 79),
-    slot(8, 46, "right", 11, 47),
-    slot(30, 17, "down", 30, 16),
-    slot(70, 17, "down", 70, 16),
-    slot(92, 46, "left", 89, 47),
-    slot(85, 78, "up", 86, 79),
+    slot([17, 81, 28, 69], [14, 81, 27, 70]),
+    slot([10, 49, 24, 50], [13, 55, 26, 65]),
+    slot([32, 17, 35, 30], [31, 16, 34, 29]),
+    slot([68, 17, 65, 30], [69, 16, 66, 29]),
+    slot([90, 49, 76, 50], [87, 55, 74, 65]),
+    slot([83, 81, 72, 69], [86, 81, 73, 70]),
   ],
   8: [
     hero,
-    slot(15, 78, "up", 14, 79),
-    slot(8, 46, "right", 11, 47),
-    slot(23, 19, "down", 24, 16),
-    slot(50, 13, "down", 50, 14),
-    slot(77, 19, "down", 76, 16),
-    slot(92, 46, "left", 89, 47),
-    slot(85, 78, "up", 86, 79),
+    slot([17, 81, 28, 69], [14, 82, 33, 71]),
+    slot([10, 51, 24, 53], [13, 58, 26, 68]),
+    slot([23, 23, 29, 36], [15, 31, 35, 37]),
+    slot([50, 15, 50, 28], [50, 14, 50, 27]),
+    slot([77, 23, 71, 36], [85, 31, 65, 37]),
+    slot([90, 51, 76, 53], [87, 58, 74, 68]),
+    slot([83, 81, 72, 69], [86, 82, 67, 71]),
   ],
   9: [
     hero,
-    slot(15, 79, "up", 14, 79),
-    slot(8, 49, "right", 11, 47),
-    slot(18, 24, "down", 17, 16),
-    slot(39, 13, "down", 39, 14),
-    slot(61, 13, "down", 61, 14),
-    slot(82, 24, "down", 83, 16),
-    slot(92, 49, "left", 89, 47),
-    slot(85, 79, "up", 86, 79),
+    slot([17, 81, 28, 69], [14, 82, 33, 71]),
+    slot([10, 56, 24, 55], [13, 59, 26, 68]),
+    slot([18, 31, 27, 43], [13, 35, 35, 37]),
+    slot([39, 15, 39, 28], [36, 15, 36, 27]),
+    slot([61, 15, 61, 28], [64, 15, 64, 27]),
+    slot([82, 31, 73, 43], [87, 35, 65, 37]),
+    slot([90, 56, 76, 55], [87, 59, 74, 68]),
+    slot([83, 81, 72, 69], [86, 82, 67, 71]),
   ],
 };
 
@@ -108,8 +115,10 @@ export function layoutPlayers<T extends Player>(
   if (
     !positions ||
     !heroPlayer ||
-    players.length !== tableSize ||
-    new Set(players.map((player) => player.position)).size !== tableSize ||
+    players.length < 2 ||
+    players.length > tableSize ||
+    players.filter((player) => player.isHero).length !== 1 ||
+    new Set(players.map((player) => player.position)).size !== players.length ||
     players.some((player) => !positions.includes(player.position))
   ) {
     throw new Error("Seat layout requires one player per supported clockwise position");

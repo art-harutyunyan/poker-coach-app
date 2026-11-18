@@ -38,6 +38,10 @@ export const actionTypeSchema = z.enum([
   "RAISE",
   "ALL_IN",
   "WIN",
+  "RETURN_UNCALLED",
+  "SHOW",
+  "SHOWDOWN",
+  "DEAL_BOARD",
 ]);
 export const positionSchema = z.enum([
   "UTG",
@@ -91,21 +95,48 @@ export const actionSchema = z.object({
   id: z.string().min(1),
   sequence: z.number().int().nonnegative(),
   street: streetSchema,
-  actorPlayerId: z.string().min(1),
+  actorPlayerId: z.string().min(1).nullable(),
   type: actionTypeSchema,
   amountChips: z.number().int().nonnegative(),
   resultingPotChips: z.number().int().nonnegative().optional(),
   note: z.string().optional(),
   decisionId: z.string().optional(),
+  cards: z.array(cardSchema).optional(),
+  raiseByChips: z.number().int().safe().positive().optional(),
+  raiseToChips: z.number().int().safe().positive().optional(),
+  isAllIn: z.boolean().optional(),
+});
+
+// Keep the object schema composable for imported contracts; contextual replay
+// constraints belong at the nested replay-action boundary.
+const replayActionSchema = actionSchema.superRefine((action, ctx) => {
+  const boundary = action.type === "DEAL_BOARD" || action.type === "SHOWDOWN";
+  const reveal = action.type === "SHOW";
+  const expectedCards =
+    action.type === "DEAL_BOARD"
+      ? { PREFLOP: 0, FLOP: 3, TURN: 4, RIVER: 5 }[action.street]
+      : undefined;
+  if (
+    (boundary ? action.actorPlayerId !== null : action.actorPlayerId === null) ||
+    ((boundary || reveal) && action.amountChips !== 0) ||
+    (expectedCards !== undefined &&
+      (expectedCards === 0 || action.cards?.length !== expectedCards)) ||
+    (reveal && (!action.cards?.length || action.cards.length > 2)) ||
+    (action.cards &&
+      new Set(action.cards.map((c) => c.rank + c.suit)).size !== action.cards.length)
+  ) {
+    ctx.addIssue({ code: "custom", message: "Invalid replay actor, chips, or cards" });
+  }
 });
 
 export const streetStateSchema = z.object({
   street: streetSchema,
   board: z.array(cardSchema),
-  actions: z.array(actionSchema),
+  actions: z.array(replayActionSchema),
 });
 
 export const handSchema = z.object({
+  replayMode: z.literal("source-events").optional(),
   id: z.string().min(1),
   tournamentId: z.string().min(1),
   handNumber: z.number().int().positive(),

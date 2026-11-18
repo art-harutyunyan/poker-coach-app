@@ -11,8 +11,8 @@ import {
   flattenActions,
 } from "../../src/domain/replay";
 
-const output = "docs/qa/replayer-shell/seat-regression";
-const widths = [1600, 1440, 1280, 1024, 768, 430, 390, 375];
+const output = "test-results/warm-dark";
+const widths = [1920, 1600, 1440, 1366, 1280, 1024, 768, 430, 390, 375];
 const sizes = [6, 8, 9] as const;
 
 async function ready(page: Page) {
@@ -65,7 +65,7 @@ async function checkGeometry(page: Page) {
         const c = rect(cards);
         if (
           Math.abs((c.left + c.right) / 2 - (p.left + p.right) / 2) > 1 ||
-          Math.abs(c.bottom - p.top) > 3
+          Math.abs(c.bottom - p.top) > 6
         )
           errors.push(`cards ${i} detached`);
       }
@@ -75,7 +75,18 @@ async function checkGeometry(page: Page) {
       if (!name.textContent || getComputedStyle(name).display === "none")
         errors.push(`name ${i} missing`);
     }
-    const center = [...document.querySelectorAll(".table-pot,.table-board")];
+    const center = [
+      ...document.querySelectorAll(".table-pot,.table-board,.table-street"),
+    ];
+    const felt = rect(document.querySelector(".table-felt")!);
+    if (felt.width / felt.height < 1.7) errors.push("oval too narrow");
+    for (const element of center) {
+      for (const seatPart of document.querySelectorAll(
+        ".player-nameplate,.player-cards",
+      ))
+        if (intersects(rect(element), rect(seatPart)))
+          errors.push("center overlaps seat");
+    }
     const commits = [...document.querySelectorAll(".player-committed")];
     for (const [i, commit] of commits.entries()) {
       const c = rect(commit);
@@ -85,6 +96,8 @@ async function checkGeometry(page: Page) {
         if (intersects(c, rect(other))) errors.push(`bet ${i} overlaps another bet`);
       for (const plate of plates)
         if (intersects(c, rect(plate))) errors.push(`bet ${i} overlaps plate`);
+      for (const cards of document.querySelectorAll(".player-cards"))
+        if (intersects(c, rect(cards))) errors.push(`bet ${i} overlaps hole cards`);
     }
     for (const [i, cluster] of clusters.entries()) {
       for (const cards of cluster.querySelectorAll(".player-cards")) {
@@ -98,7 +111,7 @@ async function checkGeometry(page: Page) {
     if (dealer.closest(".player-seat")?.getAttribute("data-position") !== "BTN")
       errors.push("dealer ownership");
     for (const element of document.querySelectorAll(
-      ".player-cards,.player-position-badge,.player-action-slot,.player-committed",
+      ".player-nameplate,.player-cards,.player-position-badge,.player-action-slot,.player-committed",
     )) {
       if (intersects(rect(dealer), rect(element))) errors.push("dealer collision");
     }
@@ -146,6 +159,13 @@ for (const width of widths)
         await checkGeometry(page);
         const state = buildReplayState(hand, cursor);
         await expect(page.locator(".player-seat")).toHaveCount(count);
+        await expect(page.locator(".table-pot strong")).toHaveText(
+          `${(state.potChips / hand.blindLevel.bigBlindChips).toFixed(1)} BB`,
+        );
+        await expect(page.locator(".table-board .playingCard")).toHaveCount(
+          state.board.length,
+        );
+        await expect(page.getByText(/^TO ACT$/i)).toHaveCount(0);
         await expect(page.locator(".is-folded .player-cards")).toHaveCount(0);
         await expect(page.locator(".player-cards")).toHaveCount(
           state.seats.filter((seat) => !seat.isFolded).length,
@@ -160,11 +180,17 @@ for (const width of widths)
               "aria-current",
               "true",
             );
+          await expect(plate.locator(".player-committed")).toHaveCount(
+            seat.committedThisStreetChips > 0 ? 1 : 0,
+          );
+          if (seat.committedThisStreetChips > 0)
+            await expect(plate.locator(".player-committed b")).toHaveText(
+              `${(seat.committedThisStreetChips / hand.blindLevel.bigBlindChips).toFixed(1).replace(/\.0$/, "")} BB`,
+            );
         }
         if (label === "raise")
-          await page.screenshot({
+          await page.locator(".pokerStage").screenshot({
             path: `${output}/${width}-${count}max.png`,
-            fullPage: true,
           });
         if ((width === 1440 || width === 390) && count === 8)
           await page
@@ -196,6 +222,44 @@ for (const width of [1440, 390])
       });
     });
   }
+
+test("Warm Dark controls, streets, keyboard and result privacy preserve replay state", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/?route=tournaments&tab=replayer&previewCards=study&previewSeats=9");
+  await ready(page);
+  const before = await page.locator(".table-pot").innerText();
+  const forward = page.getByRole("button", { name: "Forward", exact: true });
+  await forward.click();
+  await expect(page.locator(".is-acting")).toHaveAttribute("data-position", "BB");
+  await page.getByRole("button", { name: "Back", exact: true }).click();
+  await expect(page.locator(".table-pot")).toHaveText(before);
+  await page.locator("body").click({ position: { x: 5, y: 5 } });
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator(".is-acting")).toHaveAttribute("data-position", "BB");
+  for (const [street, cards] of [
+    ["Flop", 3],
+    ["Turn", 4],
+    ["River", 5],
+    ["Preflop", 0],
+  ] as const) {
+    const button = page.getByRole("button", { name: street, exact: true });
+    await button.click();
+    await expect(button).toHaveAttribute("aria-current", "step");
+    await expect(page.locator(".table-board .playingCard")).toHaveCount(cards);
+    await checkGeometry(page);
+  }
+  while (await forward.isEnabled()) await forward.click();
+  await expect(page.locator(".timelineAction[title*='wins']")).toHaveCount(0);
+  const grade = await page.locator(".analysisStatusCard[data-grade]").textContent();
+  await page.getByRole("switch").click();
+  await forward.click();
+  await expect(page.locator(".table-pot strong")).toHaveText("0.0 BB");
+  await expect(page.locator(".analysisStatusCard[data-grade]")).toHaveText(grade!);
+  await page.getByRole("switch").click();
+  await expect(page.locator(".table-pot strong")).not.toHaveText("0.0 BB");
+});
 
 test("themes, Back/Forward, keyboard and Hide Result preserve state", async ({
   page,

@@ -11,6 +11,7 @@ export interface SeatSnapshot extends Player {
   lastAction?: Action;
   displayAction?: Action;
   displayActionTotalChips: number;
+  revealedCards?: Card[];
 }
 
 export interface ReplayState {
@@ -24,6 +25,7 @@ export interface ReplayState {
   lastAction?: Action;
   seats: SeatSnapshot[];
   heroDecisionId?: string;
+  phase?: "BETTING" | "SHOWDOWN" | "COMPLETE";
 }
 
 export function flattenActions(hand: Hand): Action[] {
@@ -37,6 +39,55 @@ export function findActionCursor(hand: Hand, actionId: string): number {
   return index < 0 ? 0 : index;
 }
 
+export function findCollectionCursor(hand: Hand): number {
+  const actions = flattenActions(hand);
+  const index = actions.findIndex((a) => a.type === "WIN");
+  return index < 0 ? actions.length : index;
+}
+
+export function findStreetCursor(hand: Hand, street: Street): number | null {
+  if (street === "PREFLOP") return 0;
+  const actions = flattenActions(hand);
+  const index = actions.findIndex(
+    (a) =>
+      a.street === street &&
+      (hand.replayMode !== "source-events" || a.type === "DEAL_BOARD"),
+  );
+  return index < 0 ? null : index + (hand.replayMode === "source-events" ? 1 : 0);
+}
+
+export type ReplayNavigationTarget = Street | "SHOWDOWN";
+
+/** Cursor k consumes [0,k): landing here leaves the first reveal unconsumed. */
+export function findShowdownCursor(hand: Hand): number | null {
+  const actions = flattenActions(hand).slice(0, findCollectionCursor(hand));
+  const show = actions.findIndex((action) => action.type === "SHOW");
+  if (show >= 0) return show;
+  const marker = actions.findIndex((action) => action.type === "SHOWDOWN");
+  return marker >= 0 ? marker : null;
+}
+
+export function currentNavigationTarget(
+  hand: Hand,
+  cursor: number,
+  currentStreet: Street,
+): ReplayNavigationTarget {
+  const eligible = flattenActions(hand).slice(0, findCollectionCursor(hand));
+  const next = eligible[cursor];
+  if (next?.type === "SHOW" || next?.type === "SHOWDOWN") return "SHOWDOWN";
+  // Dealing or betting resumes street navigation after an early all-in reveal.
+  const lastTransition = eligible
+    .slice(0, cursor)
+    .filter(
+      (action) =>
+        !["ANTE", "SMALL_BLIND", "BIG_BLIND", "RETURN_UNCALLED"].includes(action.type),
+    )
+    .at(-1);
+  return lastTransition?.type === "SHOW" || lastTransition?.type === "SHOWDOWN"
+    ? "SHOWDOWN"
+    : currentStreet;
+}
+
 export function buildReplayState(hand: Hand, cursor: number): ReplayState {
   const actions = flattenActions(hand);
   const boundedCursor = Math.max(0, Math.min(cursor, actions.length));
@@ -46,7 +97,12 @@ export function buildReplayState(hand: Hand, cursor: number): ReplayState {
   const foldedPlayerIds = new Set<string>();
   const committedByPlayer = new Map<string, number>();
   const lastActionByPlayer = new Map<string, Action>();
-  const currentStreet = resolveCurrentStreet(hand, nextAction, lastAction);
+  const sourceEvents = hand.replayMode === "source-events";
+  const lastDeal = appliedActions.filter((a) => a.type === "DEAL_BOARD").at(-1);
+  const currentStreet = sourceEvents
+    ? (lastDeal?.street ?? "PREFLOP")
+    : resolveCurrentStreet(hand, nextAction, lastAction);
+  const reveals = new Map<string, Card[]>();
   const streetCommitted = new Map<string, number>();
   const displayActions = new Map<string, Action>();
   const actionTotals = new Map<string, number>();
@@ -60,6 +116,16 @@ export function buildReplayState(hand: Hand, cursor: number): ReplayState {
   );
 
   for (const action of appliedActions) {
+    if (action.type === "DEAL_BOARD" || action.type === "SHOWDOWN") {
+      if (action.actorPlayerId !== null || action.amountChips !== 0)
+        throw new Error(`Action ${action.id} is an invalid boundary`);
+      roundTotals.clear();
+      streetCommitted.clear();
+      previousStreet = action.street;
+      continue;
+    }
+    if (action.actorPlayerId === null)
+      throw new Error(`Action ${action.id} has no actor`);
     if (!stacks.has(action.actorPlayerId)) {
       throw new Error(`Action ${action.id} references an unseated player`);
     }
@@ -71,7 +137,11 @@ export function buildReplayState(hand: Hand, cursor: number): ReplayState {
       foldedPlayerIds.add(action.actorPlayerId);
     }
 
-    if (action.type === "WIN") {
+    if (action.type === "SHOW") {
+      reveals.set(action.actorPlayerId, action.cards?.map((c) => ({ ...c })) ?? []);
+      continue;
+    }
+    if (action.type === "WIN" || action.type === "RETURN_UNCALLED") {
       if (action.amountChips > potChips) {
         throw new Error(`Action ${action.id} awards more than the pot`);
       }
@@ -80,6 +150,15 @@ export function buildReplayState(hand: Hand, cursor: number): ReplayState {
         (stacks.get(action.actorPlayerId) ?? 0) + action.amountChips,
       );
       potChips = Math.max(0, potChips - action.amountChips);
+      if (action.type === "RETURN_UNCALLED") {
+        const remaining =
+          (roundTotals.get(action.actorPlayerId) ?? 0) - action.amountChips;
+        if (remaining < 0)
+          throw new Error(`Action ${action.id} returns more than committed`);
+        roundTotals.set(action.actorPlayerId, remaining);
+        streetCommitted.set(action.actorPlayerId, remaining);
+        allInPlayerIds.delete(action.actorPlayerId);
+      } else if (sourceEvents) streetCommitted.clear();
     } else if (action.amountChips > 0) {
       if (action.amountChips > stacks.get(action.actorPlayerId)!) {
         throw new Error(`Action ${action.id} exceeds the player's stack`);
@@ -111,6 +190,7 @@ export function buildReplayState(hand: Hand, cursor: number): ReplayState {
     if (
       action.type !== "ANTE" &&
       action.type !== "WIN" &&
+      action.type !== "RETURN_UNCALLED" &&
       (action.street === currentStreet ||
         action.type === "FOLD" ||
         allInPlayerIds.has(action.actorPlayerId))
@@ -134,12 +214,15 @@ export function buildReplayState(hand: Hand, cursor: number): ReplayState {
     committedThisStreetChips:
       lastAction?.type === "WIN" ? 0 : (streetCommitted.get(player.id) ?? 0),
     isActive:
-      nextAction?.type !== "WIN" &&
+      !["WIN", "RETURN_UNCALLED", "SHOW", "SHOWDOWN", "DEAL_BOARD"].includes(
+        nextAction?.type ?? "",
+      ) &&
       nextAction?.actorPlayerId === player.id &&
       !foldedPlayerIds.has(player.id) &&
       !allInPlayerIds.has(player.id),
     isFolded: foldedPlayerIds.has(player.id),
-    isAllIn: allInPlayerIds.has(player.id),
+    isAllIn: sourceEvents ? stacks.get(player.id) === 0 : allInPlayerIds.has(player.id),
+    ...(reveals.has(player.id) ? { revealedCards: reveals.get(player.id) } : {}),
     lastAction: lastActionByPlayer.get(player.id),
     displayAction:
       ["SMALL_BLIND", "BIG_BLIND"].includes(
@@ -155,12 +238,24 @@ export function buildReplayState(hand: Hand, cursor: number): ReplayState {
     cursor: boundedCursor,
     totalActions: actions.length,
     currentStreet,
-    board: boardForStreet(hand, currentStreet),
+    board: sourceEvents
+      ? (lastDeal?.cards?.map((c) => ({ ...c })) ?? [])
+      : boardForStreet(hand, currentStreet),
     potChips,
     nextAction,
     lastAction,
     seats,
     heroDecisionId: nextAction?.decisionId ?? lastAction?.decisionId,
+    ...(sourceEvents
+      ? {
+          phase:
+            boundedCursor === actions.length
+              ? ("COMPLETE" as const)
+              : appliedActions.some((a) => a.type === "SHOWDOWN")
+                ? ("SHOWDOWN" as const)
+                : ("BETTING" as const),
+        }
+      : {}),
   };
 }
 

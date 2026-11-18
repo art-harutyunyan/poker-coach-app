@@ -90,7 +90,7 @@ for (const width of [1600, 1440, 1280, 1024, 768, 430, 390, 375]) {
   });
 }
 
-test("shell navigation and informational dialogs stay within Phase 0", async ({
+test("shell navigation, local upload, and informational profile dialog remain usable", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -100,7 +100,7 @@ test("shell navigation and informational dialogs stay within Phase 0", async ({
     .first();
   await upload.click();
   await expect(page.getByRole("dialog")).toContainText(
-    "no files are uploaded or processed",
+    "Processing stays on this device, in memory.",
   );
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -124,7 +124,7 @@ test("shell navigation and informational dialogs stay within Phase 0", async ({
   await page.getByRole("button", { name: "Close dialog" }).click();
   await page.getByLabel("Primary mobile screen").selectOption("upload");
   await expect(page.getByRole("dialog")).toContainText(
-    "no files are uploaded or processed",
+    "Processing stays on this device, in memory.",
   );
   await page.keyboard.press("Escape");
   await page.getByLabel("Primary mobile screen").selectOption("profile");
@@ -132,7 +132,7 @@ test("shell navigation and informational dialogs stay within Phase 0", async ({
   await page.getByRole("button", { name: "Close dialog" }).click();
   await page.getByLabel("Primary mobile screen").selectOption("upload");
   await expect(page.getByRole("dialog")).toContainText(
-    "no files are uploaded or processed",
+    "Processing stays on this device, in memory.",
   );
   await page.keyboard.press("Escape");
 });
