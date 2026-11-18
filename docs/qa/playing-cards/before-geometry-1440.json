@@ -1,0 +1,386 @@
+[
+  {
+    "key": "tabList",
+    "x": 238,
+    "y": 230.984375,
+    "w": 1178,
+    "h": 49,
+    "text": "OverviewReplayerReview Queue"
+  },
+  {
+    "key": "table-felt",
+    "x": 459.90625,
+    "y": 441.8828125,
+    "w": 644.15625,
+    "h": 316.796875,
+    "text": ""
+  },
+  {
+    "key": "table-brand",
+    "x": 746.84375,
+    "y": 522.71875,
+    "w": 70.3125,
+    "h": 11,
+    "text": "THE STUDY"
+  },
+  {
+    "key": "",
+    "x": 732.9375,
+    "y": 558.21875,
+    "w": 17.171875,
+    "h": 16.5,
+    "text": "Pot"
+  },
+  {
+    "key": "",
+    "x": 757.109375,
+    "y": 547.21875,
+    "w": 73.9375,
+    "h": 34,
+    "text": "42.0 BB"
+  },
+  {
+    "key": "table-street",
+    "x": 767.796875,
+    "y": 655.21875,
+    "w": 28.390625,
+    "h": 12,
+    "text": "River"
+  },
+  {
+    "key": "player-seat archetype-lower-left is-folded",
+    "x": 482.4375,
+    "y": 715.078125,
+    "w": 116,
+    "h": 68,
+    "text": "UTG+1FoldHenry28.3 BB"
+  },
+  {
+    "key": "player-nameplate",
+    "x": 482.4375,
+    "y": 715.078125,
+    "w": 116,
+    "h": 68,
+    "text": "UTG+1FoldHenry28.3 BB"
+  },
+  {
+    "key": "player-action-slot",
+    "x": 492.4375,
+    "y": 721.078125,
+    "w": 63,
+    "h": 12,
+    "text": "Fold"
+  },
+  {
+    "key": "player-name importedOpponentName",
+    "x": 492.4375,
+    "y": 735.078125,
+    "w": 96,
+    "h": 16,
+    "text": "Henry"
+  },
+  {
+    "key": "player-stack",
+    "x": 492.4375,
+    "y": 751.078125,
+    "w": 96,
+    "h": 24,
+    "text": "28.3 BB"
+  },
+  {
+    "key": "player-seat archetype-left-side is-folded",
+    "x": 431.1875,
+    "y": 571.078125,
+    "w": 116,
+    "h": 68,
+    "text": "LJFoldJack 27.3 BB"
+  },
+  {
+    "key": "player-nameplate",
+    "x": 431.1875,
+    "y": 571.078125,
+    "w": 116,
+    "h": 68,
+    "text": "LJFoldJack 27.3 BB"
+  },
+  {
+    "key": "player-action-slot",
+    "x": 441.1875,
+    "y": 577.078125,
+    "w": 63,
+    "h": 12,
+    "text": "Fold"
+  },
+  {
+    "key": "player-name importedOpponentName",
+    "x": 441.1875,
+    "y": 591.078125,
+    "w": 96,
+    "h": 16,
+    "text": "Jack 2"
+  },
+  {
+    "key": "player-stack",
+    "x": 441.1875,
+    "y": 607.078125,
+    "w": 96,
+    "h": 24,
+    "text": "7.3 BB"
+  },
+  {
+    "key": "player-seat archetype-upper-left is-folded",
+    "x": 526.359375,
+    "y": 436.671875,
+    "w": 116,
+    "h": 68,
+    "text": "HJFoldHenry 28.2 BB"
+  },
+  {
+    "key": "player-nameplate",
+    "x": 526.359375,
+    "y": 436.671875,
+    "w": 116,
+    "h": 68,
+    "text": "HJFoldHenry 28.2 BB"
+  },
+  {
+    "key": "player-action-slot",
+    "x": 536.359375,
+    "y": 442.671875,
+    "w": 63,
+    "h": 12,
+    "text": "Fold"
+  },
+  {
+    "key": "player-name importedOpponentName",
+    "x": 536.359375,
+    "y": 456.671875,
+    "w": 96,
+    "h": 16,
+    "text": "Henry 2"
+  },
+  {
+    "key": "player-stack",
+    "x": 536.359375,
+    "y": 472.671875,
+    "w": 96,
+    "h": 24,
+    "text": "8.2 BB"
+  },
+  {
+    "key": "player-seat archetype-top-center is-folded",
+    "x": 724,
+    "y": 398.28125,
+    "w": 116,
+    "h": 68,
+    "text": "COFoldDaniel16.6 BB"
+  },
+  {
+    "key": "player-nameplate",
+    "x": 724,
+    "y": 398.28125,
+    "w": 116,
+    "h": 68,
+    "text": "COFoldDaniel16.6 BB"
+  },
+  {
+    "key": "player-action-slot",
+    "x": 734,
+    "y": 404.28125,
+    "w": 63,
+    "h": 12,
+    "text": "Fold"
+  },
+  {
+    "key": "player-name importedOpponentName",
+    "x": 734,
+    "y": 418.28125,
+    "w": 96,
+    "h": 16,
+    "text": "Daniel"
+  },
+  {
+    "key": "player-stack",
+    "x": 734,
+    "y": 434.28125,
+    "w": 96,
+    "h": 24,
+    "text": "16.6 BB"
+  },
+  {
+    "key": "player-seat archetype-upper-right",
+    "x": 921.625,
+    "y": 436.671875,
+    "w": 116,
+    "h": 68,
+    "text": "BTNKevin5.4 BBD"
+  },
+  {
+    "key": "player-nameplate",
+    "x": 921.625,
+    "y": 436.671875,
+    "w": 116,
+    "h": 68,
+    "text": "BTNKevin5.4 BB"
+  },
+  {
+    "key": "player-action-slot",
+    "x": 931.625,
+    "y": 442.671875,
+    "w": 63,
+    "h": 12,
+    "text": ""
+  },
+  {
+    "key": "player-name importedOpponentName",
+    "x": 931.625,
+    "y": 456.671875,
+    "w": 96,
+    "h": 16,
+    "text": "Kevin"
+  },
+  {
+    "key": "player-stack",
+    "x": 931.625,
+    "y": 472.671875,
+    "w": 96,
+    "h": 24,
+    "text": "5.4 BB"
+  },
+  {
+    "key": "seat-dealer",
+    "x": 895.625,
+    "y": 484.671875,
+    "w": 21,
+    "h": 21,
+    "text": "D"
+  },
+  {
+    "key": "player-seat archetype-right-side is-folded",
+    "x": 1016.796875,
+    "y": 571.078125,
+    "w": 116,
+    "h": 68,
+    "text": "SBFoldAlex10.5 BB"
+  },
+  {
+    "key": "player-nameplate",
+    "x": 1016.796875,
+    "y": 571.078125,
+    "w": 116,
+    "h": 68,
+    "text": "SBFoldAlex10.5 BB"
+  },
+  {
+    "key": "player-action-slot",
+    "x": 1026.796875,
+    "y": 577.078125,
+    "w": 63,
+    "h": 12,
+    "text": "Fold"
+  },
+  {
+    "key": "player-name importedOpponentName",
+    "x": 1026.796875,
+    "y": 591.078125,
+    "w": 96,
+    "h": 16,
+    "text": "Alex"
+  },
+  {
+    "key": "player-stack",
+    "x": 1026.796875,
+    "y": 607.078125,
+    "w": 96,
+    "h": 24,
+    "text": "10.5 BB"
+  },
+  {
+    "key": "player-seat archetype-lower-right is-folded",
+    "x": 965.546875,
+    "y": 715.078125,
+    "w": 116,
+    "h": 68,
+    "text": "BBFoldOscar 332.8 BB"
+  },
+  {
+    "key": "player-nameplate",
+    "x": 965.546875,
+    "y": 715.078125,
+    "w": 116,
+    "h": 68,
+    "text": "BBFoldOscar 332.8 BB"
+  },
+  {
+    "key": "player-action-slot",
+    "x": 975.546875,
+    "y": 721.078125,
+    "w": 63,
+    "h": 12,
+    "text": "Fold"
+  },
+  {
+    "key": "player-name importedOpponentName",
+    "x": 975.546875,
+    "y": 735.078125,
+    "w": 96,
+    "h": 16,
+    "text": "Oscar 3"
+  },
+  {
+    "key": "player-stack",
+    "x": 975.546875,
+    "y": 751.078125,
+    "w": 96,
+    "h": 24,
+    "text": "32.8 BB"
+  },
+  {
+    "key": "player-seat archetype-hero is-hero is-all-in",
+    "x": 724,
+    "y": 753.46875,
+    "w": 116,
+    "h": 68,
+    "text": "7\n  \n\n7\n  \n\nUTGAll-in19.8 BBHero0.0 BB"
+  },
+  {
+    "key": "player-nameplate",
+    "x": 724,
+    "y": 753.46875,
+    "w": 116,
+    "h": 68,
+    "text": "7\n  \n\n7\n  \n\nUTGAll-in19.8 BBHero0.0 BB"
+  },
+  {
+    "key": "player-action-slot",
+    "x": 734,
+    "y": 759.46875,
+    "w": 63,
+    "h": 12,
+    "text": "All-in19.8 BB"
+  },
+  {
+    "key": "player-name",
+    "x": 734,
+    "y": 772.46875,
+    "w": 96,
+    "h": 17,
+    "text": "Hero"
+  },
+  {
+    "key": "player-stack",
+    "x": 734,
+    "y": 789.46875,
+    "w": 96,
+    "h": 24,
+    "text": "0.0 BB"
+  },
+  {
+    "key": "replayControls",
+    "x": 416,
+    "y": 964.78125,
+    "w": 732,
+    "h": 122,
+    "text": "BackPreflopFlopTurnRiverShowdownForwardHide result"
+  }
+]

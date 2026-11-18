@@ -1,0 +1,2 @@
+# Keep raw GG hand-history fixtures byte-for-byte; their source includes trailing spaces.
+tests/fixtures/gg/*.txt -whitespace

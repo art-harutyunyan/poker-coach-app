@@ -1,14 +1,5 @@
 /* Approved study-shell language. Table/seat geometry stays in poker-seats.css. */
 .appShell[data-replayer-screen="true"] {
-  --study-bg: #101815;
-  --study-surface: #19231e;
-  --study-raised: #26382b;
-  --study-line: #334238;
-  --study-text: #efece2;
-  --study-muted: #a1ada5;
-  --study-gold: #d5bf90;
-  --study-green: #8fc3a5;
-  grid-template-columns: 214px minmax(0, 1fr);
   background: var(--study-bg);
   color: var(--study-text);
   font-family: "Seat Inter", sans-serif;
@@ -23,128 +14,6 @@
   outline: 2px solid var(--study-gold);
   outline-offset: 3px;
   box-shadow: none;
-}
-.appShell[data-replayer-screen="true"] .sidebar {
-  background: #131d17;
-  border-right: 1px solid var(--study-line);
-  padding: 30px 18px 16px;
-  backdrop-filter: none;
-}
-.appShell[data-replayer-screen="true"] .brandLockup {
-  gap: 10px;
-  border: 0;
-  padding: 0 5px;
-  margin-bottom: 36px;
-}
-.appShell[data-replayer-screen="true"] .brandMark {
-  width: 28px;
-  height: 28px;
-  color: var(--study-gold);
-  text-shadow: none;
-  flex-shrink: 0;
-}
-.appShell[data-replayer-screen="true"] .brandName {
-  color: var(--study-gold);
-  font-size: 17px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-.appShell[data-replayer-screen="true"] .brandMeta {
-  font-size: 9px;
-  line-height: 1.5;
-  color: var(--study-muted);
-  letter-spacing: 0;
-}
-.appShell[data-replayer-screen="true"] .navList {
-  gap: 6px;
-}
-.appShell[data-replayer-screen="true"] .navButton {
-  gap: 13px;
-  min-height: 46px;
-  padding: 10px 12px;
-  border: 0;
-  border-radius: 5px;
-  color: #bcc5bd;
-  font-size: 13px;
-  font-weight: 400;
-}
-.appShell[data-replayer-screen="true"] .navButton:hover {
-  background: #202c24;
-}
-.appShell[data-replayer-screen="true"] .navButton[data-active="true"] {
-  background: #283a2d;
-  color: var(--study-gold);
-  box-shadow: none;
-}
-.sidebarUpload,
-.sidebarSettings {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-height: 44px;
-  margin-top: 28px;
-  border: 1px solid #485846;
-  border-radius: 5px;
-  color: #c7d2c8;
-  background: transparent;
-  font-size: 12px;
-  cursor: pointer;
-}
-.sidebarUpload:hover,
-.sidebarSettings:hover {
-  background: #26352b;
-}
-.sidebarSettings {
-  justify-content: flex-start;
-  border-color: transparent;
-  margin: 10px 0;
-  padding: 10px;
-}
-.appShell[data-replayer-screen="true"] .sidebarGoal {
-  display: block;
-  padding: 20px 10px 10px;
-  border: 0;
-  font-size: 12px;
-}
-.appShell[data-replayer-screen="true"] .sidebarGoal > svg {
-  display: none;
-}
-.appShell[data-replayer-screen="true"] .sidebarGoal strong,
-.appShell[data-replayer-screen="true"] .sidebarGoal span {
-  color: var(--study-muted);
-  font-size: 12px;
-  font-weight: 400;
-}
-.appShell[data-replayer-screen="true"] .sidebarAccount {
-  grid-template-columns: 30px minmax(0, 1fr) auto;
-  gap: 9px;
-  border-top: 1px solid var(--study-line);
-  padding-top: 18px;
-}
-.appShell[data-replayer-screen="true"] .accountAvatar {
-  width: 30px;
-  height: 30px;
-  border: 0;
-  background: #2d3c30;
-  font-size: 11px;
-  color: var(--study-gold);
-}
-.appShell[data-replayer-screen="true"] .sidebarAccount strong {
-  font-size: 12px;
-}
-.appShell[data-replayer-screen="true"] .sidebarAccount span {
-  font-size: 10px;
-  color: var(--study-muted);
-}
-.demoBadge {
-  color: #b3c1b1;
-  border: 1px solid #334238;
-  border-radius: 3px;
-  padding: 3px 6px;
-  font-size: 10px;
-  font-weight: 400;
-  white-space: nowrap;
 }
 .appShell[data-replayer-screen="true"] .mainSurface {
   padding: 0 24px 24px;
@@ -178,10 +47,10 @@
   border: 0;
   color: var(--study-muted);
 }
-.tournamentTabs[data-active-screen="replayer"] {
+.tournamentTabs[data-active-screen] {
   display: block;
 }
-.tournamentTabs[data-active-screen="replayer"] > .tabList {
+.tournamentTabs[data-active-screen] > .tabList {
   position: static;
   width: auto;
   height: auto;
@@ -197,7 +66,7 @@
   border-radius: 0;
   background: transparent;
 }
-.tournamentTabs[data-active-screen="replayer"] > .tabList .tabTrigger {
+.tournamentTabs[data-active-screen] > .tabList .tabTrigger {
   min-height: 48px;
   padding: 10px 0 14px;
   position: relative;
@@ -209,14 +78,10 @@
   color: var(--study-muted);
   box-shadow: none;
 }
-.tournamentTabs[data-active-screen="replayer"]
-  > .tabList
-  .tabTrigger[data-state="active"] {
+.tournamentTabs[data-active-screen] > .tabList .tabTrigger[data-state="active"] {
   color: var(--study-gold);
 }
-.tournamentTabs[data-active-screen="replayer"]
-  > .tabList
-  .tabTrigger[data-state="active"]::after {
+.tournamentTabs[data-active-screen] > .tabList .tabTrigger[data-state="active"]::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -225,7 +90,7 @@
   height: 2px;
   background: var(--study-gold);
 }
-.tournamentTabs[data-active-screen="replayer"] > .tabList .tabTrigger:hover {
+.tournamentTabs[data-active-screen] > .tabList .tabTrigger:hover {
   color: var(--study-text);
 }
 .replayerPageHeader {
@@ -518,6 +383,7 @@
   min-width: 0;
 }
 .streetNavigation button {
+  white-space: nowrap;
   min-height: 44px;
   padding: 8px 0;
   border: 0;
@@ -990,42 +856,6 @@
     margin-right: -32px;
   }
 }
-@media (min-width: 1180px) and (max-width: 1439px) {
-  .appShell[data-replayer-screen="true"] {
-    grid-template-columns: 76px minmax(0, 1fr);
-  }
-  .appShell[data-replayer-screen="true"] .sidebar {
-    padding: 24px 12px 16px;
-  }
-  .appShell[data-replayer-screen="true"] .brandLockup {
-    justify-content: center;
-    padding: 0;
-  }
-  .appShell[data-replayer-screen="true"]
-    :is(
-      .brandLockup > div:not(.brandMark),
-      .navButton span,
-      .sidebarUpload span,
-      .sidebarSettings span,
-      .sidebarGoal,
-      .sidebarAccount > div:not(.accountAvatar),
-      .sidebarAccount > small
-    ) {
-    display: none;
-  }
-  .appShell[data-replayer-screen="true"] .navButton {
-    justify-content: center;
-    padding: 10px;
-  }
-  .appShell[data-replayer-screen="true"] .sidebarSettings {
-    margin-top: auto;
-    justify-content: center;
-  }
-  .appShell[data-replayer-screen="true"] .sidebarAccount {
-    display: flex;
-    justify-content: center;
-  }
-}
 @media (max-width: 1250px) {
   .tournamentReviewScreen .replayerLayout {
     grid-template-columns: 56px minmax(0, 1fr);
@@ -1041,38 +871,6 @@
   }
 }
 @media (max-width: 1179px) {
-  .appShell[data-replayer-screen="true"] {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .appShell[data-replayer-screen="true"] .sidebar {
-    display: none;
-  }
-  .appShell[data-replayer-screen="true"] .mobileNav {
-    display: flex;
-    background: #131d17;
-    border-bottom: 1px solid var(--study-line);
-    padding: 10px 24px;
-    min-height: 60px;
-  }
-  .appShell[data-replayer-screen="true"] .mobileBrand {
-    color: var(--study-gold);
-    gap: 10px;
-  }
-  .appShell[data-replayer-screen="true"] .mobileBrand strong {
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 500;
-  }
-  .appShell[data-replayer-screen="true"] .mobileBrand small {
-    display: none;
-  }
-  .appShell[data-replayer-screen="true"] .mobileNavSelect select {
-    background: #131d17;
-    border: 1px solid #435348;
-    min-height: 44px;
-    font-size: 12px;
-    color: var(--study-text);
-  }
   .workspaceChrome {
     display: none;
   }
@@ -1083,9 +881,6 @@
 @media (max-width: 700px) {
   .appShell[data-replayer-screen="true"] .mainSurface {
     padding: 0 10px 24px;
-  }
-  .appShell[data-replayer-screen="true"] .mobileNav {
-    padding: 8px 16px;
   }
   .replayerPageHeader {
     padding: 14px 6px 8px;
@@ -1105,12 +900,12 @@
   .tournamentReviewGrade {
     display: none;
   }
-  .tournamentTabs[data-active-screen="replayer"] > .tabList {
+  .tournamentTabs[data-active-screen] > .tabList {
     gap: 24px;
     margin-bottom: 14px;
     padding: 0 6px;
   }
-  .tournamentTabs[data-active-screen="replayer"] > .tabList .tabTrigger {
+  .tournamentTabs[data-active-screen] > .tabList .tabTrigger {
     font-size: 12px;
     min-height: 44px;
   }
@@ -1190,7 +985,7 @@
     justify-content: space-between;
   }
   .streetNavigation button {
-    flex: 1;
+    flex: 1 0 auto;
     font-size: 11px;
   }
   .tournamentReviewScreen .switchLabel {
@@ -1221,7 +1016,6 @@
 @media (prefers-reduced-motion: no-preference) {
   .appShell[data-replayer-screen="true"]
     :where(
-      .navButton,
       .primaryButton,
       .secondaryButton,
       .tabTrigger,

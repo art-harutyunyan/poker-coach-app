@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+﻿import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { hands } from "../../data/mockTournament";
 import {
@@ -31,7 +31,7 @@ describe("approved PlayerSeat anatomy", () => {
       );
       expect(btn.querySelector(".player-committed")).toHaveTextContent("2.3 BB");
       expect(btn.querySelector(".seat-dealer")).toHaveAccessibleName("Dealer button");
-      expect(screen.getAllByLabelText("Hidden card")).toHaveLength(4);
+      expect(screen.getAllByLabelText("Face-down card")).toHaveLength(4);
       for (const folded of container.querySelectorAll(".is-folded")) {
         expect(folded.querySelector(".player-cards")).toBeNull();
         expect(folded.querySelector(".player-action-text")).toHaveTextContent("Fold");
@@ -63,5 +63,41 @@ describe("approved PlayerSeat anatomy", () => {
     expect(
       within(screen.getByLabelText("Community cards")).getAllByLabelText(/./),
     ).toHaveLength(3);
+  });
+  it("keeps dealer ownership with rotated Hero and unordered input players", () => {
+    for (const count of [6, 8, 9] as const) {
+      const source = count === 6 ? base : buildMultiSeatPreviewHand(base, count);
+      for (const hero of source.players) {
+        const hand = {
+          ...source,
+          players: [...source.players].reverse().map((player) => ({
+            ...player,
+            isHero: player.id === hero.id,
+          })),
+        };
+        const { container, unmount } = render(
+          <PokerTable
+            hand={hand}
+            replayState={buildReplayState(hand, 0)}
+            resultHidden
+          />,
+        );
+        expect(
+          container.querySelector(".seat-dealer")!.closest(".player-seat"),
+        ).toHaveAttribute("data-position", "BTN");
+        expect(container.querySelector(".is-hero")).toHaveAttribute(
+          "data-player-id",
+          hero.id,
+        );
+        expect(
+          container.querySelectorAll(".is-hero .playingCard:not(.cardBack)"),
+        ).toHaveLength(2);
+        expect(container.querySelector(".table-board")).toBeNull();
+        expect(
+          container.querySelector(".pokerStage img:not(.cardBack > img)"),
+        ).toBeNull();
+        unmount();
+      }
+    }
   });
 });

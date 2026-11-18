@@ -3,23 +3,16 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import type { CSSProperties } from "react";
 import {
   AlertTriangle,
-  BarChart3,
-  BookOpen,
   ChevronLeft,
   Gauge,
-  GraduationCap,
-  Home,
   Layers3,
   ListChecks,
   Loader2,
   Menu,
   PlayCircle,
   SearchX,
-  Settings,
-  Spade,
   Upload,
   Check,
-  Trophy,
 } from "lucide-react";
 import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import {
@@ -38,8 +31,16 @@ import { PokerTable } from "./components/PokerTable";
 import { ReplayControls } from "./components/ReplayControls";
 import { KeyHandsRail } from "./components/KeyHandsRail";
 import { PrototypeDialog } from "./components/PrototypeDialog";
+import { TournamentTabs, type TournamentTab } from "./components/TournamentTabs";
+import { TournamentUpload } from "./components/TournamentUpload";
+import { ImportedTournamentWorkspace } from "./components/ImportedTournamentWorkspace";
+import { presentTournamentOverview } from "./tournamentLibraryPresentation";
+import { ImportedReplayBoundary } from "./components/ImportedReplayBoundary";
+import { TournamentLibrary } from "./components/TournamentLibrary";
+import { useTournamentImport } from "./useTournamentImport";
 import { ReviewQueue } from "./components/ReviewQueue";
 import { VisualPreviewControl } from "./design/VisualPreviewControl";
+import { ApplicationShell, MainWorkspace, type AppRoute } from "./ApplicationShell";
 import {
   loadVisualPreviewSelection,
   saveVisualPreviewSelection,
@@ -51,17 +52,6 @@ const CardLab = import.meta.env.DEV
       import("./design/CardLab").then((module) => ({ default: module.CardLab })),
     )
   : undefined;
-
-type AppRoute = "dashboard" | "tournaments" | "development" | "training" | "playbook";
-type TournamentTab = "overview" | "replayer" | "review";
-
-const navItems = [
-  { route: "dashboard", label: "Dashboard", icon: Home },
-  { route: "tournaments", label: "Tournaments", icon: Trophy },
-  { route: "development", label: "Development", icon: BarChart3 },
-  { route: "training", label: "Training", icon: GraduationCap },
-  { route: "playbook", label: "Playbook", icon: BookOpen },
-] as const;
 
 export function App() {
   if (isCardLabRoute() && CardLab) {
@@ -78,6 +68,7 @@ export function App() {
 }
 
 function MainApp() {
+  const imported = useTournamentImport();
   const [sourceHand] = useState(() =>
     import.meta.env.DEV &&
     new URLSearchParams(window.location.search).get("qaScenario") === "all-in"
@@ -87,6 +78,14 @@ function MainApp() {
   const [initialPreview] = useState(loadVisualPreviewSelection);
   const [route, setRoute] = useState<AppRoute>(initialRoute);
   const [tab, setTab] = useState<TournamentTab>(initialTournamentTab);
+  const [demoOpen, setDemoOpen] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return (
+      import.meta.env.DEV &&
+      params.get("route") === "tournaments" &&
+      ["overview", "replayer", "review"].includes(params.get("tab") ?? "")
+    );
+  });
   const [cursor, setCursor] = useState(() => {
     const qaCursor = import.meta.env.DEV
       ? new URLSearchParams(window.location.search).get("qaCursor")
@@ -122,14 +121,44 @@ function MainApp() {
     [hand, visibleCursor],
   );
   const primaryAnalysis = analyses[0]!;
+  const activeTournamentTab =
+    imported.view.kind === "tournament"
+      ? (imported.activeTab ?? "overview")
+      : demoOpen
+        ? tab
+        : "overview";
+  const replayerScreen =
+    route === "tournaments" &&
+    (imported.view.kind === "tournament" || demoOpen) &&
+    activeTournamentTab === "replayer";
+  const completedAttempt = imported.attempt;
+  const completedEntry =
+    completedAttempt.status === "complete"
+      ? (imported.entries.find((entry) => entry.key === completedAttempt.key) ?? null)
+      : null;
+
+  function openUpload() {
+    imported.resetImportAttempt();
+    setDialog("upload");
+  }
+  function openDemo(nextTab: TournamentTab) {
+    imported.showLibrary();
+    setDemoOpen(true);
+    setRoute("tournaments");
+    setTab(nextTab);
+  }
+  function openLibrary() {
+    imported.showLibrary();
+    setDemoOpen(false);
+    setRoute("tournaments");
+  }
 
   useEffect(() => {
     saveVisualPreviewSelection(visualPreview);
   }, [visualPreview]);
 
   function openReviewItem(item: ReviewQueueItem) {
-    setRoute("tournaments");
-    setTab("replayer");
+    openDemo("replayer");
     setCursor(findActionCursor(hand, item.actionId));
   }
 
@@ -147,125 +176,44 @@ function MainApp() {
 
   return (
     <Tooltip.Provider delayDuration={250}>
-      <div
-        className="appShell"
-        data-replayer-screen={route === "tournaments" && tab === "replayer"}
+      <ApplicationShell
+        route={route}
+        replayerScreen={replayerScreen}
+        onNavigate={(next) => (next === "tournaments" ? openLibrary() : setRoute(next))}
+        onUpload={openUpload}
+        onSettings={() => setDialog("profile")}
       >
-        <aside className="sidebar" aria-label="Primary navigation">
-          <div className="brandLockup">
-            <div className="brandMark" aria-hidden="true">
-              <Spade size={25} fill="currentColor" />
-            </div>
-            <div>
-              <div className="brandName">Poker Coach</div>
-              <div className="brandMeta">Better decisions. Longer game.</div>
-            </div>
-          </div>
-          <nav className="navList">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  className="navButton"
-                  data-active={route === item.route}
-                  aria-current={route === item.route ? "page" : undefined}
-                  title={item.label}
-                  key={item.route}
-                  onClick={() => setRoute(item.route)}
-                  type="button"
-                >
-                  <Icon size={18} aria-hidden="true" />
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </nav>
-          <button
-            className="sidebarUpload"
-            type="button"
-            onClick={() => setDialog("upload")}
-            title="Upload tournament"
-          >
-            <Upload size={17} aria-hidden="true" />
-            <span>Upload tournament</span>
-          </button>
-          <div className="sidebarFooter sidebarGoal">
-            <BarChart3 size={20} aria-hidden="true" />
-            <div>
-              <strong>Better Decisions</strong>
-              <span>A Stronger You</span>
-            </div>
-          </div>
-          <button
-            className="sidebarSettings"
-            type="button"
-            onClick={() => setDialog("profile")}
-            title="Settings & profile"
-          >
-            <Settings size={18} aria-hidden="true" />
-            <span>Settings & profile</span>
-          </button>
-          <div className="sidebarAccount">
-            <div className="accountAvatar">JS</div>
-            <div>
-              <strong>Jacob S.</strong>
-              <span>Premium</span>
-            </div>
-            <small className="demoBadge">Demo</small>
-          </div>
-        </aside>
-
-        <nav className="mobileNav" aria-label="Mobile navigation">
-          <div className="mobileBrand">
-            <Spade size={20} fill="currentColor" aria-hidden="true" />
-            <div>
-              <strong>Poker Coach</strong>
-              <small>PLAY SMARTER</small>
-            </div>
-          </div>
-          <label className="mobileNavSelect">
-            <span>Screen</span>
-            <select
-              aria-label="Primary mobile screen"
-              value={route}
-              onChange={(event) => {
-                const next = event.currentTarget.value;
-                if (next === "upload" || next === "profile") setDialog(next);
-                else setRoute(next as AppRoute);
-              }}
-            >
-              {navItems.map((item) => (
-                <option key={item.route} value={item.route}>
-                  {item.label}
-                </option>
-              ))}
-              <option value="upload">Upload tournament</option>
-              <option value="profile">Settings & profile</option>
-            </select>
-          </label>
-        </nav>
-
-        <main className="mainSurface">
-          {route === "tournaments" && tab === "replayer" && (
+        <MainWorkspace
+          className={
+            route === "tournaments" && !demoOpen ? "tournamentLibraryPage" : ""
+          }
+        >
+          {replayerScreen && (
             <header className="workspaceChrome">
               <div>
                 <strong>Tournament review</strong>
-                <span>/ {tournament.name}</span>
+                <span>
+                  / {imported.activeEntry?.tournament.name ?? tournament.name}
+                </span>
               </div>
               <div>
-                <span className="demoBadge">Illustrative prototype</span>
-                <button
-                  className="iconButton"
-                  type="button"
-                  aria-label="Upload tournament"
-                  onClick={() => setDialog("upload")}
-                >
-                  <Upload size={18} />
-                </button>
+                <span className="demoBadge">
+                  {demoOpen ? "Illustrative prototype" : "Local hand history"}
+                </span>
+                {demoOpen && (
+                  <button
+                    className="iconButton"
+                    type="button"
+                    aria-label="Upload tournament"
+                    onClick={openUpload}
+                  >
+                    <Upload size={18} />
+                  </button>
+                )}
               </div>
             </header>
           )}
-          {!(route === "tournaments" && tab === "replayer") && (
+          {!replayerScreen && (
             <header className="topBar">
               <button
                 className="iconButton mobileOnly"
@@ -275,30 +223,30 @@ function MainApp() {
                 <Menu size={18} />
               </button>
               <div>
-                <p className="eyebrow">Serious poker software with AI inside it</p>
+                <p className="eyebrow">
+                  {route === "tournaments" && !demoOpen
+                    ? "Imported GG hand history"
+                    : "Serious poker software with AI inside it"}
+                </p>
                 <h1>{routeTitle(route)}</h1>
               </div>
               <div className="topBarStatus" aria-label="Prototype status">
                 <span className="statusDot" />
-                Mock data only
+                {route === "tournaments" && !demoOpen
+                  ? "Local session"
+                  : "Mock data only"}
               </div>
             </header>
           )}
 
           {route === "dashboard" && (
             <Dashboard
-              onOpenTournament={() => {
-                setRoute("tournaments");
-                setTab("overview");
-              }}
-              onOpenReview={() => {
-                setRoute("tournaments");
-                setTab("review");
-              }}
+              onOpenTournament={() => openDemo("overview")}
+              onOpenReview={() => openDemo("review")}
             />
           )}
 
-          {route === "tournaments" && (
+          {route === "tournaments" && demoOpen && (
             <TournamentWorkspace
               activeTab={tab}
               analysis={primaryAnalysis}
@@ -315,12 +263,114 @@ function MainApp() {
             />
           )}
 
+          {route === "tournaments" && !demoOpen && (
+            <TournamentLibrary
+              entries={imported.entries}
+              selectedKey={
+                imported.view.kind === "tournament" ? imported.view.key : null
+              }
+              onImport={openUpload}
+              onOpen={(key, section) => {
+                imported.openTournament(key, section);
+              }}
+            />
+          )}
+
+          {route === "tournaments" &&
+            !demoOpen &&
+            imported.selected &&
+            imported.view.kind === "tournament" &&
+            (imported.replayError?.key === imported.view.key ? (
+              <section className="panel importedReplayError" role="alert">
+                <p>{imported.replayError.message}</p>
+                {imported.activeEntry &&
+                  imported.activeEntry.tournament.hands.length > 1 && (
+                    <label className="importedRecoveryPicker">
+                      Choose another hand
+                      <select
+                        value={imported.selected.selectedHandId}
+                        onChange={(event) =>
+                          imported.selectHand(event.currentTarget.value)
+                        }
+                      >
+                        {imported.activeEntry.tournament.hands.map((hand) => (
+                          <option key={hand.id} value={hand.id}>
+                            Hand #{hand.handNumber} · {hand.id}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
+                <button className="secondaryButton" type="button" onClick={openLibrary}>
+                  Tournament Library
+                </button>
+              </section>
+            ) : (
+              <ImportedReplayBoundary
+                key={imported.view.key}
+                onError={imported.reportIntegrationError}
+              >
+                <ImportedTournamentWorkspace
+                  state={imported.selected}
+                  overview={presentTournamentOverview(imported.activeEntry!)}
+                  facts={imported.activeEntry!.facts}
+                  metrics={imported.activeEntry!.metrics}
+                  outcomeStatsVisible={imported.outcomeStatsVisible ?? false}
+                  onOutcomeStatsVisibleChange={imported.setOutcomeStatsVisible}
+                  activeFilter={imported.activeFilter ?? "all"}
+                  onFilterChange={imported.setHandFilter}
+                  onFilteredNavigate={imported.navigateFilteredHand}
+                  activeTab={imported.activeTab ?? "overview"}
+                  onTabChange={imported.setTab}
+                  onSelectHand={imported.selectHand}
+                  onCursorChange={imported.setCursor}
+                  onResultHiddenChange={imported.setResultHidden}
+                  onImport={openUpload}
+                  onReturnToLibrary={openLibrary}
+                />
+              </ImportedReplayBoundary>
+            ))}
+          {route === "tournaments" &&
+            !demoOpen &&
+            imported.view.kind === "library" &&
+            import.meta.env.DEV && (
+              <button
+                className="secondaryButton"
+                type="button"
+                onClick={() => openDemo("overview")}
+              >
+                View demo tournament
+              </button>
+            )}
+
           {route === "development" && <Development />}
           {route === "training" && <PlaceholderSection kind="training" />}
           {route === "playbook" && <PlaceholderSection kind="playbook" />}
-        </main>
-        {dialog && <PrototypeDialog kind={dialog} onClose={() => setDialog(null)} />}
-      </div>
+        </MainWorkspace>
+        {dialog && (
+          <PrototypeDialog
+            kind={dialog}
+            onClose={() => {
+              imported.cancelPendingImport();
+              setDialog(null);
+            }}
+          >
+            {dialog === "upload" ? (
+              <TournamentUpload
+                attempt={imported.attempt}
+                completedEntry={completedEntry}
+                onImport={imported.importFile}
+                onOpenReview={(key) => {
+                  imported.openTournament(key);
+                  setDemoOpen(false);
+                  setDialog(null);
+                  setRoute("tournaments");
+                }}
+              />
+            ) : undefined}
+          </PrototypeDialog>
+        )}
+      </ApplicationShell>
     </Tooltip.Provider>
   );
 }
@@ -414,62 +464,38 @@ function TournamentWorkspace({
 }) {
   const [reviewed, setReviewed] = useState(false);
   return (
-    <Tabs.Root
-      className="tournamentTabs"
-      data-active-screen={activeTab}
+    <TournamentTabs
       value={activeTab}
-      onValueChange={(value) => onTabChange(value as TournamentTab)}
+      onChange={onTabChange}
+      header={
+        activeTab === "replayer" && (
+          <header className="replayerPageHeader">
+            <div className="replayerTitleBlock">
+              <button
+                className="replayerBackLink"
+                type="button"
+                onClick={() => onTabChange("overview")}
+              >
+                <ChevronLeft size={16} aria-hidden="true" />
+                Tournament overview
+              </button>
+              <h1>{tournament.name}</h1>
+              <div className="tournamentMetaLine replayerMetaLine">
+                <span>Sep 4, 2026</span>
+                <span>{tournament.handsPlayed} hands</span>
+                <span>Regular MTT</span>
+              </div>
+            </div>
+            <div className="tournamentReviewGrade">
+              <strong>B</strong>
+              <div>
+                Decision quality<small>Mock heuristic review</small>
+              </div>
+            </div>
+          </header>
+        )
+      }
     >
-      {activeTab === "replayer" && (
-        <header className="replayerPageHeader">
-          <div className="replayerTitleBlock">
-            <button
-              className="replayerBackLink"
-              type="button"
-              onClick={() => onTabChange("overview")}
-            >
-              <ChevronLeft size={16} aria-hidden="true" />
-              Tournament overview
-            </button>
-            <h1>{tournament.name}</h1>
-            <div className="tournamentMetaLine replayerMetaLine">
-              <span>Sep 4, 2026</span>
-              <span>{tournament.handsPlayed} hands</span>
-              <span>Regular MTT</span>
-            </div>
-          </div>
-          <div className="tournamentReviewGrade">
-            <strong>B</strong>
-            <div>
-              Decision quality<small>Mock heuristic review</small>
-            </div>
-          </div>
-        </header>
-      )}
-      <Tabs.List className="tabList" aria-label="Tournament sections">
-        <Tabs.Trigger
-          className="tabTrigger"
-          value="overview"
-          onClick={() => onTabChange("overview")}
-        >
-          Overview
-        </Tabs.Trigger>
-        <Tabs.Trigger
-          className="tabTrigger"
-          value="replayer"
-          onClick={() => onTabChange("replayer")}
-        >
-          Replayer
-        </Tabs.Trigger>
-        <Tabs.Trigger
-          className="tabTrigger"
-          value="review"
-          onClick={() => onTabChange("review")}
-        >
-          Review Queue
-        </Tabs.Trigger>
-      </Tabs.List>
-
       <Tabs.Content value="overview">
         <div className="pageGrid">
           <TournamentOverview />
@@ -570,7 +596,7 @@ function TournamentWorkspace({
           <ReviewQueue items={reviewQueue} onOpenItem={onOpenReviewItem} />
         </div>
       </Tabs.Content>
-    </Tabs.Root>
+    </TournamentTabs>
   );
 }
 

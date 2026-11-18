@@ -1,7 +1,11 @@
 import * as Switch from "@radix-ui/react-switch";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect } from "react";
-import { flattenActions } from "../../domain/replay";
+import {
+  currentNavigationTarget,
+  findShowdownCursor,
+  findStreetCursor,
+} from "../../domain/replay";
 import type { Hand, Street } from "../../domain/schemas";
 
 export function ReplayControls({
@@ -55,18 +59,23 @@ export function ReplayControls({
         <ChevronLeft size={18} aria-hidden="true" />
         Back
       </button>
-      <nav className="streetNavigation" aria-label="Betting streets">
-        {(["PREFLOP", "FLOP", "TURN", "RIVER"] as const).map((street) => {
-          const target = flattenActions(hand).find(
-            (action) => action.street === street && action.type !== "WIN",
-          );
+      <nav className="streetNavigation" aria-label="Replay streets and showdown">
+        {(["PREFLOP", "FLOP", "TURN", "RIVER", "SHOWDOWN"] as const).map((street) => {
+          const target =
+            street === "SHOWDOWN"
+              ? findShowdownCursor(hand)
+              : findStreetCursor(hand, street);
           return (
             <button
               key={street}
               type="button"
-              aria-current={street === currentStreet ? "step" : undefined}
-              disabled={!target || target.sequence > totalActions}
-              onClick={() => target && onCursorChange(target.sequence)}
+              aria-current={
+                street === currentNavigationTarget(hand, cursor, currentStreet)
+                  ? "step"
+                  : undefined
+              }
+              disabled={target === null || target > totalActions}
+              onClick={() => target !== null && onCursorChange(target)}
             >
               {street.charAt(0) + street.slice(1).toLowerCase()}
             </button>

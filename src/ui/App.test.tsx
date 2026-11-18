@@ -12,9 +12,10 @@ describe("phase 0 app prototype", () => {
     const { container } = render(<App />);
 
     fireEvent.click(screen.getByRole("button", { name: "Tournaments" }));
+    fireEvent.click(screen.getByRole("button", { name: "View demo tournament" }));
     activateTab("Replayer");
 
-    expect(screen.getAllByLabelText("Hidden card")).toHaveLength(4);
+    expect(screen.getAllByLabelText("Face-down card")).toHaveLength(4);
     expect(screen.queryByText(/^To act$/i)).not.toBeInTheDocument();
     expect(container.querySelectorAll(".player-position-badge")).toHaveLength(8);
     expect(container.querySelectorAll(".seatIdentity .seatPosition")).toHaveLength(0);
@@ -39,6 +40,7 @@ describe("phase 0 app prototype", () => {
     render(<App />);
 
     fireEvent.click(screen.getByRole("button", { name: "Tournaments" }));
+    fireEvent.click(screen.getByRole("button", { name: "View demo tournament" }));
     activateTab("Review Queue");
     fireEvent.click(screen.getByRole("button", { name: /A5s SB vs BTN open/i }));
 
@@ -70,6 +72,7 @@ describe("phase 0 app prototype", () => {
     render(<App />);
 
     fireEvent.click(screen.getByRole("button", { name: "Tournaments" }));
+    fireEvent.click(screen.getByRole("button", { name: "View demo tournament" }));
     activateTab("Replayer");
     fireEvent.keyDown(window, { key: "ArrowRight" });
 
@@ -96,6 +99,7 @@ describe("phase 0 app prototype", () => {
     render(<App />);
 
     fireEvent.click(screen.getByRole("button", { name: "Tournaments" }));
+    fireEvent.click(screen.getByRole("button", { name: "View demo tournament" }));
     activateTab("Replayer");
     fireEvent.keyDown(window, { key: "ArrowRight" });
 
@@ -115,6 +119,7 @@ describe("phase 0 app prototype", () => {
     const { container } = render(<App />);
 
     fireEvent.click(screen.getByRole("button", { name: "Tournaments" }));
+    fireEvent.click(screen.getByRole("button", { name: "View demo tournament" }));
     activateTab("Replayer");
 
     fireEvent.change(screen.getByLabelText("Table size preview"), {

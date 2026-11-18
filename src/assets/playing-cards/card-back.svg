@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" aria-hidden="true" focusable="false" class="study-card-back">
+  <!-- External image: size the SVG viewport to the card shell.
+       Inline SVG: set data-variant to compact, table, or board. -->
+  <style>
+    .study-card-back {
+      --study-back-radius: 4px;
+      --study-back-inset: 3.5px;
+      --study-back-inner-radius: 3px;
+      --study-back-diamond-scale: 1 1;
+    }
+    @media (max-width: 32px) {
+      .study-card-back:not([data-variant]) {
+        --study-back-radius: 3px;
+        --study-back-inset: 2.5px;
+        --study-back-inner-radius: 2px;
+        --study-back-diamond-scale: .666667 .666667;
+      }
+    }
+    @media (min-width: 43px) {
+      .study-card-back:not([data-variant]) {
+        --study-back-radius: 5px;
+        --study-back-inner-radius: 4px;
+        --study-back-diamond-scale: 1.166667 1.111111;
+      }
+    }
+    .study-card-back[data-variant="compact"] {
+      --study-back-radius: 3px;
+      --study-back-inset: 2.5px;
+      --study-back-inner-radius: 2px;
+      --study-back-diamond-scale: .666667 .666667;
+    }
+    .study-card-back[data-variant="board"] {
+      --study-back-radius: 5px;
+      --study-back-inner-radius: 4px;
+      --study-back-diamond-scale: 1.166667 1.111111;
+    }
+    .study-card-back > .back-outer {
+      width: calc(100% - 1px);
+      height: calc(100% - 1px);
+      rx: var(--study-back-radius);
+    }
+    .study-card-back > .back-inner {
+      x: var(--study-back-inset);
+      y: var(--study-back-inset);
+      width: calc(100% - 2 * var(--study-back-inset));
+      height: calc(100% - 2 * var(--study-back-inset));
+      rx: var(--study-back-inner-radius);
+    }
+    .study-card-back .back-motif { scale: var(--study-back-diamond-scale); }
+  </style>
+  <rect class="back-outer" x=".5" y=".5" fill="#192C23" stroke="#D6BB87" stroke-width="1"/>
+  <rect class="back-inner" fill="none" stroke="#A88D5E" stroke-width="1"/>
+  <svg x="50%" y="50%" width="1" height="1" overflow="visible">
+    <path class="back-motif" d="M0 -9 6 0 0 9 -6 0Z" fill="none" stroke="#D6BB87" stroke-width="1"
+      vector-effect="non-scaling-stroke"/>
+  </svg>
+</svg>

@@ -663,24 +663,6 @@ button:disabled {
   gap: 12px;
 }
 
-.playingCard {
-  position: relative;
-  display: block;
-  width: var(--card-w);
-  height: var(--card-h);
-  border: 1px solid rgba(20, 16, 12, 0.28);
-  border-radius: 6px;
-  background: linear-gradient(145deg, #fffaf0, #efe4cf), #f7f0df;
-  color: #171513;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
-    0 7px 16px rgba(0, 0, 0, 0.26);
-}
-
-.playingCard[data-red="true"] {
-  color: #b73134;
-}
-
 .deckAssetCard {
   overflow: hidden;
   padding: 0;
@@ -709,49 +691,6 @@ button:disabled {
   background:
     linear-gradient(145deg, rgba(255, 255, 255, 0.62), transparent 38%),
     linear-gradient(160deg, #fff9ed, #ece0c9);
-}
-
-.cardCorner {
-  position: absolute;
-  top: 5px;
-  left: 6px;
-  display: grid;
-  justify-items: center;
-  line-height: 0.92;
-}
-
-.cardCorner strong {
-  font-family: var(--font-display);
-  font-size: 1rem;
-}
-
-.cardCorner small {
-  font-size: 0.78rem;
-}
-
-.cardSuit {
-  position: absolute;
-  right: 7px;
-  bottom: 4px;
-  font-size: 1.32rem;
-  line-height: 1;
-}
-
-.cardBack {
-  display: grid;
-  place-items: center;
-  background:
-    linear-gradient(135deg, rgba(216, 189, 122, 0.18) 25%, transparent 25%) 0 0 / 8px
-      8px,
-    #24201c;
-  color: var(--champagne);
-}
-
-.cardBack span {
-  width: 18px;
-  height: 18px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
 }
 
 .seatHeader {
@@ -1451,72 +1390,6 @@ body {
   color: var(--text-1);
 }
 
-.playingCard {
-  width: var(--card-w);
-  height: var(--card-h);
-  border-color: rgba(20, 16, 12, 0.24);
-  border-radius: 7px;
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.62), transparent 38%),
-    linear-gradient(160deg, #fff9ed, #ece0c9);
-  color: #15120f;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.56),
-    inset 0 -10px 20px rgba(74, 51, 26, 0.045),
-    0 8px 16px rgba(0, 0, 0, 0.25);
-  transition:
-    transform 180ms var(--ease-premium),
-    box-shadow 180ms var(--ease-premium);
-}
-
-.playingCard[data-red="true"] {
-  color: #af2d31;
-}
-
-.cardCorner {
-  top: 5px;
-  left: 6px;
-  line-height: 0.9;
-}
-
-.cardCorner strong {
-  font-family: var(--font-display);
-  font-size: 1.04rem;
-  font-weight: 600;
-}
-
-.cardCorner small,
-.cardSuit {
-  font-family: Georgia, "Times New Roman", serif;
-}
-
-.cardCorner small {
-  font-size: 0.82rem;
-}
-
-.cardSuit {
-  right: 7px;
-  bottom: 5px;
-  font-size: 1.34rem;
-}
-
-.cardBack {
-  background:
-    radial-gradient(circle at 50% 50%, rgba(216, 189, 122, 0.22), transparent 34%),
-    repeating-linear-gradient(
-      45deg,
-      rgba(216, 189, 122, 0.22) 0 1px,
-      transparent 1px 6px
-    ),
-    linear-gradient(145deg, #2a2520, #181614);
-}
-
-.cardBack span {
-  width: 17px;
-  height: 17px;
-  opacity: 0.78;
-}
-
 .seatActionLabel {
   border-color: rgba(245, 238, 220, 0.09);
   background: rgba(8, 8, 7, 0.68);
@@ -2131,20 +2004,20 @@ body {
     linear-gradient(135deg, #0c1215 0%, #060909 58%, #101715 100%);
 }
 
-.appShell[data-replayer-screen="true"] .sidebar {
+.appShell.studyShell .sidebar {
   border-right-color: rgba(148, 163, 184, 0.12);
   background:
     linear-gradient(180deg, rgba(17, 27, 29, 0.95), rgba(7, 12, 13, 0.96)), #071011;
   padding: 22px 20px;
 }
 
-.appShell[data-replayer-screen="true"] .brandLockup {
+.appShell.studyShell .brandLockup {
   margin-bottom: 26px;
   padding-bottom: 22px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.13);
 }
 
-.appShell[data-replayer-screen="true"] .brandMark {
+.appShell.studyShell .brandMark {
   width: 40px;
   height: 40px;
   border: 0;
@@ -2155,22 +2028,22 @@ body {
   text-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
 }
 
-.appShell[data-replayer-screen="true"] .brandName {
+.appShell.studyShell .brandName {
   font-size: 1.08rem;
 }
 
-.appShell[data-replayer-screen="true"] .brandMeta {
+.appShell.studyShell .brandMeta {
   margin-top: 2px;
   color: #99a3ad;
   font-size: 0.72rem;
   letter-spacing: 0.16em;
 }
 
-.appShell[data-replayer-screen="true"] .navList {
+.appShell.studyShell .navList {
   gap: 10px;
 }
 
-.appShell[data-replayer-screen="true"] .navButton {
+.appShell.studyShell .navButton {
   min-height: 56px;
   border: 1px solid transparent;
   border-radius: 7px;
@@ -2179,11 +2052,11 @@ body {
   padding: 0 14px;
 }
 
-.appShell[data-replayer-screen="true"] .navButton::before {
+.appShell.studyShell .navButton::before {
   display: none;
 }
 
-.appShell[data-replayer-screen="true"] .navButton[data-active="true"] {
+.appShell.studyShell .navButton[data-active="true"] {
   border-color: rgba(69, 213, 139, 0.32);
   background:
     linear-gradient(180deg, rgba(52, 211, 153, 0.2), rgba(16, 77, 56, 0.44)),
@@ -2257,11 +2130,11 @@ body {
   padding: 24px 18px 20px 28px;
 }
 
-.tournamentTabs[data-active-screen="replayer"] {
+.tournamentTabs[data-active-screen] {
   gap: 0;
 }
 
-.tournamentTabs[data-active-screen="replayer"] > .tabList {
+.tournamentTabs[data-active-screen] > .tabList {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -2875,33 +2748,33 @@ body {
 }
 
 @media (max-width: 1439px) and (min-width: 1180px) {
-  .appShell[data-replayer-screen="true"] {
+  .appShell.studyShell {
     grid-template-columns: 96px minmax(0, 1fr);
   }
 
-  .appShell[data-replayer-screen="true"] .sidebar {
+  .appShell.studyShell .sidebar {
     padding-inline: 14px;
   }
 
-  .appShell[data-replayer-screen="true"] .brandLockup {
+  .appShell.studyShell .brandLockup {
     justify-content: center;
   }
 
-  .appShell[data-replayer-screen="true"] .brandLockup > div:not(.brandMark),
-  .appShell[data-replayer-screen="true"] .navButton span,
-  .appShell[data-replayer-screen="true"] .sidebarGoal div,
-  .appShell[data-replayer-screen="true"] .sidebarAccount div,
-  .appShell[data-replayer-screen="true"] .sidebarAccount svg {
+  .appShell.studyShell .brandLockup > div:not(.brandMark),
+  .appShell.studyShell .navButton span,
+  .appShell.studyShell .sidebarGoal div,
+  .appShell.studyShell .sidebarAccount div,
+  .appShell.studyShell .sidebarAccount svg {
     display: none;
   }
 
-  .appShell[data-replayer-screen="true"] .navButton {
+  .appShell.studyShell .navButton {
     justify-content: center;
     padding-inline: 0;
   }
 
-  .appShell[data-replayer-screen="true"] .sidebarGoal,
-  .appShell[data-replayer-screen="true"] .sidebarAccount {
+  .appShell.studyShell .sidebarGoal,
+  .appShell.studyShell .sidebarAccount {
     display: flex;
     justify-content: center;
   }
@@ -2921,15 +2794,15 @@ body {
 }
 
 @media (max-width: 1179px) {
-  .appShell[data-replayer-screen="true"] {
+  .appShell.studyShell {
     display: block;
   }
 
-  .appShell[data-replayer-screen="true"] .sidebar {
+  .appShell.studyShell .sidebar {
     display: none;
   }
 
-  .appShell[data-replayer-screen="true"] .mobileNav {
+  .appShell.studyShell .mobileNav {
     display: flex;
   }
 
@@ -3000,10 +2873,6 @@ body {
 @media (max-width: 767px) {
   .appShell[data-replayer-screen="true"] .mainSurface {
     padding: 14px 10px 22px;
-  }
-
-  .appShell:not([data-replayer-screen="true"]) .mobileNav {
-    display: flex;
   }
 
   .mobileNav {

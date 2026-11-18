@@ -1,0 +1,165 @@
+﻿/* Approved Study sizes are local to the shared card, never its consumers. */
+.playingCard[data-card-variant] {
+  --card-width: 24px;
+  --card-height: 34px;
+  --card-rank-size: 16px;
+  --card-suit-size: 9px;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  width: var(--card-width);
+  height: var(--card-height);
+  padding: 3px 2px;
+  border: 1px solid #ced2c9;
+  border-radius: 3px;
+  background: #fafaf7;
+  color: #181f1b;
+  box-shadow: none;
+}
+.playingCard[data-card-variant="table"] {
+  --card-width: 40px;
+  --card-height: 54px;
+  --card-rank-size: 25px;
+  --card-suit-size: 14px;
+  gap: 2px;
+  padding: 5px 3px 6px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px #0004;
+}
+.playingCard[data-card-variant="board"] {
+  --card-width: 46px;
+  --card-height: 64px;
+  --card-rank-size: 29px;
+  --card-suit-size: 17px;
+  gap: 2px;
+  padding: 6px 4px 8px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px #0005;
+}
+.playingCard[data-red="true"] {
+  color: #821d38;
+}
+.cardCorner {
+  display: block;
+  flex: 0 0 var(--card-rank-size);
+  height: var(--card-rank-size);
+  text-align: center;
+  white-space: nowrap;
+}
+.playingCard[data-card-variant] .cardCorner strong {
+  display: block;
+  font:
+    700 var(--card-rank-size)/var(--card-rank-size) Arial,
+    "Liberation Sans",
+    sans-serif;
+  letter-spacing: normal;
+}
+.cardSuit {
+  display: block;
+  flex: 0 0 var(--card-suit-size);
+  width: var(--card-suit-size);
+  height: var(--card-suit-size);
+}
+.cardSuit svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* The supplied SVG owns the back's outer and inset borders. */
+.playingCard.cardBack[data-card-variant] {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.cardBackArtwork {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+/* Development-only external deck art keeps its independent calibration. */
+.deckAssetCard {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  width: var(--card-w);
+  height: var(--card-h);
+  border: 1px solid #72776b;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px #0002;
+  overflow: hidden;
+  padding: 0;
+  background: transparent;
+}
+
+/* Keep the pre-existing board slot height so pot/street text does not move.
+   The approved artwork may extend into the existing surrounding card spacing. */
+.table-board:has(> [data-card-variant="board"]) {
+  height: 53px;
+  align-items: center;
+}
+@container (max-width: 620px) {
+  .table-board:has(> [data-card-variant="board"]) {
+    height: 46px;
+  }
+}
+@media (max-width: 700px) {
+  .table-board:has(> [data-card-variant="board"]) {
+    height: 39px;
+  }
+  /* Five cards must fit between fixed 84px plates centered at 13% / 87%.
+     Reserve 4px either side and the existing four 3px gaps. See QA evidence. */
+  .playingCard[data-card-variant="board"] {
+    --card-width: min(46px, calc(14.8cqw - 20.8px));
+    --card-height: calc(var(--card-width) * 64 / 46);
+    --card-rank-size: calc(var(--card-width) * 29 / 46);
+    --card-suit-size: calc(var(--card-width) * 17 / 46);
+    gap: calc(var(--card-width) * 2 / 46);
+    padding: calc(var(--card-width) * 6 / 46) calc(var(--card-width) * 4 / 46)
+      calc(var(--card-width) * 8 / 46);
+  }
+}
+/* Dense mobile seat profiles leave less than 54px between fixed nameplates.
+   Keep one Table face for Hero/reveals/backs and scale its tokens together. */
+@media (max-width: 700px) {
+  .playingCard[data-card-variant="table"] {
+    --card-width: 35px;
+    --card-height: calc(var(--card-width) * 54 / 40);
+    --card-rank-size: calc(var(--card-width) * 25 / 40);
+    --card-suit-size: calc(var(--card-width) * 14 / 40);
+    gap: calc(var(--card-width) * 2 / 40);
+    padding: calc(var(--card-width) * 5 / 40) calc(var(--card-width) * 3 / 40)
+      calc(var(--card-width) * 6 / 40);
+  }
+  .pokerStage[data-table-size="9"] .playingCard[data-card-variant="table"] {
+    --card-width: 31px;
+  }
+}
+@media (max-width: 700px) {
+  /* Six-seat side commitments share the hole-card lane; preserve their anchors. */
+  .pokerStage[data-table-size="6"] .playingCard[data-card-variant="table"] {
+    --card-width: min(40px, calc(17cqw - 31px));
+  }
+}
+/* The fixed nine-seat desktop profile has only 47px between adjacent plates. */
+@media (min-width: 701px) {
+  @container (max-height: 500px) {
+    .pokerStage[data-table-size="9"] .playingCard[data-card-variant="table"] {
+      --card-width: 34px;
+      --card-height: calc(var(--card-width) * 54 / 40);
+      --card-rank-size: calc(var(--card-width) * 25 / 40);
+      --card-suit-size: calc(var(--card-width) * 14 / 40);
+      gap: calc(var(--card-width) * 2 / 40);
+      padding: calc(var(--card-width) * 5 / 40) calc(var(--card-width) * 3 / 40)
+        calc(var(--card-width) * 6 / 40);
+    }
+  }
+}
+
+.cardBackArtwork > svg {
+  display: block;
+}

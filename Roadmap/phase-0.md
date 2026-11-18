@@ -2,7 +2,11 @@
 
 ## Status
 
-READY FOR REVIEW
+COMPLETE
+
+User approval recorded on 2026-10-18. Earlier review entries below document the
+Phase 0 implementation history. Phase 1A is complete; Phase 1B local import/replay
+is READY FOR REVIEW with [verification evidence](../docs/qa/phase-1b/README.md).
 
 ## Goal
 
@@ -59,7 +63,7 @@ Screenshot index: `docs/qa/replayer-shell/README.md`.
 Visual comparisons: `docs/qa/replayer-shell/comparison-{1440,390}.png` and
 `comparison-analysis.png`. Dashboard and other feature-page bodies were not redesigned.
 
-Overall Phase 0 remains READY FOR REVIEW. No Phase 1 implementation is authorized.
+Phase 0 was approved complete on 2026-10-18, authorizing Phase 1A parser work.
 
 ### Phase 0 Product / UX Remediation
 

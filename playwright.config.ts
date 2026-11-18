@@ -4,7 +4,11 @@ export default defineConfig({
   testDir: "./tests/visual",
   timeout: 60000,
   workers: 1,
-  reporter: "list",
+  reporter: [
+    ["list"],
+    ["html", { open: "never", outputFolder: "playwright-report" }],
+    ["json", { outputFile: "playwright-report/results.json" }],
+  ],
   use: {
     baseURL: "http://127.0.0.1:5180",
     channel: "chrome",

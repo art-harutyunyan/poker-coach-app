@@ -1,3 +1,18 @@
+import type { Player } from "../domain/schemas";
+import type { OpponentAliases } from "./opponentAliases";
+
+export function playerDisplayName(
+  player: Pick<Player, "id" | "isHero" | "name">,
+  imported: boolean,
+  aliases?: OpponentAliases,
+): string {
+  return imported
+    ? player.isHero
+      ? "Hero"
+      : (aliases?.[player.id] ?? `Opponent ${player.name}`)
+    : player.name;
+}
+
 export function formatChips(value: number): string {
   if (value >= 1000) {
     return `${(value / 1000).toFixed(value % 1000 === 0 ? 0 : 1)}k`;

@@ -1,0 +1,1 @@
+Passed navigation, replay stepping, primary hover/focus, and chart tooltip checks.

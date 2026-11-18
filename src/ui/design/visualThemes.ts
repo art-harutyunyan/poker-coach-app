@@ -1,7 +1,7 @@
 import type { Card } from "../../domain/schemas";
 
 export type CardTheme = "public-domain" | "block52" | "letele";
-export type ReplayerCardTheme = Exclude<CardTheme, "public-domain">;
+export type ReplayerCardTheme = "study" | Exclude<CardTheme, "public-domain">;
 export type TableTheme = "deep-emerald" | "graphite-emerald" | "felt-texture";
 export type ChipTheme = "poker-coach" | "block52";
 export type PreviewTableSize = 6 | 8 | 9;
@@ -15,7 +15,7 @@ export interface VisualPreviewSelection {
 }
 
 export const defaultVisualPreview: VisualPreviewSelection = {
-  cardTheme: "block52",
+  cardTheme: "study",
   chipTheme: "poker-coach",
   tableSize: 8,
   tableTheme: "deep-emerald",
@@ -33,6 +33,7 @@ export const replayerCardThemeOptions: Array<{
   label: string;
   value: ReplayerCardTheme;
 }> = [
+  { label: "Warm Dark", value: "study" },
   { label: "Classic", value: "block52" },
   { label: "Modern SVG", value: "letele" },
 ];
@@ -196,7 +197,7 @@ function rankName(rank: Card["rank"]): string {
 }
 
 function isReplayerCardTheme(value: unknown): value is ReplayerCardTheme {
-  return value === "block52" || value === "letele";
+  return value === "study" || value === "block52" || value === "letele";
 }
 
 function isTableTheme(value: unknown): value is TableTheme {

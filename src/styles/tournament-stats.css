@@ -1,0 +1,87 @@
+.tournamentStats {
+  padding: 24px;
+  color: var(--study-text);
+}
+.tournamentStats h2,
+.tournamentStats h3,
+.tournamentStats p {
+  margin-top: 0;
+}
+.tournamentStatsHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.tournamentStatsContext,
+.tournamentMetricCount,
+.tournamentMetricCoverage,
+.tournamentMetricDefinition {
+  color: var(--study-muted);
+}
+.tournamentStatsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.tournamentMetric {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--study-line);
+  border-radius: 6px;
+  background: var(--study-surface);
+  overflow-wrap: anywhere;
+}
+.tournamentMetric h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--study-muted);
+}
+.tournamentMetricValue {
+  font-size: clamp(24px, 3vw, 32px);
+  line-height: 1.15;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.tournamentMetricCount,
+.tournamentMetricUnavailable,
+.tournamentMetricMasked {
+  font-size: 13px;
+}
+.tournamentMetric details {
+  margin-top: 12px;
+  font-size: 12px;
+}
+.tournamentMetric summary {
+  cursor: pointer;
+  width: fit-content;
+  color: var(--study-gold);
+}
+.tournamentMetric details p {
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+.tournamentMetricCoverage ul {
+  padding-left: 18px;
+  margin: 8px 0;
+  max-height: 180px;
+  overflow: auto;
+}
+.tournamentMetricAudit button,
+.tournamentMetricHide {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--study-gold);
+  text-align: left;
+  cursor: pointer;
+}
+.tournamentMetricMasked {
+  margin-bottom: 12px;
+}
+@media (max-width: 700px) {
+  .tournamentStatsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

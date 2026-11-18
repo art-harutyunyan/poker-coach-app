@@ -1,0 +1,234 @@
+/* Approved Tournaments shell, shared by every section. No route-specific navigation styles. */
+.appShell.studyShell {
+  --study-bg: #101815;
+  --study-surface: #19231e;
+  --study-raised: #26382b;
+  --study-line: #334238;
+  --study-text: #efece2;
+  --study-muted: #a1ada5;
+  --study-gold: #d5bf90;
+  --study-green: #8fc3a5;
+  grid-template-columns: 214px minmax(0, 1fr);
+}
+.appShell.studyShell .sidebar {
+  background: #131d17;
+  border-right: 1px solid var(--study-line);
+  padding: 30px 18px 16px;
+  backdrop-filter: none;
+}
+.appShell.studyShell .brandLockup {
+  gap: 10px;
+  border: 0;
+  padding: 0 5px;
+  margin-bottom: 36px;
+}
+.appShell.studyShell .brandMark {
+  width: 28px;
+  height: 28px;
+  color: var(--study-gold);
+  text-shadow: none;
+  flex-shrink: 0;
+}
+.appShell.studyShell .brandName {
+  color: var(--study-gold);
+  font-size: 17px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.appShell.studyShell .brandMeta {
+  font-size: 9px;
+  line-height: 1.5;
+  color: var(--study-muted);
+  letter-spacing: 0;
+}
+.appShell.studyShell .navList {
+  gap: 6px;
+}
+.appShell.studyShell .navButton {
+  gap: 13px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 5px;
+  color: #bcc5bd;
+  font-size: 13px;
+  font-weight: 400;
+}
+.appShell.studyShell .navButton:hover {
+  background: #202c24;
+}
+.appShell.studyShell .navButton[data-active="true"] {
+  background: #283a2d;
+  color: var(--study-gold);
+  box-shadow: none;
+}
+.sidebarUpload,
+.sidebarSettings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  margin-top: 28px;
+  border: 1px solid #485846;
+  border-radius: 5px;
+  color: #c7d2c8;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+}
+.sidebarUpload:hover,
+.sidebarSettings:hover {
+  background: #26352b;
+}
+.sidebarSettings {
+  justify-content: flex-start;
+  border-color: transparent;
+  margin: 10px 0;
+  padding: 10px;
+}
+.appShell.studyShell .sidebarGoal {
+  display: block;
+  padding: 20px 10px 10px;
+  border: 0;
+  font-size: 12px;
+}
+.appShell.studyShell .sidebarGoal > svg {
+  display: none;
+}
+.appShell.studyShell .sidebarGoal strong,
+.appShell.studyShell .sidebarGoal span {
+  color: var(--study-muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+.appShell.studyShell .sidebarAccount {
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 9px;
+  border-top: 1px solid var(--study-line);
+  padding-top: 18px;
+}
+.appShell.studyShell .accountAvatar {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: #2d3c30;
+  font-size: 11px;
+  color: var(--study-gold);
+}
+.appShell.studyShell .sidebarAccount strong {
+  font-size: 12px;
+}
+.appShell.studyShell .sidebarAccount span {
+  font-size: 10px;
+  color: var(--study-muted);
+}
+.demoBadge {
+  color: #b3c1b1;
+  border: 1px solid #334238;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+@media (min-width: 1180px) and (max-width: 1439px) {
+  .appShell.studyShell {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+  .appShell.studyShell .sidebar {
+    padding: 24px 12px 16px;
+  }
+  .appShell.studyShell .brandLockup {
+    justify-content: center;
+    padding: 0;
+  }
+  .appShell.studyShell
+    :is(
+      .brandLockup > div:not(.brandMark),
+      .navButton span,
+      .sidebarUpload span,
+      .sidebarSettings span,
+      .sidebarGoal,
+      .sidebarAccount > div:not(.accountAvatar),
+      .sidebarAccount > small
+    ) {
+    display: none;
+  }
+  .appShell.studyShell .navButton {
+    justify-content: center;
+    padding: 10px;
+  }
+  .appShell.studyShell .sidebarSettings {
+    margin-top: auto;
+    justify-content: center;
+  }
+  .appShell.studyShell .sidebarAccount {
+    display: flex;
+    justify-content: center;
+  }
+}
+@media (max-width: 1179px) {
+  .appShell.studyShell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .appShell.studyShell .sidebar {
+    display: none;
+  }
+  .appShell.studyShell .mobileNav {
+    display: flex;
+    background: #131d17;
+    border-bottom: 1px solid var(--study-line);
+    padding: 10px 24px;
+    min-height: 60px;
+  }
+  .appShell.studyShell .mobileBrand {
+    color: var(--study-gold);
+    gap: 10px;
+  }
+  .appShell.studyShell .mobileBrand strong {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .appShell.studyShell .mobileBrand small {
+    display: none;
+  }
+  .appShell.studyShell .mobileNavSelect select {
+    background: #131d17;
+    border: 1px solid #435348;
+    min-height: 44px;
+    font-size: 12px;
+    color: var(--study-text);
+  }
+}
+@media (max-width: 700px) {
+  .appShell.studyShell .mobileNav {
+    padding: 8px 16px;
+  }
+}
+/* Navigation owns its typography independently of page content. */
+.appShell.studyShell .sidebar,
+.appShell.studyShell .mobileNav {
+  font-family: "Seat Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--study-text);
+}
+.appShell.studyShell .sidebar button,
+.appShell.studyShell .mobileNav select {
+  font-family: inherit;
+}
+.appShell.studyShell :is(.sidebar, .mobileNav) :is(button, select):focus-visible {
+  outline: 2px solid var(--study-gold);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .appShell.studyShell :where(.navButton) {
+    transition:
+      color 180ms,
+      background 180ms,
+      border-color 180ms;
+  }
+}
