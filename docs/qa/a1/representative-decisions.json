@@ -1,0 +1,1431 @@
+[
+  {
+    "tournamentId": "309704619",
+    "context": {
+      "handId": "TM6376938342",
+      "eventId": "TM6376938342:line:3808",
+      "sourceLine": 3808,
+      "decisionIndex": 0,
+      "street": "PREFLOP",
+      "heroPosition": "BB",
+      "heroCards": [
+        {
+          "rank": "5",
+          "suit": "c"
+        },
+        {
+          "rank": "T",
+          "suit": "d"
+        }
+      ],
+      "board": [],
+      "playersDealt": 7,
+      "playersInHand": 2,
+      "playersRemaining": [
+        {
+          "playerId": "gg:309704619:cc4026d3",
+          "seatNumber": 1,
+          "position": "SB",
+          "stackBeforeChips": 164024,
+          "streetCommitmentChips": 3500,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:309704619:Hero",
+          "seatNumber": 3,
+          "position": "BB",
+          "stackBeforeChips": 91015,
+          "streetCommitmentChips": 3500,
+          "state": "active"
+        }
+      ],
+      "heroStackBeforeChips": 91015,
+      "heroStackBeforeBb": 26.004285714285714,
+      "effectiveStackBeforeChips": 91015,
+      "effectiveStackBeforeBb": 26.004285714285714,
+      "potBeforeActionChips": 10150,
+      "contributionsByPlayerChips": {
+        "gg:309704619:cc4026d3": 3950,
+        "gg:309704619:Hero": 3950,
+        "gg:309704619:1590b7cd": 450,
+        "gg:309704619:d07f6d37": 450,
+        "gg:309704619:295b6d2e": 450,
+        "gg:309704619:a0bd1d68": 450,
+        "gg:309704619:4ea47d75": 450
+      },
+      "currentBetChips": 3500,
+      "facingAmountChips": 0,
+      "amountToCallChips": 0,
+      "facingAction": "LIMPED",
+      "legalActions": ["CHECK", "RAISE"],
+      "minimumRaiseToChips": 7000,
+      "actualAction": {
+        "kind": "CHECK",
+        "isAllIn": false,
+        "amountAddedChips": 0,
+        "raiseToChips": null,
+        "amountAddedBb": null,
+        "potFraction": null
+      },
+      "potType": "LIMPED",
+      "preflopSequence": [
+        {
+          "eventId": "TM6376938342:line:3802",
+          "playerId": "gg:309704619:1590b7cd",
+          "position": "UTG",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6376938342:line:3803",
+          "playerId": "gg:309704619:d07f6d37",
+          "position": "LJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6376938342:line:3804",
+          "playerId": "gg:309704619:295b6d2e",
+          "position": "HJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6376938342:line:3805",
+          "playerId": "gg:309704619:a0bd1d68",
+          "position": "CO",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6376938342:line:3806",
+          "playerId": "gg:309704619:4ea47d75",
+          "position": "BTN",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6376938342:line:3807",
+          "playerId": "gg:309704619:cc4026d3",
+          "position": "SB",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 1750,
+          "raiseToChips": null
+        }
+      ],
+      "sourceConfidence": "confirmed",
+      "unknownReasons": []
+    }
+  },
+  {
+    "tournamentId": "314729652",
+    "context": {
+      "handId": "TM6469820465",
+      "eventId": "TM6469820465:line:30",
+      "sourceLine": 30,
+      "decisionIndex": 0,
+      "street": "PREFLOP",
+      "heroPosition": "UTG",
+      "heroCards": [
+        {
+          "rank": "7",
+          "suit": "c"
+        },
+        {
+          "rank": "7",
+          "suit": "h"
+        }
+      ],
+      "board": [],
+      "playersDealt": 8,
+      "playersInHand": 8,
+      "playersRemaining": [
+        {
+          "playerId": "gg:314729652:3521ffc",
+          "seatNumber": 1,
+          "position": "UTG_PLUS_1",
+          "stackBeforeChips": 452025,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314729652:7c70f084",
+          "seatNumber": 2,
+          "position": "LJ",
+          "stackBeforeChips": 117528,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314729652:7b8b81ca",
+          "seatNumber": 3,
+          "position": "HJ",
+          "stackBeforeChips": 130422,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314729652:1fabf495",
+          "seatNumber": 4,
+          "position": "CO",
+          "stackBeforeChips": 265828,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314729652:54df8316",
+          "seatNumber": 5,
+          "position": "BTN",
+          "stackBeforeChips": 401930,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314729652:13d31a5d",
+          "seatNumber": 6,
+          "position": "SB",
+          "stackBeforeChips": 167441,
+          "streetCommitmentChips": 8000,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314729652:e09a02f4",
+          "seatNumber": 7,
+          "position": "BB",
+          "stackBeforeChips": 525587,
+          "streetCommitmentChips": 16000,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314729652:Hero",
+          "seatNumber": 8,
+          "position": "UTG",
+          "stackBeforeChips": 316050,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        }
+      ],
+      "heroStackBeforeChips": 316050,
+      "heroStackBeforeBb": 19.753125,
+      "effectiveStackBeforeChips": null,
+      "effectiveStackBeforeBb": null,
+      "potBeforeActionChips": 40000,
+      "contributionsByPlayerChips": {
+        "gg:314729652:3521ffc": 2000,
+        "gg:314729652:7c70f084": 2000,
+        "gg:314729652:7b8b81ca": 2000,
+        "gg:314729652:1fabf495": 2000,
+        "gg:314729652:54df8316": 2000,
+        "gg:314729652:13d31a5d": 10000,
+        "gg:314729652:e09a02f4": 18000,
+        "gg:314729652:Hero": 2000
+      },
+      "currentBetChips": 16000,
+      "facingAmountChips": 16000,
+      "amountToCallChips": 16000,
+      "facingAction": "UNOPENED",
+      "legalActions": ["FOLD", "CALL", "RAISE"],
+      "minimumRaiseToChips": 32000,
+      "actualAction": {
+        "kind": "RAISE",
+        "isAllIn": false,
+        "amountAddedChips": 32000,
+        "raiseToChips": 32000,
+        "amountAddedBb": 2,
+        "potFraction": 0.8
+      },
+      "potType": "UNOPENED",
+      "preflopSequence": [],
+      "sourceConfidence": "partial",
+      "unknownReasons": [
+        {
+          "field": "effectiveStackBeforeChips",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        },
+        {
+          "field": "effectiveStackBeforeBb",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        }
+      ]
+    }
+  },
+  {
+    "tournamentId": "314729652",
+    "context": {
+      "handId": "TM6469820465",
+      "eventId": "TM6469820465:line:38",
+      "sourceLine": 38,
+      "decisionIndex": 1,
+      "street": "PREFLOP",
+      "heroPosition": "UTG",
+      "heroCards": [
+        {
+          "rank": "7",
+          "suit": "c"
+        },
+        {
+          "rank": "7",
+          "suit": "h"
+        }
+      ],
+      "board": [],
+      "playersDealt": 8,
+      "playersInHand": 2,
+      "playersRemaining": [
+        {
+          "playerId": "gg:314729652:54df8316",
+          "seatNumber": 5,
+          "position": "BTN",
+          "stackBeforeChips": 317930,
+          "streetCommitmentChips": 84000,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314729652:Hero",
+          "seatNumber": 8,
+          "position": "UTG",
+          "stackBeforeChips": 284050,
+          "streetCommitmentChips": 32000,
+          "state": "active"
+        }
+      ],
+      "heroStackBeforeChips": 284050,
+      "heroStackBeforeBb": 17.753125,
+      "effectiveStackBeforeChips": 284050,
+      "effectiveStackBeforeBb": 17.753125,
+      "potBeforeActionChips": 156000,
+      "contributionsByPlayerChips": {
+        "gg:314729652:3521ffc": 2000,
+        "gg:314729652:7c70f084": 2000,
+        "gg:314729652:7b8b81ca": 2000,
+        "gg:314729652:1fabf495": 2000,
+        "gg:314729652:54df8316": 86000,
+        "gg:314729652:13d31a5d": 10000,
+        "gg:314729652:e09a02f4": 18000,
+        "gg:314729652:Hero": 34000
+      },
+      "currentBetChips": 84000,
+      "facingAmountChips": 52000,
+      "amountToCallChips": 52000,
+      "facingAction": "FACING_3BET",
+      "legalActions": ["FOLD", "CALL", "RAISE"],
+      "minimumRaiseToChips": 136000,
+      "actualAction": {
+        "kind": "RAISE",
+        "isAllIn": true,
+        "amountAddedChips": 284050,
+        "raiseToChips": 316050,
+        "amountAddedBb": 17.753125,
+        "potFraction": 1.8208333333333333
+      },
+      "potType": "THREE_BET",
+      "preflopSequence": [
+        {
+          "eventId": "TM6469820465:line:30",
+          "playerId": "gg:314729652:Hero",
+          "position": "UTG",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 32000,
+          "raiseToChips": 32000
+        },
+        {
+          "eventId": "TM6469820465:line:31",
+          "playerId": "gg:314729652:3521ffc",
+          "position": "UTG_PLUS_1",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6469820465:line:32",
+          "playerId": "gg:314729652:7c70f084",
+          "position": "LJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6469820465:line:33",
+          "playerId": "gg:314729652:7b8b81ca",
+          "position": "HJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6469820465:line:34",
+          "playerId": "gg:314729652:1fabf495",
+          "position": "CO",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6469820465:line:35",
+          "playerId": "gg:314729652:54df8316",
+          "position": "BTN",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 84000,
+          "raiseToChips": 84000
+        },
+        {
+          "eventId": "TM6469820465:line:36",
+          "playerId": "gg:314729652:13d31a5d",
+          "position": "SB",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6469820465:line:37",
+          "playerId": "gg:314729652:e09a02f4",
+          "position": "BB",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        }
+      ],
+      "sourceConfidence": "confirmed",
+      "unknownReasons": []
+    }
+  },
+  {
+    "tournamentId": "314806258",
+    "context": {
+      "handId": "TM6471062694",
+      "eventId": "TM6471062694:line:37",
+      "sourceLine": 37,
+      "decisionIndex": 0,
+      "street": "PREFLOP",
+      "heroPosition": "BB",
+      "heroCards": [
+        {
+          "rank": "Q",
+          "suit": "c"
+        },
+        {
+          "rank": "A",
+          "suit": "h"
+        }
+      ],
+      "board": [],
+      "playersDealt": 8,
+      "playersInHand": 3,
+      "playersRemaining": [
+        {
+          "playerId": "gg:314806258:25e7496d",
+          "seatNumber": 2,
+          "position": "BTN",
+          "stackBeforeChips": 251884,
+          "streetCommitmentChips": 40000,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314806258:f6d234a1",
+          "seatNumber": 3,
+          "position": "SB",
+          "stackBeforeChips": 0,
+          "streetCommitmentChips": 309292,
+          "state": "all-in"
+        },
+        {
+          "playerId": "gg:314806258:Hero",
+          "seatNumber": 4,
+          "position": "BB",
+          "stackBeforeChips": 160225,
+          "streetCommitmentChips": 20000,
+          "state": "active"
+        }
+      ],
+      "heroStackBeforeChips": 160225,
+      "heroStackBeforeBb": 8.01125,
+      "effectiveStackBeforeChips": null,
+      "effectiveStackBeforeBb": null,
+      "potBeforeActionChips": 389292,
+      "contributionsByPlayerChips": {
+        "gg:314806258:87e15f35": 2500,
+        "gg:314806258:25e7496d": 42500,
+        "gg:314806258:f6d234a1": 311792,
+        "gg:314806258:Hero": 22500,
+        "gg:314806258:df7748a7": 2500,
+        "gg:314806258:77604242": 2500,
+        "gg:314806258:13ab0373": 2500,
+        "gg:314806258:2f9f2192": 2500
+      },
+      "currentBetChips": 309292,
+      "facingAmountChips": 289292,
+      "amountToCallChips": 160225,
+      "facingAction": "FACING_ALL_IN",
+      "legalActions": ["FOLD", "CALL"],
+      "minimumRaiseToChips": null,
+      "actualAction": {
+        "kind": "CALL",
+        "isAllIn": true,
+        "amountAddedChips": 160225,
+        "raiseToChips": null,
+        "amountAddedBb": 8.01125,
+        "potFraction": null
+      },
+      "potType": "THREE_BET",
+      "preflopSequence": [
+        {
+          "eventId": "TM6471062694:line:30",
+          "playerId": "gg:314806258:df7748a7",
+          "position": "UTG",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6471062694:line:31",
+          "playerId": "gg:314806258:77604242",
+          "position": "UTG_PLUS_1",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6471062694:line:32",
+          "playerId": "gg:314806258:13ab0373",
+          "position": "LJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6471062694:line:33",
+          "playerId": "gg:314806258:2f9f2192",
+          "position": "HJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6471062694:line:34",
+          "playerId": "gg:314806258:87e15f35",
+          "position": "CO",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6471062694:line:35",
+          "playerId": "gg:314806258:25e7496d",
+          "position": "BTN",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 40000,
+          "raiseToChips": 40000
+        },
+        {
+          "eventId": "TM6471062694:line:36",
+          "playerId": "gg:314806258:f6d234a1",
+          "position": "SB",
+          "action": "RAISE",
+          "isAllIn": true,
+          "amountAddedChips": 299292,
+          "raiseToChips": 309292
+        }
+      ],
+      "sourceConfidence": "partial",
+      "unknownReasons": [
+        {
+          "field": "effectiveStackBeforeChips",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        },
+        {
+          "field": "effectiveStackBeforeBb",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        }
+      ]
+    }
+  },
+  {
+    "tournamentId": "317697722",
+    "context": {
+      "handId": "TM6524471450",
+      "eventId": "TM6524471450:line:37",
+      "sourceLine": 37,
+      "decisionIndex": 0,
+      "street": "PREFLOP",
+      "heroPosition": "BB",
+      "heroCards": [
+        {
+          "rank": "A",
+          "suit": "d"
+        },
+        {
+          "rank": "A",
+          "suit": "h"
+        }
+      ],
+      "board": [],
+      "playersDealt": 8,
+      "playersInHand": 3,
+      "playersRemaining": [
+        {
+          "playerId": "gg:317697722:Hero",
+          "seatNumber": 1,
+          "position": "BB",
+          "stackBeforeChips": 9654,
+          "streetCommitmentChips": 70,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:317697722:9d2dcd91",
+          "seatNumber": 3,
+          "position": "UTG_PLUS_1",
+          "stackBeforeChips": 9980,
+          "streetCommitmentChips": 161,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:317697722:c6e16303",
+          "seatNumber": 4,
+          "position": "LJ",
+          "stackBeforeChips": 9831,
+          "streetCommitmentChips": 161,
+          "state": "active"
+        }
+      ],
+      "heroStackBeforeChips": 9654,
+      "heroStackBeforeBb": 137.9142857142857,
+      "effectiveStackBeforeChips": null,
+      "effectiveStackBeforeBb": null,
+      "potBeforeActionChips": 491,
+      "contributionsByPlayerChips": {
+        "gg:317697722:Hero": 78,
+        "gg:317697722:86bece49": 8,
+        "gg:317697722:9d2dcd91": 169,
+        "gg:317697722:c6e16303": 169,
+        "gg:317697722:66423988": 8,
+        "gg:317697722:b140c1d5": 8,
+        "gg:317697722:a128711e": 8,
+        "gg:317697722:318625a8": 43
+      },
+      "currentBetChips": 161,
+      "facingAmountChips": 91,
+      "amountToCallChips": 91,
+      "facingAction": "FACING_RAISE",
+      "legalActions": ["FOLD", "CALL", "RAISE"],
+      "minimumRaiseToChips": 252,
+      "actualAction": {
+        "kind": "RAISE",
+        "isAllIn": false,
+        "amountAddedChips": 586,
+        "raiseToChips": 656,
+        "amountAddedBb": 8.371428571428572,
+        "potFraction": 1.1934826883910388
+      },
+      "potType": "SINGLE_RAISED",
+      "preflopSequence": [
+        {
+          "eventId": "TM6524471450:line:30",
+          "playerId": "gg:317697722:86bece49",
+          "position": "UTG",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:31",
+          "playerId": "gg:317697722:9d2dcd91",
+          "position": "UTG_PLUS_1",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 161,
+          "raiseToChips": 161
+        },
+        {
+          "eventId": "TM6524471450:line:32",
+          "playerId": "gg:317697722:c6e16303",
+          "position": "LJ",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 161,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:33",
+          "playerId": "gg:317697722:66423988",
+          "position": "HJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:34",
+          "playerId": "gg:317697722:b140c1d5",
+          "position": "CO",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:35",
+          "playerId": "gg:317697722:a128711e",
+          "position": "BTN",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:36",
+          "playerId": "gg:317697722:318625a8",
+          "position": "SB",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        }
+      ],
+      "sourceConfidence": "partial",
+      "unknownReasons": [
+        {
+          "field": "effectiveStackBeforeChips",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        },
+        {
+          "field": "effectiveStackBeforeBb",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        }
+      ]
+    }
+  },
+  {
+    "tournamentId": "317697722",
+    "context": {
+      "handId": "TM6524471450",
+      "eventId": "TM6524471450:line:41",
+      "sourceLine": 41,
+      "decisionIndex": 1,
+      "street": "FLOP",
+      "heroPosition": "BB",
+      "heroCards": [
+        {
+          "rank": "A",
+          "suit": "d"
+        },
+        {
+          "rank": "A",
+          "suit": "h"
+        }
+      ],
+      "board": [
+        {
+          "rank": "8",
+          "suit": "c"
+        },
+        {
+          "rank": "2",
+          "suit": "c"
+        },
+        {
+          "rank": "6",
+          "suit": "s"
+        }
+      ],
+      "playersDealt": 8,
+      "playersInHand": 3,
+      "playersRemaining": [
+        {
+          "playerId": "gg:317697722:Hero",
+          "seatNumber": 1,
+          "position": "BB",
+          "stackBeforeChips": 9068,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:317697722:9d2dcd91",
+          "seatNumber": 3,
+          "position": "UTG_PLUS_1",
+          "stackBeforeChips": 9485,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:317697722:c6e16303",
+          "seatNumber": 4,
+          "position": "LJ",
+          "stackBeforeChips": 9336,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        }
+      ],
+      "heroStackBeforeChips": 9068,
+      "heroStackBeforeBb": 129.54285714285714,
+      "effectiveStackBeforeChips": null,
+      "effectiveStackBeforeBb": null,
+      "potBeforeActionChips": 2067,
+      "contributionsByPlayerChips": {
+        "gg:317697722:Hero": 664,
+        "gg:317697722:86bece49": 8,
+        "gg:317697722:9d2dcd91": 664,
+        "gg:317697722:c6e16303": 664,
+        "gg:317697722:66423988": 8,
+        "gg:317697722:b140c1d5": 8,
+        "gg:317697722:a128711e": 8,
+        "gg:317697722:318625a8": 43
+      },
+      "currentBetChips": 0,
+      "facingAmountChips": 0,
+      "amountToCallChips": 0,
+      "facingAction": "CHECKED_TO",
+      "legalActions": ["CHECK", "BET"],
+      "minimumRaiseToChips": null,
+      "actualAction": {
+        "kind": "BET",
+        "isAllIn": false,
+        "amountAddedChips": 1315,
+        "raiseToChips": null,
+        "amountAddedBb": 18.785714285714285,
+        "potFraction": 0.6361877116594098
+      },
+      "potType": "THREE_BET",
+      "preflopSequence": [
+        {
+          "eventId": "TM6524471450:line:30",
+          "playerId": "gg:317697722:86bece49",
+          "position": "UTG",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:31",
+          "playerId": "gg:317697722:9d2dcd91",
+          "position": "UTG_PLUS_1",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 161,
+          "raiseToChips": 161
+        },
+        {
+          "eventId": "TM6524471450:line:32",
+          "playerId": "gg:317697722:c6e16303",
+          "position": "LJ",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 161,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:33",
+          "playerId": "gg:317697722:66423988",
+          "position": "HJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:34",
+          "playerId": "gg:317697722:b140c1d5",
+          "position": "CO",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:35",
+          "playerId": "gg:317697722:a128711e",
+          "position": "BTN",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:36",
+          "playerId": "gg:317697722:318625a8",
+          "position": "SB",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:37",
+          "playerId": "gg:317697722:Hero",
+          "position": "BB",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 586,
+          "raiseToChips": 656
+        },
+        {
+          "eventId": "TM6524471450:line:38",
+          "playerId": "gg:317697722:9d2dcd91",
+          "position": "UTG_PLUS_1",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 495,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:39",
+          "playerId": "gg:317697722:c6e16303",
+          "position": "LJ",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 495,
+          "raiseToChips": null
+        }
+      ],
+      "sourceConfidence": "partial",
+      "unknownReasons": [
+        {
+          "field": "effectiveStackBeforeChips",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        },
+        {
+          "field": "effectiveStackBeforeBb",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        }
+      ]
+    }
+  },
+  {
+    "tournamentId": "317697722",
+    "context": {
+      "handId": "TM6524471450",
+      "eventId": "TM6524471450:line:47",
+      "sourceLine": 47,
+      "decisionIndex": 3,
+      "street": "TURN",
+      "heroPosition": "BB",
+      "heroCards": [
+        {
+          "rank": "A",
+          "suit": "d"
+        },
+        {
+          "rank": "A",
+          "suit": "h"
+        }
+      ],
+      "board": [
+        {
+          "rank": "8",
+          "suit": "c"
+        },
+        {
+          "rank": "2",
+          "suit": "c"
+        },
+        {
+          "rank": "6",
+          "suit": "s"
+        },
+        {
+          "rank": "3",
+          "suit": "c"
+        }
+      ],
+      "playersDealt": 8,
+      "playersInHand": 2,
+      "playersRemaining": [
+        {
+          "playerId": "gg:317697722:Hero",
+          "seatNumber": 1,
+          "position": "BB",
+          "stackBeforeChips": 5874,
+          "streetCommitmentChips": 1879,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:317697722:9d2dcd91",
+          "seatNumber": 3,
+          "position": "UTG_PLUS_1",
+          "stackBeforeChips": 0,
+          "streetCommitmentChips": 8170,
+          "state": "all-in"
+        }
+      ],
+      "heroStackBeforeChips": 5874,
+      "heroStackBeforeBb": 83.91428571428571,
+      "effectiveStackBeforeChips": 5874,
+      "effectiveStackBeforeBb": 83.91428571428571,
+      "potBeforeActionChips": 14746,
+      "contributionsByPlayerChips": {
+        "gg:317697722:Hero": 3858,
+        "gg:317697722:86bece49": 8,
+        "gg:317697722:9d2dcd91": 10149,
+        "gg:317697722:c6e16303": 664,
+        "gg:317697722:66423988": 8,
+        "gg:317697722:b140c1d5": 8,
+        "gg:317697722:a128711e": 8,
+        "gg:317697722:318625a8": 43
+      },
+      "currentBetChips": 8170,
+      "facingAmountChips": 6291,
+      "amountToCallChips": 5874,
+      "facingAction": "FACING_ALL_IN",
+      "legalActions": ["FOLD", "CALL"],
+      "minimumRaiseToChips": null,
+      "actualAction": {
+        "kind": "CALL",
+        "isAllIn": true,
+        "amountAddedChips": 5874,
+        "raiseToChips": null,
+        "amountAddedBb": 83.91428571428571,
+        "potFraction": null
+      },
+      "potType": "THREE_BET",
+      "preflopSequence": [
+        {
+          "eventId": "TM6524471450:line:30",
+          "playerId": "gg:317697722:86bece49",
+          "position": "UTG",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:31",
+          "playerId": "gg:317697722:9d2dcd91",
+          "position": "UTG_PLUS_1",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 161,
+          "raiseToChips": 161
+        },
+        {
+          "eventId": "TM6524471450:line:32",
+          "playerId": "gg:317697722:c6e16303",
+          "position": "LJ",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 161,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:33",
+          "playerId": "gg:317697722:66423988",
+          "position": "HJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:34",
+          "playerId": "gg:317697722:b140c1d5",
+          "position": "CO",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:35",
+          "playerId": "gg:317697722:a128711e",
+          "position": "BTN",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:36",
+          "playerId": "gg:317697722:318625a8",
+          "position": "SB",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:37",
+          "playerId": "gg:317697722:Hero",
+          "position": "BB",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 586,
+          "raiseToChips": 656
+        },
+        {
+          "eventId": "TM6524471450:line:38",
+          "playerId": "gg:317697722:9d2dcd91",
+          "position": "UTG_PLUS_1",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 495,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6524471450:line:39",
+          "playerId": "gg:317697722:c6e16303",
+          "position": "LJ",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 495,
+          "raiseToChips": null
+        }
+      ],
+      "sourceConfidence": "confirmed",
+      "unknownReasons": []
+    }
+  },
+  {
+    "tournamentId": "309704619",
+    "context": {
+      "handId": "TM6378370476",
+      "eventId": "TM6378370476:line:1478",
+      "sourceLine": 1478,
+      "decisionIndex": 2,
+      "street": "FLOP",
+      "heroPosition": "BB",
+      "heroCards": [
+        {
+          "rank": "K",
+          "suit": "s"
+        },
+        {
+          "rank": "J",
+          "suit": "h"
+        }
+      ],
+      "board": [
+        {
+          "rank": "4",
+          "suit": "h"
+        },
+        {
+          "rank": "7",
+          "suit": "c"
+        },
+        {
+          "rank": "8",
+          "suit": "d"
+        }
+      ],
+      "playersDealt": 8,
+      "playersInHand": 2,
+      "playersRemaining": [
+        {
+          "playerId": "gg:309704619:Hero",
+          "seatNumber": 4,
+          "position": "BB",
+          "stackBeforeChips": 114575,
+          "streetCommitmentChips": 0,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:309704619:a0bd1d68",
+          "seatNumber": 5,
+          "position": "UTG",
+          "stackBeforeChips": 74273,
+          "streetCommitmentChips": 9009,
+          "state": "active"
+        }
+      ],
+      "heroStackBeforeChips": 114575,
+      "heroStackBeforeBb": 22.915,
+      "effectiveStackBeforeChips": 83282,
+      "effectiveStackBeforeBb": 16.6564,
+      "potBeforeActionChips": 36309,
+      "contributionsByPlayerChips": {
+        "gg:309704619:9c76c78b": 600,
+        "gg:309704619:f5cbea50": 600,
+        "gg:309704619:1590b7cd": 3100,
+        "gg:309704619:Hero": 10600,
+        "gg:309704619:a0bd1d68": 19609,
+        "gg:309704619:295b6d2e": 600,
+        "gg:309704619:cc4026d3": 600,
+        "gg:309704619:b137d296": 600
+      },
+      "currentBetChips": 9009,
+      "facingAmountChips": 9009,
+      "amountToCallChips": 9009,
+      "facingAction": "FACING_BET",
+      "legalActions": ["FOLD", "CALL", "RAISE"],
+      "minimumRaiseToChips": 18018,
+      "actualAction": {
+        "kind": "RAISE",
+        "isAllIn": false,
+        "amountAddedChips": 26245,
+        "raiseToChips": 26245,
+        "amountAddedBb": 5.249,
+        "potFraction": 0.7228235423724145
+      },
+      "potType": "SINGLE_RAISED",
+      "preflopSequence": [
+        {
+          "eventId": "TM6378370476:line:1467",
+          "playerId": "gg:309704619:a0bd1d68",
+          "position": "UTG",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 10000,
+          "raiseToChips": 10000
+        },
+        {
+          "eventId": "TM6378370476:line:1468",
+          "playerId": "gg:309704619:295b6d2e",
+          "position": "UTG_PLUS_1",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6378370476:line:1469",
+          "playerId": "gg:309704619:cc4026d3",
+          "position": "LJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6378370476:line:1470",
+          "playerId": "gg:309704619:b137d296",
+          "position": "HJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6378370476:line:1471",
+          "playerId": "gg:309704619:9c76c78b",
+          "position": "CO",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6378370476:line:1472",
+          "playerId": "gg:309704619:f5cbea50",
+          "position": "BTN",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6378370476:line:1473",
+          "playerId": "gg:309704619:1590b7cd",
+          "position": "SB",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6378370476:line:1474",
+          "playerId": "gg:309704619:Hero",
+          "position": "BB",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 5000,
+          "raiseToChips": null
+        }
+      ],
+      "sourceConfidence": "confirmed",
+      "unknownReasons": []
+    }
+  },
+  {
+    "tournamentId": "314806258",
+    "context": {
+      "handId": "TM6470155563",
+      "eventId": "TM6470155563:line:8364",
+      "sourceLine": 8364,
+      "decisionIndex": 2,
+      "street": "FLOP",
+      "heroPosition": "UTG",
+      "heroCards": [
+        {
+          "rank": "5",
+          "suit": "s"
+        },
+        {
+          "rank": "A",
+          "suit": "s"
+        }
+      ],
+      "board": [
+        {
+          "rank": "5",
+          "suit": "h"
+        },
+        {
+          "rank": "4",
+          "suit": "s"
+        },
+        {
+          "rank": "3",
+          "suit": "s"
+        }
+      ],
+      "playersDealt": 7,
+      "playersInHand": 3,
+      "playersRemaining": [
+        {
+          "playerId": "gg:314806258:32e39437",
+          "seatNumber": 3,
+          "position": "BB",
+          "stackBeforeChips": 36400,
+          "streetCommitmentChips": 6800,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314806258:Hero",
+          "seatNumber": 4,
+          "position": "UTG",
+          "stackBeforeChips": 44327,
+          "streetCommitmentChips": 1593,
+          "state": "active"
+        },
+        {
+          "playerId": "gg:314806258:fbcae12b",
+          "seatNumber": 7,
+          "position": "CO",
+          "stackBeforeChips": 175842,
+          "streetCommitmentChips": 6800,
+          "state": "active"
+        }
+      ],
+      "heroStackBeforeChips": 44327,
+      "heroStackBeforeBb": 55.40875,
+      "effectiveStackBeforeChips": null,
+      "effectiveStackBeforeBb": null,
+      "potBeforeActionChips": 21093,
+      "contributionsByPlayerChips": {
+        "gg:314806258:d4ddc787": 500,
+        "gg:314806258:32e39437": 8500,
+        "gg:314806258:Hero": 3293,
+        "gg:314806258:ee333656": 100,
+        "gg:314806258:3647c134": 100,
+        "gg:314806258:fbcae12b": 8500,
+        "gg:314806258:73798ac2": 100
+      },
+      "currentBetChips": 6800,
+      "facingAmountChips": 5207,
+      "amountToCallChips": 5207,
+      "facingAction": "FACING_RAISE",
+      "legalActions": ["FOLD", "CALL", "RAISE"],
+      "minimumRaiseToChips": 12007,
+      "actualAction": {
+        "kind": "RAISE",
+        "isAllIn": true,
+        "amountAddedChips": 44327,
+        "raiseToChips": 45920,
+        "amountAddedBb": 55.40875,
+        "potFraction": 2.1015028682501304
+      },
+      "potType": "SINGLE_RAISED",
+      "preflopSequence": [
+        {
+          "eventId": "TM6470155563:line:8352",
+          "playerId": "gg:314806258:Hero",
+          "position": "UTG",
+          "action": "RAISE",
+          "isAllIn": false,
+          "amountAddedChips": 1600,
+          "raiseToChips": 1600
+        },
+        {
+          "eventId": "TM6470155563:line:8353",
+          "playerId": "gg:314806258:ee333656",
+          "position": "LJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6470155563:line:8354",
+          "playerId": "gg:314806258:3647c134",
+          "position": "HJ",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6470155563:line:8355",
+          "playerId": "gg:314806258:fbcae12b",
+          "position": "CO",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 1600,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6470155563:line:8356",
+          "playerId": "gg:314806258:73798ac2",
+          "position": "BTN",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6470155563:line:8357",
+          "playerId": "gg:314806258:d4ddc787",
+          "position": "SB",
+          "action": "FOLD",
+          "isAllIn": false,
+          "amountAddedChips": 0,
+          "raiseToChips": null
+        },
+        {
+          "eventId": "TM6470155563:line:8358",
+          "playerId": "gg:314806258:32e39437",
+          "position": "BB",
+          "action": "CALL",
+          "isAllIn": false,
+          "amountAddedChips": 800,
+          "raiseToChips": null
+        }
+      ],
+      "sourceConfidence": "partial",
+      "unknownReasons": [
+        {
+          "field": "effectiveStackBeforeChips",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        },
+        {
+          "field": "effectiveStackBeforeBb",
+          "code": "MULTIWAY_EFFECTIVE_STACK_AMBIGUOUS"
+        }
+      ]
+    }
+  }
+]

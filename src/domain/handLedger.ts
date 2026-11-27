@@ -55,6 +55,25 @@ export class HandLedger {
     return this.live.get(actorId) ?? 0;
   }
 
+  beginStreet(street: HandHistoryEvent["street"]): void {
+    this.setStreet(street);
+  }
+
+  currentBetChips(): number {
+    return Math.max(
+      this.street === "PREFLOP" ? this.bigBlindChips : 0,
+      ...this.live.values(),
+    );
+  }
+
+  facingAmountChips(actorId: string): number {
+    return Math.max(0, this.currentBetChips() - this.commitment(actorId));
+  }
+
+  amountToCallChips(actorId: string): number {
+    return Math.min(this.facingAmountChips(actorId), this.stacks.get(actorId)!);
+  }
+
   apply(event: HandHistoryEvent): void {
     const source = event.source;
     safe(event.amountChips, source);
@@ -81,10 +100,7 @@ export class HandLedger {
     if (this.awarding) invalid("Betting or returns after pot collection", source);
     const committed = this.live.get(actor) ?? 0;
     // A short forced BB changes chips in the pot, not the declared preflop wager.
-    const maximum = Math.max(
-      this.street === "PREFLOP" ? this.bigBlindChips : 0,
-      ...this.live.values(),
-    );
+    const maximum = this.currentBetChips();
     if (event.type === "RETURN_UNCALLED") {
       const otherMaximum = Math.max(
         0,

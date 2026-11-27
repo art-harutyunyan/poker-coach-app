@@ -270,4 +270,42 @@ describe("exact normalized chip ledger", () => {
     expect(() => ledger.apply(event("FOLD", "hero"))).not.toThrow();
     expect(ledger.snapshot()).toMatchObject({ potChips: 5493, stacks: { hero: 0 } });
   });
+  it("exposes nominal preflop wager and stack-capped call before action", () => {
+    const ledger = new HandLedger(
+      [{ ...players[0]!, startingStackChips: 70 }, players[1]!],
+      100,
+    );
+    ledger.apply(event("SMALL_BLIND", "hero", 50));
+    ledger.apply(event("BIG_BLIND", "villain", 100));
+    expect(ledger.currentBetChips()).toBe(100);
+    expect(ledger.facingAmountChips("hero")).toBe(50);
+    expect(ledger.amountToCallChips("hero")).toBe(20);
+    expect(ledger.facingAmountChips("villain")).toBe(0);
+  });
+  it("retains nominal BB when the posted BB is short", () => {
+    const ledger = new HandLedger(
+      [players[0]!, { ...players[1]!, startingStackChips: 40 }],
+      100,
+    );
+    ledger.apply(event("SMALL_BLIND", "hero", 50));
+    ledger.apply(event("BIG_BLIND", "villain", 40, { isAllIn: true }));
+    expect(ledger.currentBetChips()).toBe(100);
+    expect(ledger.amountToCallChips("hero")).toBe(50);
+  });
+  it("reads a returned wager from live commitments", () => {
+    const ledger = allInAndReturn();
+    expect(ledger.currentBetChips()).toBe(100);
+    expect(ledger.facingAmountChips("hero")).toBe(0);
+  });
+  it("prepares a new street before reading its first decision", () => {
+    const ledger = posted();
+    ledger.apply(event("CALL", "hero", 50));
+    const before = ledger.snapshot();
+    ledger.beginStreet("FLOP");
+    expect(ledger.currentBetChips()).toBe(0);
+    expect(ledger.commitment("hero")).toBe(0);
+    expect(ledger.commitment("villain")).toBe(0);
+    expect(ledger.snapshot()).toEqual(before);
+    ledger.apply(event("CHECK", "hero", 0, { street: "FLOP" }));
+  });
 });
