@@ -1,0 +1,60 @@
+/* R10: final visual rhythm within the approved R6–R9 Replayer shell. */
+.appShell[data-replayer-screen="true"] .noc-replayer-strip__header h1 {
+  font: 600 18px/24px var(--noc-font-body);
+}
+
+.appShell[data-replayer-screen="true"] .noc-replayer-strip__count {
+  font: var(--noc-mono);
+}
+
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .handStudyHeader {
+  margin-bottom: 6px;
+}
+
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .handStudyHeader h2 {
+  color: var(--noc-text);
+  font: var(--noc-heading);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .handStudyHeader
+  h2
+  span {
+  margin-left: 8px;
+  color: var(--noc-text-3);
+  font: var(--noc-mono);
+}
+
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .handStudyHeader p {
+  margin-top: 2px;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .replayerCommandDeck {
+  margin-top: 0;
+  padding: 7px 12px;
+  gap: 5px;
+}
+
+@media (max-width: 700px) {
+  .appShell[data-replayer-screen="true"] .noc-replayer-strip__header h1 {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .appShell[data-replayer-screen="true"] .tournamentReviewScreen .handStudyHeader h2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 8px;
+  }
+
+  .appShell[data-replayer-screen="true"]
+    .tournamentReviewScreen
+    .handStudyHeader
+    h2
+    span {
+    margin: 0;
+  }
+}

@@ -47,12 +47,14 @@ async function upload(page: Page, index: number, width: number) {
   await page
     .getByLabel("Hand history file")
     .setInputFiles(resolve("tests/fixtures/gg", fixtureNames[index]!));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
   const elapsedMs = Date.now() - start;
   await expect(page.getByRole("status")).toContainText(`${counts[index]} hands`);
   await expect(page.getByRole("status")).toContainText("NLHE");
   await expect(
-    page.getByRole("button", { name: "Open Tournament Review" }),
+    page.getByRole("button", { name: "Open tournament", exact: true }),
   ).toBeVisible();
   await expect(page.getByLabel("Hand history file")).toHaveValue("");
   expect(await storage(page)).toEqual(before);
@@ -124,7 +126,7 @@ async function layout(page: Page) {
       if (
         hero &&
         (hero.style.getPropertyValue("--seat-x") !== "50%" ||
-          hero.style.getPropertyValue("--seat-y") !== "89%")
+          hero.style.getPropertyValue("--seat-y") !== "88%")
       )
         errors.push("Hero anchor changed");
       const plates = [...document.querySelectorAll(".player-nameplate")].map((p) =>
@@ -176,7 +178,7 @@ for (const width of widths) {
     page.on("pageerror", (e) => errors.push(e.message));
     const requests = await upload(page, 0, width);
     if (width === 1440) await screenshot(page, "upload-success-1440");
-    await page.getByRole("button", { name: "Open Tournament Review" }).click();
+    await page.getByRole("button", { name: "Open tournament", exact: true }).click();
     await layout(page);
     await expect(
       page.getByText("Analysis not available for this tournament"),
@@ -236,12 +238,9 @@ for (const width of widths) {
       if (width === 1440) {
         await page.locator('[data-hand-id="TM6469819712"]').click();
         await complete(page);
-        const folded = page
-          .locator(".player-seat.is-folded")
-          .filter({ has: page.getByLabel("Ten of spades", { exact: true }) });
-        await expect(folded).toHaveCount(1);
-        await expect(folded.getByLabel("Face-down card", { exact: true })).toHaveCount(
-          1,
+        await expect(page.locator(".player-seat.is-folded")).not.toHaveCount(0);
+        await expect(page.locator(".player-seat.is-folded .player-cards")).toHaveCount(
+          0,
         );
         await page.getByRole("switch").click();
         await expect(
@@ -261,7 +260,7 @@ test("Fifty refund, warnings, short-handed layout, preserved review and recovery
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   const requests = await upload(page, 1, 1440);
-  await page.getByRole("button", { name: "Open Tournament Review" }).click();
+  await page.getByRole("button", { name: "Open tournament", exact: true }).click();
   await page.getByRole("tab", { name: "Review Queue", exact: true }).click();
   await page.locator('[data-hand-id="TM6471062694"]').click();
   const forward = page.getByRole("button", { name: "Forward", exact: true });
@@ -293,18 +292,20 @@ test("Fifty refund, warnings, short-handed layout, preserved review and recovery
     mimeType: "text/plain",
     buffer: Buffer.from("not GG"),
   });
-  await expect(page.getByRole("alert")).toContainText("could not be imported");
+  await expect(page.getByRole("alert")).toContainText(
+    "Expected a GG Poker tournament hand header",
+  );
   await expect(
-    page.getByRole("button", { name: "Open Tournament Review" }),
+    page.getByRole("button", { name: "Open tournament", exact: true }),
   ).toHaveCount(0);
   await screenshot(page, "upload-error-390");
   await page.getByRole("button", { name: "Close dialog" }).click();
-  await expect(page.locator(".importedTournamentContext")).toBeVisible();
+  await expect(page.getByRole("region", { name: "Replayer hand strip" })).toBeVisible();
   await openUpload(page);
   await page
     .getByLabel("Hand history file")
     .setInputFiles(resolve("tests/fixtures/gg", fixtureNames[1]));
-  await expect(page.getByRole("heading", { name: "Already imported" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Show existing" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).not.toBeVisible();
   expect(errors).toEqual([]);
@@ -314,7 +315,7 @@ test("GGMasters real import, all-in return and separate awards on mobile", async
   page,
 }) => {
   const requests = await upload(page, 2, 390);
-  await page.getByRole("button", { name: "Open Tournament Review" }).click();
+  await page.getByRole("button", { name: "Open tournament", exact: true }).click();
   await page.getByRole("tab", { name: "Review Queue", exact: true }).click();
   await page.locator('[data-hand-id="TM6524471450"]').click();
   await layout(page);

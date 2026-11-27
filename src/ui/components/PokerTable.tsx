@@ -65,6 +65,7 @@ export function PokerTable({
       <div
         className={`pokerStage${replayState.board.length ? " has-board" : ""}`}
         data-table-size={hand.tableSize}
+        data-board-count={replayState.board.length}
         data-table-theme={visualPreview?.tableTheme}
         role="group"
         aria-label={`Poker table state for hand ${hand.handNumber}`}
@@ -118,21 +119,40 @@ export function PokerTable({
             seat={seat}
             resultHidden={resultHidden}
             opponentAliases={opponentAliases}
+            currentStreet={replayState.currentStreet}
+            lastActionId={replayState.lastAction?.id}
           />
         ))}
       </div>
 
-      <div className="replayerCommandDeck">
-        {controls}
+      <div className="replayerCommandDeck" role="group" aria-label="Replay dock">
         <div className="decisionRibbon">
-          <div>
+          <div className="decisionRibbonMessage">
+            <strong>{currentSummary}</strong>
+            <p>{actingContext}</p>
+          </div>
+          <div
+            className="replayProgress"
+            role="progressbar"
+            aria-label="Replay action progress"
+            aria-valuemin={0}
+            aria-valuemax={replayState.totalActions}
+            aria-valuenow={replayState.cursor}
+            aria-valuetext={`Action ${replayState.cursor} of ${replayState.totalActions}`}
+          >
             <span>
               Action {replayState.cursor} / {replayState.totalActions}
             </span>
-            <strong>{currentSummary}</strong>
+            <div className="replayProgressTrack" aria-hidden="true">
+              <i
+                style={{
+                  width: `${replayState.totalActions > 0 ? (replayState.cursor / replayState.totalActions) * 100 : 0}%`,
+                }}
+              />
+            </div>
           </div>
-          <p>{actingContext}</p>
         </div>
+        {controls}
       </div>
       <details className="actionHistory">
         <summary>Action history</summary>

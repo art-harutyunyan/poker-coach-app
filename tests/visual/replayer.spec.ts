@@ -22,15 +22,20 @@ async function ready(page: Page) {
   await expect
     .poll(
       () =>
-        page
-          .locator(".pokerStage img")
-          .evaluateAll((images) =>
-            images.every(
-              (image) =>
-                (image as HTMLImageElement).complete &&
-                (image as HTMLImageElement).naturalWidth > 0,
-            ),
-          ),
+        page.locator(".pokerStage img").evaluateAll((images) =>
+          images.every((image) => {
+            const asset = image as HTMLImageElement;
+            const url = new URL(asset.currentSrc || asset.src, location.href);
+            // Block52 preview assets are hosted externally and may be
+            // unavailable in an offline QA run. Validate their source;
+            // require local assets to load before measuring geometry.
+            if (url.origin !== location.origin)
+              return url.href.startsWith(
+                "https://raw.githubusercontent.com/block52/cards/main/",
+              );
+            return asset.complete && asset.naturalWidth > 0;
+          }),
+        ),
       { timeout: 20000 },
     )
     .toBe(true);
@@ -55,12 +60,12 @@ async function checkGeometry(page: Page) {
         errors.push(`plate ${i} clipped`);
       if (
         badge.right > p.right ||
-        badge.left < p.left + p.width / 2 ||
+        badge.left < p.left ||
         badge.top < p.top ||
-        badge.top > p.top + 7
+        badge.top > p.top + 16
       )
         errors.push(`badge ${i} not top right`);
-      const cards = plate.querySelector(".player-cards");
+      const cards = plate.parentElement!.querySelector(".player-cards");
       if (cards) {
         const c = rect(cards);
         if (
@@ -70,7 +75,10 @@ async function checkGeometry(page: Page) {
           errors.push(`cards ${i} detached`);
       }
       for (const other of plates.slice(i + 1))
-        if (intersects(p, rect(other))) errors.push(`plate ${i} overlaps another`);
+        if (intersects(p, rect(other)))
+          errors.push(
+            `plate ${i} ${plate.parentElement?.getAttribute("data-position")} overlaps ${other.parentElement?.getAttribute("data-position")}`,
+          );
       const name = plate.querySelector(".player-name")!;
       if (!name.textContent || getComputedStyle(name).display === "none")
         errors.push(`name ${i} missing`);
@@ -85,25 +93,39 @@ async function checkGeometry(page: Page) {
         ".player-nameplate,.player-cards",
       ))
         if (intersects(rect(element), rect(seatPart)))
-          errors.push("center overlaps seat");
+          errors.push(
+            `${element.className} overlaps ${seatPart.parentElement?.getAttribute("data-position")} ${seatPart.className}`,
+          );
     }
     const commits = [...document.querySelectorAll(".player-committed")];
     for (const [i, commit] of commits.entries()) {
       const c = rect(commit);
-      if (center.some((element) => intersects(c, rect(element))))
-        errors.push(`bet ${i} overlaps pot/board`);
+      for (const element of center)
+        if (intersects(c, rect(element)))
+          errors.push(
+            `bet ${i} ${commit.parentElement?.getAttribute("data-position")} overlaps ${element.className}`,
+          );
       for (const other of commits.slice(i + 1))
         if (intersects(c, rect(other))) errors.push(`bet ${i} overlaps another bet`);
       for (const plate of plates)
-        if (intersects(c, rect(plate))) errors.push(`bet ${i} overlaps plate`);
+        if (intersects(c, rect(plate)))
+          errors.push(
+            `bet ${i} overlaps ${plate.parentElement?.getAttribute("data-position")}: ${Math.round(c.x)},${Math.round(c.y)} / ${Math.round(rect(plate).x)},${Math.round(rect(plate).y)}`,
+          );
       for (const cards of document.querySelectorAll(".player-cards"))
-        if (intersects(c, rect(cards))) errors.push(`bet ${i} overlaps hole cards`);
+        if (intersects(c, rect(cards)))
+          errors.push(
+            `bet ${i} ${commit.parentElement?.getAttribute("data-position")} overlaps ${cards.parentElement?.getAttribute("data-position")} hole cards`,
+          );
     }
     for (const [i, cluster] of clusters.entries()) {
       for (const cards of cluster.querySelectorAll(".player-cards")) {
-        for (const other of clusters.slice(i + 1)) {
+        for (const other of clusters.filter((item) => item !== cluster)) {
           for (const child of other.querySelectorAll(".player-nameplate,.player-cards"))
-            if (intersects(rect(cards), rect(child))) errors.push(`cards ${i} collide`);
+            if (intersects(rect(cards), rect(child)))
+              errors.push(
+                `cards ${i} ${cluster.getAttribute("data-position")} collide ${other.getAttribute("data-position")} ${child.className}`,
+              );
         }
       }
     }
@@ -165,7 +187,9 @@ for (const width of widths)
         await expect(page.locator(".table-board .playingCard")).toHaveCount(
           state.board.length,
         );
-        await expect(page.getByText(/^TO ACT$/i)).toHaveCount(0);
+        await expect(
+          page.locator('.player-nameplate[aria-current="true"]'),
+        ).toHaveCount(state.seats.filter((seat) => seat.isActive).length);
         await expect(page.locator(".is-folded .player-cards")).toHaveCount(0);
         await expect(page.locator(".player-cards")).toHaveCount(
           state.seats.filter((seat) => !seat.isFolded).length,

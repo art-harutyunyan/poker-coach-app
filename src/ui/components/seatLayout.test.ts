@@ -5,7 +5,19 @@ import { buildMultiSeatPreviewHand } from "../../data/previewHands";
 import { parseGgTournament } from "../../parsers/gg";
 import { readFixture } from "../../parsers/gg/fixtureTestUtils";
 
-describe("Warm Dark clockwise seat geometry", () => {
+describe("Nocturne clockwise seat geometry", () => {
+  it("places 6 through 9 seats on one desktop ellipse with Hero bottom-center", () => {
+    for (const count of [6, 7, 8, 9]) {
+      const slots = seatLayouts[count]!;
+      expect(slots).toHaveLength(count);
+      expect(slots[0]).toMatchObject({ x: 50, y: 88 });
+      for (const [index, slot] of slots.entries()) {
+        if (count === 9 && [1, 2, 7, 8].includes(index)) continue;
+        const ellipse = ((slot.x - 50) / 41) ** 2 + ((slot.y - 54) / 34) ** 2;
+        expect(Math.abs(ellipse - 1)).toBeLessThan(0.001);
+      }
+    }
+  });
   it.each([0, 1, 2, 3])(
     "preserves unique coordinates and Hero anchor for every real occupancy in fixture %i",
     (index) => {
@@ -18,7 +30,7 @@ describe("Warm Dark clockwise seat geometry", () => {
         expect(seats).toHaveLength(source.occupiedSeatCount);
         expect(seats.find((p) => p.seat.isHero)?.anchor).toMatchObject({
           x: 50,
-          y: 89,
+          y: 88,
           mx: 50,
           my: 91,
         });
@@ -36,13 +48,20 @@ describe("Warm Dark clockwise seat geometry", () => {
         expect([...occupancies]).toEqual(expect.arrayContaining([5, 7, 8]));
     },
   );
-  for (const count of [6, 8, 9] as const) {
-    const hand = count === 6 ? hands[0]! : buildMultiSeatPreviewHand(hands[0]!, count);
+  for (const count of [6, 7, 8, 9] as const) {
+    const hand =
+      count === 6
+        ? hands[0]!
+        : buildMultiSeatPreviewHand(hands[0]!, count === 7 ? 8 : count);
+    const players =
+      count === 7
+        ? hand.players.filter((player) => player.position !== "UTG_PLUS_1")
+        : hand.players;
     it(`${count}-max preserves clockwise poker order for every Hero position`, () => {
       const positions = positionSets[count]!;
       for (const hero of positions) {
         const result = layoutPlayers(
-          hand.players.map((player) => ({
+          players.map((player) => ({
             ...player,
             isHero: player.position === hero,
           })),
@@ -51,7 +70,7 @@ describe("Warm Dark clockwise seat geometry", () => {
         const slots = seatLayouts[count]!;
         expect(result.find((item) => item.seat.isHero)?.anchor).toMatchObject({
           x: 50,
-          y: 89,
+          y: 88,
           mx: 50,
           my: 91,
         });
@@ -81,7 +100,7 @@ describe("Warm Dark clockwise seat geometry", () => {
     expect(() => layoutPlayers(players, 6)).toThrow();
   });
   it("keeps bet anchors inward and distinct in each desktop and compact profile", () => {
-    for (const count of [6, 8, 9]) {
+    for (const count of [6, 7, 8, 9]) {
       const slots = seatLayouts[count]!;
       for (const [x, y, bx, by] of [
         ["x", "y", "betX", "betY"],
@@ -92,6 +111,19 @@ describe("Warm Dark clockwise seat geometry", () => {
           const distance = (px: number, py: number) => Math.hypot(px - 50, py - 50);
           expect(distance(seat[bx], seat[by])).toBeLessThan(distance(seat[x], seat[y]));
         }
+      }
+    }
+  });
+  it("places action chips between the committed-chips lane and the pot", () => {
+    for (const count of [6, 7, 8, 9]) {
+      for (const seat of seatLayouts[count]!) {
+        const distance = (x: number, y: number) => Math.hypot(x - 50, y - 54);
+        expect(distance(seat.actionX, seat.actionY)).toBeLessThan(
+          distance(seat.x, seat.y),
+        );
+        expect(distance(seat.actionX, seat.actionY)).toBeLessThan(
+          distance(seat.betX, seat.betY),
+        );
       }
     }
   });

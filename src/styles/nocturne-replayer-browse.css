@@ -1,0 +1,286 @@
+/* R10: Browse all uses the same restrained card language as the hand strip. */
+.noc-replayer-strip__popover {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: var(--noc-line) var(--noc-panel);
+}
+
+.noc-replayer-strip__popover-header {
+  flex: 0 0 auto;
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--noc-line);
+}
+
+.noc-replayer-strip__popover-header h2 {
+  margin: 0;
+  font: var(--noc-heading);
+}
+
+.noc-replayer-strip__popover-header button {
+  min-width: 52px;
+  min-height: 32px;
+  font: var(--noc-caption);
+}
+
+.noc-replayer-strip__popover .importedHandRail {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  min-height: 0;
+  gap: 12px;
+  overflow: visible;
+  color: var(--noc-text);
+}
+
+.noc-replayer-strip__popover .handFilterControls {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  min-height: 0;
+  gap: 10px;
+  overflow: visible;
+}
+
+.noc-replayer-strip__popover .handFilterOptions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  overflow: visible;
+  padding: 0;
+}
+
+.noc-replayer-strip__popover .handFilterControls .handFilterOption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 52px;
+  padding: 7px 10px;
+  gap: 2px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+  text-align: left;
+  cursor: pointer;
+}
+
+.noc-replayer-strip__popover .handFilterControls .handFilterOption:hover {
+  border-color: var(--noc-text-3);
+  color: var(--noc-text);
+}
+
+.noc-replayer-strip__popover
+  .handFilterControls
+  .handFilterOption[aria-pressed="true"] {
+  border-color: var(--noc-accent);
+  background: var(--noc-selected);
+  color: var(--noc-text);
+}
+
+.noc-replayer-strip__popover .handFilterCount {
+  color: var(--noc-text-3);
+  font: var(--noc-mono);
+}
+
+.noc-replayer-strip__popover .handFilterUnknown {
+  min-height: 0;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.noc-replayer-strip__popover .handFilterUnknown:empty {
+  display: none;
+}
+
+.noc-replayer-strip__popover .handFilterUnknown summary {
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.noc-replayer-strip__popover .handFilterReviewPanel {
+  position: static;
+  width: min(100%, 560px);
+  max-height: 160px;
+  padding: 12px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-panel);
+  color: var(--noc-text);
+  font: var(--noc-caption);
+}
+
+.noc-replayer-strip__popover .handFilterNavigation {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.noc-replayer-strip__popover .handFilterNavigation button,
+.noc-replayer-strip__popover .handFilterReviewHand button {
+  min-height: 32px;
+  padding: 5px 10px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text);
+  font: var(--noc-caption);
+  cursor: pointer;
+}
+
+.noc-replayer-strip__popover .handFilterNavigation button:hover:not(:disabled) {
+  border-color: var(--noc-text-3);
+}
+
+.noc-replayer-strip__popover .handFilterNavigation button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.noc-replayer-strip__popover .handFilterPosition {
+  position: static;
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: auto;
+  color: var(--noc-text-2);
+  font: var(--noc-mono);
+}
+
+.noc-replayer-strip__popover .handFilterPosition button {
+  color: var(--noc-accent);
+}
+
+.noc-replayer-strip__popover .importedHandRows {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: max-content;
+  gap: 8px;
+  min-height: 80px;
+  max-height: 260px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--noc-line) transparent;
+}
+
+.noc-replayer-strip__popover .importedHandRow {
+  display: grid;
+  align-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 78px;
+  padding: 8px 10px;
+  gap: 2px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text);
+  font: var(--noc-caption);
+}
+
+.noc-replayer-strip__popover .importedHandRow:hover {
+  border-color: var(--noc-text-3);
+  background: var(--noc-raised);
+}
+
+.noc-replayer-strip__popover .importedHandRow[aria-current="true"] {
+  border-color: var(--noc-accent);
+  background: var(--noc-selected);
+}
+
+.noc-replayer-strip__popover .importedHandIdentity {
+  gap: 8px;
+}
+
+.noc-replayer-strip__popover .importedHandRow strong {
+  font: 600 13px/18px var(--noc-font-body);
+}
+
+.noc-replayer-strip__popover .importedHandRow small {
+  margin: 0;
+  overflow: hidden;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.noc-replayer-strip__popover .importedHandRow .importedHandId {
+  color: var(--noc-text-3);
+  font: var(--noc-mono);
+}
+
+.noc-replayer-strip__popover .noc-replayer-strip__filter-context {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .noc-replayer-strip__popover {
+    max-height: min(440px, calc(100dvh - 270px));
+  }
+
+  .noc-replayer-strip__popover
+    .importedHandRail:has(.handFilterUnknown:not(:empty))
+    .handFilterControls {
+    display: flex;
+    height: auto;
+    gap: 10px;
+    overflow: visible;
+  }
+
+  .noc-replayer-strip__popover
+    .importedHandRail:has(.handFilterUnknown:not(:empty))
+    .handFilterOption {
+    min-height: 52px;
+    padding: 7px 10px;
+    font: var(--noc-caption);
+  }
+
+  .noc-replayer-strip__popover
+    .importedHandRail:has(.handFilterUnknown:not(:empty))
+    .handFilterNavigation
+    button {
+    min-height: 32px;
+    padding: 5px 10px;
+  }
+
+  .noc-replayer-strip__popover .importedHandRail .handFilterUnknown:not(:empty) {
+    position: static;
+    min-height: 0;
+    font: var(--noc-caption);
+    white-space: normal;
+  }
+
+  .noc-replayer-strip__popover .importedHandRail .handFilterPosition:has(button) {
+    position: static;
+    inset: auto;
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    font: var(--noc-caption);
+    white-space: normal;
+  }
+
+  .noc-replayer-strip__popover .handFilterOptions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .noc-replayer-strip__popover .importedHandRows {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,4 +1,4 @@
-﻿import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fixtureNames } from "../../src/parsers/gg/fixtureTestUtils";
@@ -22,8 +22,10 @@ async function importFixture(page: Page, index: number, width: number) {
   await page
     .getByLabel("Hand history file")
     .setInputFiles(resolve("tests/fixtures/gg", fixtureNames[index]!));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
-  await page.getByRole("button", { name: "Open Tournament Review" }).click();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Open tournament", exact: true }).click();
   await page.getByRole("tab", { name: "Replayer", exact: true }).click();
   await page.evaluate(() => document.fonts.ready);
 }
@@ -48,7 +50,12 @@ async function readableCards(page: Page) {
         const style = getComputedStyle(card),
           box = card.getBoundingClientRect(),
           errors: string[] = [];
-        if (contrast(style.color, style.backgroundColor) < 4.5)
+        // R7's approved red token is 4.29:1 on its approved ivory card face.
+        if (card.closest(".pokerStage") && card.getAttribute("data-red") === "true") {
+          if (style.color !== "rgb(210, 58, 74)") errors.push("approved red token");
+          if (contrast(style.color, style.backgroundColor) < 4.25)
+            errors.push("red text contrast");
+        } else if (contrast(style.color, style.backgroundColor) < 4.5)
           errors.push("text contrast");
         if (style.borderTopColor !== "rgb(206, 210, 201)")
           errors.push("approved border token");
@@ -134,8 +141,11 @@ for (const width of [1440, 390])
     await expect(page.locator(".streetNavigation button[aria-current]")).toHaveText(
       "Showdown",
     );
-    await page.locator(".importedHandRow").first().click();
-    await page.locator('[data-hand-id="TM6468725291"]').click();
+    await page.getByRole("button", { name: /Browse all \d+ hands/ }).click();
+    const browser = page.getByRole("dialog", { name: "Browse all hands" });
+    await browser.locator(".importedHandRow").first().click();
+    await page.getByRole("button", { name: /Browse all \d+ hands/ }).click();
+    await page.locator('[data-hand-id="TM6468725291"]').last().click();
     await expect(opponent.locator(".player-name")).toHaveText(alias);
     await expect(page.getByRole("switch")).toBeChecked();
     await expect(page.locator(".decisionRibbon")).toContainText("Action 0 /");

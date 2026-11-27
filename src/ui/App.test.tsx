@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { App } from "./App";
 
@@ -24,7 +24,7 @@ describe("phase 0 app prototype", () => {
     ).toBeInTheDocument();
     expect(container.querySelector(".is-acting .player-action-text")).toBeNull();
     expect(container.querySelector(".action-raise")).toHaveTextContent(
-      "Raise to2.3 BB",
+      "Raise to 2.3 BB",
     );
 
     expect(screen.getByText(/Hero to act · SB · 30.8 BB/i)).toBeInTheDocument();
@@ -144,22 +144,29 @@ describe("phase 0 app prototype", () => {
     expect(screen.getByRole("heading", { name: "Development" })).toBeInTheDocument();
   });
 
-  it("keeps the study rail truthful and marks the sample reviewed locally", () => {
+  it("keeps the sample hand strip truthful and marks the sample reviewed locally", () => {
     window.history.pushState({}, "", "/?route=tournaments&tab=replayer");
     render(<App />);
-    const rail = screen.getByRole("navigation", { name: "Key hands" });
-    expect(rail.querySelectorAll("button")).toHaveLength(1);
+    const strip = screen.getByRole("region", { name: "Replayer hand strip" });
+    expect(strip.querySelectorAll(".noc-replayer-strip__item")).toHaveLength(1);
     fireEvent.click(screen.getByRole("button", { name: "Mark reviewed" }));
     expect(screen.getByRole("button", { name: "Reviewed" })).toHaveAttribute(
       "aria-pressed",
       "true",
     );
-    expect(rail).toHaveTextContent("A5s");
+    expect(strip).toHaveTextContent("Not analysed");
+    fireEvent.click(within(strip).getByRole("button", { name: "Browse all 1 hand" }));
+    expect(screen.getByRole("dialog", { name: "Browse all hands" })).toHaveTextContent(
+      "A5s",
+    );
   });
 
   it("keeps fixed mock analysis explicit while exposing replay context", () => {
     window.history.pushState({}, "", "/?route=tournaments&tab=replayer");
     render(<App />);
+    expect(
+      screen.getByRole("complementary", { name: "Hand analysis" }),
+    ).toHaveTextContent("Illustrative analysis");
     activateTab("Context");
     expect(screen.getByText(/does not re-analyze later actions/)).toBeInTheDocument();
     expect(screen.getByText("decision-a5s-sb-vs-btn-open")).toBeInTheDocument();

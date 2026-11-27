@@ -39,6 +39,24 @@ export type ImportAttempt =
   | { status: "error"; error: ImportFailure }
   | { status: "conflict"; tournamentId: string }
   | { status: "complete"; key: string; duplicate: boolean };
+export type ImportStatus =
+  "processing" | "success" | "warning" | "duplicate" | "conflict" | "error";
+type FileResultBase = { id: number; fileName: string };
+export type FileImportResult =
+  | (FileResultBase & { status: "processing" })
+  | (FileResultBase & { status: "success"; key: string })
+  | (FileResultBase & {
+      status: "warning";
+      key: string;
+      skippedHands: number;
+    })
+  | (FileResultBase & { status: "duplicate"; key: string })
+  | (FileResultBase & {
+      status: "conflict";
+      key: string;
+      tournamentId: string;
+    })
+  | (FileResultBase & { status: "error"; error: ImportFailure });
 export type LibraryView = { kind: "library" } | { kind: "tournament"; key: string };
 type EntryView = {
   ready: ReadyImportState;
@@ -49,6 +67,7 @@ type EntryView = {
 interface SessionData {
   entries: readonly LibraryEntry[];
   attempt: ImportAttempt;
+  fileResults: readonly FileImportResult[];
   view: LibraryView;
   entryViews: Readonly<Record<string, EntryView>>;
   replayError: { key: string; handId: string; message: string } | null;
@@ -56,6 +75,7 @@ interface SessionData {
 export interface TournamentImportSession {
   entries: readonly LibraryEntry[];
   attempt: ImportAttempt;
+  fileResults: readonly FileImportResult[];
   view: LibraryView;
   selected: ReadyImportState | null;
   activeEntry: LibraryEntry | null;
@@ -80,6 +100,7 @@ export interface TournamentImportSession {
 const INITIAL: SessionData = {
   entries: [],
   attempt: { status: "idle" },
+  fileResults: [],
   view: { kind: "library" },
   entryViews: {},
   replayError: null,
@@ -149,6 +170,7 @@ export function useTournamentImport(
   return {
     entries: state.entries,
     attempt: state.attempt,
+    fileResults: state.fileResults,
     view: state.view,
     selected: activeView?.ready ?? null,
     activeEntry,
@@ -158,18 +180,38 @@ export function useTournamentImport(
     replayError: state.replayError,
     async importFile(file) {
       const identity = ++generation.current;
+      const fileName = file.name;
+      const finish = (
+        result: FileImportResult,
+        attempt: ImportAttempt,
+        extra: Partial<SessionData> = {},
+      ) => {
+        const previous = current.current;
+        publish({
+          ...previous,
+          ...extra,
+          attempt,
+          fileResults: previous.fileResults.map((item) =>
+            item.id === identity ? result : item,
+          ),
+        });
+      };
       publish({
         ...current.current,
         attempt: { status: "reading", fileName: file.name },
+        fileResults: [
+          ...current.current.fileResults.filter((item) => item.status !== "processing"),
+          { id: identity, fileName, status: "processing" },
+        ],
       });
       try {
         const outcome = await readImport(file);
         if (identity !== generation.current || !mounted.current) return;
         if (!outcome.ok) {
-          publish({
-            ...current.current,
-            attempt: { status: "error", error: outcome.error },
-          });
+          finish(
+            { id: identity, fileName, status: "error", error: outcome.error },
+            { status: "error", error: outcome.error },
+          );
           return;
         }
         const prior = current.current;
@@ -179,50 +221,64 @@ export function useTournamentImport(
           outcome.warnings,
         );
         if (decision.status === "already-imported") {
-          publish({
-            ...prior,
-            attempt: { status: "complete", key: decision.key, duplicate: true },
-          });
+          finish(
+            { id: identity, fileName, status: "duplicate", key: decision.key },
+            { status: "complete", key: decision.key, duplicate: true },
+          );
         } else if (decision.status === "conflict") {
-          publish({
-            ...prior,
-            attempt: { status: "conflict", tournamentId: decision.tournamentId },
-          });
+          finish(
+            {
+              id: identity,
+              fileName,
+              status: "conflict",
+              key: decision.key,
+              tournamentId: decision.tournamentId,
+            },
+            { status: "conflict", tournamentId: decision.tournamentId },
+          );
         } else {
           const first = decision.entry.tournament.hands[0];
           if (!first) throw new Error("No imported hands");
           const ready = readyFor(decision.entry, first.id);
-          publish({
-            ...prior,
-            entries: [decision.entry, ...prior.entries],
-            entryViews: {
-              ...prior.entryViews,
-              [decision.entry.key]: {
-                ready,
-                activeTab: "overview",
-                activeFilter: "all",
-                outcomeStatsVisible: false,
+          finish(
+            { id: identity, fileName, status: "success", key: decision.entry.key },
+            { status: "complete", key: decision.entry.key, duplicate: false },
+            {
+              entries: [decision.entry, ...prior.entries],
+              entryViews: {
+                ...prior.entryViews,
+                [decision.entry.key]: {
+                  ready,
+                  activeTab: "overview",
+                  activeFilter: "all",
+                  outcomeStatsVisible: false,
+                },
               },
             },
-            attempt: { status: "complete", key: decision.entry.key, duplicate: false },
-          });
+          );
         }
       } catch {
         if (identity === generation.current && mounted.current)
-          publish({
-            ...current.current,
-            attempt: { status: "error", error: IMPORT_ERROR },
-          });
+          finish(
+            { id: identity, fileName, status: "error", error: IMPORT_ERROR },
+            { status: "error", error: IMPORT_ERROR },
+          );
       }
     },
     cancelPendingImport() {
       if (current.current.attempt.status !== "reading") return;
       generation.current++;
-      publish({ ...current.current, attempt: { status: "idle" } });
+      publish({
+        ...current.current,
+        attempt: { status: "idle" },
+        fileResults: current.current.fileResults.filter(
+          (item) => item.status !== "processing",
+        ),
+      });
     },
     resetImportAttempt() {
       generation.current++;
-      publish({ ...current.current, attempt: { status: "idle" } });
+      publish({ ...current.current, attempt: { status: "idle" }, fileResults: [] });
     },
     openTournament(key, tab) {
       const previous = current.current;

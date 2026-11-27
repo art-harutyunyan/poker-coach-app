@@ -40,10 +40,8 @@ it("renders identical approved backs regardless of concealed identity", () => {
   expect(back.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
   expect(back.querySelector("svg")).toHaveAttribute("focusable", "false");
   const source = readFileSync("src/assets/playing-cards/card-back.svg", "utf8");
-  expect(back.querySelector("path")).toHaveAttribute(
-    "d",
-    source.match(/ d="([^"]+)"/)![1],
-  );
+  expect(source).toContain('<circle class="back-motif"');
+  expect(back.querySelector("circle.back-motif")).toBeInTheDocument();
   expect(back).not.toHaveAttribute("data-red");
   const html = container.innerHTML;
   rerender(<PlayingCard concealed rank="T" suit="h" />);
@@ -54,6 +52,14 @@ it("renders identical approved backs regardless of concealed identity", () => {
   expect(container.innerHTML).toBe(html);
   rerender(<PlayingCard suit="c" />);
   expect(container.innerHTML).toBe(html);
+});
+it("uses the Nocturne navy back with an ivory border and centered ring", () => {
+  const { container } = render(<PlayingCard concealed variant="table" />);
+  const outer = container.querySelector(".back-outer");
+  expect(outer).toHaveAttribute("fill", "#1A2238");
+  expect(outer).toHaveAttribute("stroke", "#F1EDE4");
+  expect(outer).toHaveAttribute("stroke-width", "2");
+  expect(container.querySelector("circle.back-motif")).toBeInTheDocument();
 });
 it("supports a parent that already announces the full hand", () => {
   const { container } = render(<PlayingCard rank="Q" suit="h" aria-hidden />);

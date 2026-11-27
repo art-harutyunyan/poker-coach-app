@@ -1,0 +1,216 @@
+- generic [ref=e3]:
+  - navigation "Mobile navigation" [ref=e4]:
+    - strong [ref=e9]: Poker Coach
+    - generic [ref=e10]:
+      - generic [ref=e11]: Screen
+      - combobox "Primary mobile screen" [ref=e12]:
+        - option "Dashboard"
+        - option "Tournaments" [selected]
+        - option "Development"
+        - option "Training"
+        - option "Playbook"
+        - option "Upload tournament"
+        - option "Settings & profile"
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - button "Tournament overview" [ref=e17] [cursor=pointer]
+          - heading "Daily Classic $5.40" [level=1] [ref=e20]
+          - generic [ref=e21]:
+            - generic [ref=e22]: Sep 4, 2026
+            - generic [ref=e23]: 146 hands
+            - generic [ref=e24]: Regular MTT
+        - generic [ref=e25]:
+          - strong [ref=e26]: B
+          - generic [ref=e27]:
+            - text: Decision quality
+            - generic [ref=e28]: Mock heuristic review
+      - tablist "Tournament sections" [ref=e29]:
+        - tab "Overview" [ref=e30] [cursor=pointer]
+        - tab "Replayer" [selected] [ref=e31] [cursor=pointer]
+        - tab "Review Queue" [ref=e32] [cursor=pointer]
+      - tabpanel "Replayer" [ref=e33]:
+        - generic [ref=e34]:
+          - generic [ref=e35]:
+            - navigation "Key hands" [ref=e36]:
+              - heading "Key hands" [level=2] [ref=e37]
+              - button "Hand 118, A5s" [ref=e38] [cursor=pointer]:
+                - generic [ref=e39]: "#118"
+                - strong [ref=e40]: A5s
+              - generic [ref=e42]: 1 hand
+            - generic [ref=e43]:
+              - generic [ref=e44]:
+                - generic [ref=e45]:
+                  - heading "A5s SB vs BTN open" [level=2] [ref=e46]
+                  - paragraph [ref=e47]: "Hand #118 · 8-max · Mock review"
+                - button "Queue" [ref=e48] [cursor=pointer]
+              - group [ref=e52]:
+                - generic "Visual preview" [ref=e53] [cursor=pointer]
+                - option "Warm Dark" [selected]
+                - option "Classic"
+                - option "Modern SVG"
+                - option "Emerald" [selected]
+                - option "Graphite"
+                - option "Textured"
+                - option "Study Chips" [selected]
+                - option "Block52"
+                - option "6-max"
+                - option "8-max" [selected]
+                - option "9-max"
+              - generic [ref=e55]:
+                - group "Poker table state for hand 118" [ref=e56]:
+                  - generic [ref=e57]:
+                    - generic [ref=e58]: THE STUDY
+                    - generic "47.5k chips" [ref=e59]:
+                      - generic [ref=e60]: Pot
+                      - strong [ref=e61]: 23.8 BB
+                    - generic [ref=e62]: PREFLOP · 1 BB TOTAL ANTES
+                  - generic [ref=e63]:
+                    - group "SB, Hero, 0.0 BB, Hero, All-in 19.5 BB" [ref=e64]:
+                      - generic "Hero hole cards":
+                        - img "Ace of spades":
+                          - generic [aria-hidden]:
+                            - strong: A
+                        - img "Five of spades":
+                          - generic [aria-hidden]:
+                            - strong: "5"
+                      - generic "Position SB" [ref=e65]: SB
+                      - generic [ref=e66]: All-in
+                      - generic "Hero" [ref=e69]
+                      - generic [ref=e70]: 0.0 BB
+                    - 'generic "Hero: 19.5 BB committed" [ref=e71]': 19.5 BB
+                  - generic [ref=e78]:
+                    - group "BB, KaroLine, 19.7 BB, Current actor" [ref=e79]:
+                      - generic "KaroLine hidden cards":
+                        - img "Face-down card"
+                        - img "Face-down card"
+                      - generic "Position BB" [ref=e80]: BB
+                      - generic "KaroLine" [ref=e82]
+                      - generic [ref=e83]: 19.7 BB
+                    - 'generic "KaroLine: 1.0 BB committed" [ref=e84]': 1 BB
+                  - group "UTG, RiverMint, 26.0 BB, Fold" [ref=e92]:
+                    - generic "Position UTG" [ref=e93]: UTG
+                    - generic [ref=e94]: Fold
+                    - generic "RiverMint" [ref=e97]
+                    - generic [ref=e98]: 26.0 BB
+                  - group "UTG+1, Aster, 24.5 BB, Fold" [ref=e100]:
+                    - generic "Position UTG+1" [ref=e101]: UTG+1
+                    - generic [ref=e102]: Fold
+                    - generic "Aster" [ref=e105]
+                    - generic [ref=e106]: 24.5 BB
+                  - group "LJ, LumaRaise, 29.2 BB, Fold" [ref=e108]:
+                    - generic "Position LJ" [ref=e109]: LJ
+                    - generic [ref=e110]: Fold
+                    - generic "LumaRaise" [ref=e113]
+                    - generic [ref=e114]: 29.2 BB
+                  - group "HJ, DuneStack, 44.5 BB, Fold" [ref=e116]:
+                    - generic "Position HJ" [ref=e117]: HJ
+                    - generic [ref=e118]: Fold
+                    - generic "DuneStack" [ref=e121]
+                    - generic [ref=e122]: 44.5 BB
+                  - group "CO, North3, 18.2 BB, Fold" [ref=e124]:
+                    - generic "Position CO" [ref=e125]: CO
+                    - generic [ref=e126]: Fold
+                    - generic "North3" [ref=e129]
+                    - generic [ref=e130]: 18.2 BB
+                  - generic [ref=e131]:
+                    - group "BTN, Vale9, 17.3 BB, Raise to 2.3 BB" [ref=e132]:
+                      - generic "Vale9 hidden cards":
+                        - img "Face-down card"
+                        - img "Face-down card"
+                      - generic "Position BTN" [ref=e133]: BTN
+                      - generic [ref=e134]: Raise to
+                      - generic "Vale9" [ref=e137]
+                      - generic [ref=e138]: 17.3 BB
+                    - generic "Dealer button" [ref=e139]: D
+                    - 'generic "Vale9: 2.3 BB committed" [ref=e140]': 2.3 BB
+                - generic [ref=e147]:
+                  - generic [ref=e148]:
+                    - button "Back" [ref=e149] [cursor=pointer]
+                    - navigation "Replay streets and showdown" [ref=e152]:
+                      - button "Preflop" [ref=e153] [cursor=pointer]
+                      - button "Flop" [disabled] [ref=e154]
+                      - button "Turn" [disabled] [ref=e155]
+                      - button "River" [ref=e156] [cursor=pointer]
+                      - button "Showdown" [disabled] [ref=e157]
+                    - button "Forward" [ref=e158] [cursor=pointer]
+                    - generic [ref=e161]:
+                      - text: Hide result
+                      - switch "Hide result" [checked] [ref=e162]
+                  - generic [ref=e164]:
+                    - generic [ref=e165]:
+                      - generic [ref=e166]: Action 17 / 20
+                      - strong [ref=e167]: "Next to act: BB · 19.7 BB"
+                    - paragraph [ref=e168]: Facing SB all-in 19.5 BB
+                - group [ref=e169]:
+                  - generic "Action history" [ref=e170] [cursor=pointer]
+              - generic [ref=e171]:
+                - generic [ref=e172]: 1 sample hand in this tournament
+                - button "Mark reviewed" [ref=e173] [cursor=pointer]
+            - complementary "Hand analysis" [ref=e176]:
+              - generic [ref=e177]:
+                - tablist "Hand analysis views" [ref=e178]:
+                  - tab "Decision" [selected] [ref=e179] [cursor=pointer]
+                  - tab "Context" [ref=e180] [cursor=pointer]
+                - tabpanel "Decision" [ref=e181]:
+                  - generic [ref=e182]:
+                    - generic [ref=e183]: Preflop · SB vs BTN
+                    - generic [ref=e184]: Mistake
+                  - generic [ref=e185]:
+                    - heading "Actual vs Recommended" [level=3] [ref=e186]
+                    - generic [ref=e190]:
+                      - generic [ref=e191]:
+                        - generic [ref=e192]: Actual
+                        - strong [ref=e193]: Call
+                        - generic [ref=e194]: Call 1.75 BB more from SB
+                      - generic [ref=e197]:
+                        - generic [ref=e198]: Recommended
+                        - strong [ref=e199]: 3-bet
+                        - generic [ref=e200]: 7.2-7.8 BB
+                  - generic [ref=e201]:
+                    - generic [ref=e202]:
+                      - heading "Severity" [level=3] [ref=e203]
+                      - strong [ref=e204]: Mistake
+                      - generic [ref=e205]: MEDIUM
+                    - generic [ref=e206]:
+                      - heading "Confidence" [level=3] [ref=e207]
+                      - strong [ref=e208]: High
+                      - generic [ref=e209]: Mock reference
+                  - generic [ref=e210]:
+                    - heading "The idea behind the decision" [level=3] [ref=e211]
+                    - paragraph [ref=e212]: A5s blocks strong continues, plays poorly as a flat out of position, and benefits from fold equity against a wide BTN open.
+                  - generic [ref=e213]:
+                    - generic [ref=e214]:
+                      - term [ref=e215]: Preferred sizing
+                      - definition [ref=e216]: 7.2-7.8 BB
+                    - generic [ref=e217]:
+                      - term [ref=e218]: Strategy source
+                      - definition [ref=e219]: Illustrative mock
+                  - generic [ref=e220]:
+                    - generic [ref=e221]:
+                      - heading "Strategy Mix" [level=3] [ref=e222]
+                      - generic [ref=e223]: Mock / not solver truth
+                    - generic [ref=e224]:
+                      - generic [ref=e225]:
+                        - generic [ref=e226]: 3-bet
+                        - strong [ref=e229]: 72%
+                      - generic [ref=e230]:
+                        - generic [ref=e231]: fold
+                        - strong [ref=e234]: 18%
+                      - generic [ref=e235]:
+                        - generic [ref=e236]: call
+                        - strong [ref=e239]: 10%
+                  - generic [ref=e240]:
+                    - heading "Alternative line" [level=3] [ref=e241]
+                    - paragraph [ref=e242]: Flatting is reserved for reference nodes with specific BB tendencies; without that evidence, prefer pressure or fold.
+                  - button "Ask Coach about this decision" [disabled] [ref=e243]
+                  - paragraph [ref=e246]: Coach conversations are not connected in Phase 0.
+              - generic [ref=e251]:
+                - strong [ref=e252]: Phase 0 mock strategy display
+                - generic [ref=e253]: MOCK PROTOTYPE - vmock-v1
+                - paragraph [ref=e254]: Prototype percentages are illustrative and not solver output.
+              - generic [ref=e255]: The hand result is hidden during study and does not determine the decision grade.
+          - generic [ref=e256]:
+            - generic [ref=e257]: Poker Coach / Better decisions. A longer game.
+            - generic [ref=e258]: Mock data · Strategy sources shown in context

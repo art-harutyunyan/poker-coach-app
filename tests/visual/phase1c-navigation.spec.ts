@@ -11,7 +11,9 @@ async function importFile(page: Page, index: number) {
     await page.locator(".sidebarUpload").click();
   else await page.locator(".mobileNavSelect select").selectOption("upload");
   await page.getByLabel("Hand history file").setInputFiles(fixture(index));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Close dialog" }).click();
 }
 
@@ -21,6 +23,22 @@ async function openReplayer(page: Page, id: string) {
     .filter({ hasText: id })
     .getByRole("button", { name: "Replayer" })
     .click();
+}
+
+async function openBrowser(page: Page, total: number) {
+  await page
+    .getByRole("button", {
+      name: `Browse all ${total} ${total === 1 ? "hand" : "hands"}`,
+    })
+    .click();
+  const browser = page.getByRole("dialog", { name: "Browse all hands" });
+  await expect(browser).toBeVisible();
+  return browser.locator(".importedHandRail");
+}
+
+async function returnToLibrary(page: Page) {
+  await page.getByRole("button", { name: "Tournament overview" }).click();
+  await page.getByRole("button", { name: "Tournament Library" }).click();
 }
 
 async function screenshot(page: Page, name: string) {
@@ -53,7 +71,7 @@ test("222-hand source filters keep replay, geometry and ordered navigation", asy
   await page.goto("/?route=tournaments");
   await importFile(page, 0);
   await openReplayer(page, "314729652");
-  const rail = page.locator(".importedHandRail");
+  const rail = await openBrowser(page, 222);
   await expect(rail.getByRole("button", { name: "All 222 / 222" })).toHaveAttribute(
     "aria-pressed",
     "true",
@@ -63,6 +81,7 @@ test("222-hand source filters keep replay, geometry and ordered navigation", asy
   await expect(rail.getByRole("button", { name: "Showdown 13 / 222" })).toBeVisible();
   await rail.locator('[data-hand-id="TM6468722697"]').click();
   await page.getByRole("button", { name: "Forward", exact: true }).click();
+  await openBrowser(page, 222);
   const beforeGeometry = await tableGeometry(page);
   const beforeHeader = await page.locator(".handStudyHeader").textContent();
   const beforeCursor = await page.locator(".decisionRibbon").textContent();
@@ -79,6 +98,7 @@ test("222-hand source filters keep replay, geometry and ordered navigation", asy
   await expect(page.locator(".decisionRibbon")).toContainText("Action 0 /");
   await expect(page.getByRole("switch")).toBeChecked();
   await rail.locator(".importedHandRow").last().click();
+  await openBrowser(page, 222);
   await expect(rail.getByRole("button", { name: "Next filtered hand" })).toBeDisabled();
   await screenshot(page, "filtered-222-desktop");
 });
@@ -89,28 +109,34 @@ test("233-hand filters restore per entry and Queue remains complete", async ({
   await page.goto("/?route=tournaments");
   await importFile(page, 3);
   await openReplayer(page, "309704619");
-  const rail = page.locator(".importedHandRail");
+  const rail = await openBrowser(page, 233);
   await expect(rail.getByRole("button", { name: "Played 50 / 233" })).toBeVisible();
   await expect(rail.getByRole("button", { name: "Postflop 29 / 233" })).toBeVisible();
   await expect(rail.getByRole("button", { name: "Showdown 11 / 233" })).toBeVisible();
   await rail.getByRole("button", { name: "Postflop 29 / 233" }).click();
   await expect(rail.locator(".importedHandRow")).toHaveCount(29);
-  await page.getByRole("button", { name: "Tournament Library" }).click();
+  await page.getByRole("button", { name: "Close hand browser" }).click();
+  await returnToLibrary(page);
   await importFile(page, 2);
   await openReplayer(page, "317697722");
+  await openBrowser(page, 28);
   await expect(rail.getByRole("button", { name: "All 28 / 28" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
-  await page.getByRole("button", { name: "Tournament Library" }).click();
+  await page.getByRole("button", { name: "Close hand browser" }).click();
+  await returnToLibrary(page);
   await openReplayer(page, "309704619");
+  await openBrowser(page, 233);
   await expect(rail.getByRole("button", { name: "Postflop 29 / 233" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
+  await page.getByRole("button", { name: "Close hand browser" }).click();
   await page.getByRole("tab", { name: "Review Queue", exact: true }).click();
   await expect(page.locator(".importedHandList .importedHandRow")).toHaveCount(233);
   await page.locator('.importedHandList [data-hand-id="TM6378370688"]').click();
+  await openBrowser(page, 233);
   await expect(rail.getByText("Current hand is outside this filter")).toBeVisible();
   await expect(rail.locator(".importedHandRow")).toHaveCount(29);
 });
@@ -123,13 +149,15 @@ test("zero-match filter retains current hand and offers All", async ({ page }) =
     mimeType: "text/plain",
     buffer: Buffer.from(fixtureHand(2, "TM6522429068")),
   });
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Close dialog" }).click();
   await page
     .locator(".tournamentLibraryRow")
     .getByRole("button", { name: "Replayer" })
     .click();
-  const rail = page.locator(".importedHandRail");
+  const rail = await openBrowser(page, 1);
   await rail.getByRole("button", { name: "Showdown 0 / 1" }).click();
   await expect(rail.getByText("No hands match this filter")).toBeVisible();
   await expect(rail.locator(".importedHandRow")).toHaveCount(0);
@@ -147,17 +175,24 @@ test("mobile outside-filter notice and Show all remain visible without moving th
   await page.goto("/?route=tournaments");
   await importFile(page, 0);
   await openReplayer(page, "314729652");
-  const rail = page.locator(".importedHandRail");
+  const rail = await openBrowser(page, 222);
   const before = await tableGeometry(page);
   await rail.getByRole("button", { name: "Played 53 / 222" }).click();
   await expect(rail.getByText("Current hand is outside this filter")).toBeVisible();
   const showAll = rail.getByRole("button", { name: "Show all hands" });
   await expect(showAll).toBeVisible();
+  await showAll.scrollIntoViewIfNeeded();
   const button = await showAll.boundingBox();
-  const railBox = await rail.boundingBox();
-  expect(button!.x).toBeGreaterThanOrEqual(railBox!.x);
-  expect(button!.x + button!.width).toBeLessThanOrEqual(railBox!.x + railBox!.width);
-  expect(button!.y + button!.height).toBeLessThanOrEqual(railBox!.y + railBox!.height);
+  const browserBox = await page
+    .getByRole("dialog", { name: "Browse all hands" })
+    .boundingBox();
+  expect(button!.x).toBeGreaterThanOrEqual(browserBox!.x);
+  expect(button!.x + button!.width).toBeLessThanOrEqual(
+    browserBox!.x + browserBox!.width,
+  );
+  expect(button!.y + button!.height).toBeLessThanOrEqual(
+    browserBox!.y + browserBox!.height,
+  );
   expect(await tableGeometry(page)).toEqual(before);
   await showAll.click();
   await expect(rail.locator(".importedHandRow")).toHaveCount(222);
@@ -170,27 +205,23 @@ test("mobile unknown-count notice stays inside the navigator without moving the 
   await page.goto("/?route=tournaments");
   await importFile(page, 3);
   await openReplayer(page, "309704619");
-  const rail = page.locator(".importedHandRail");
+  const rail = await openBrowser(page, 233);
   const before = await tableGeometry(page);
   await rail.getByRole("button", { name: "Played 50 / 233" }).click();
   const notice = rail.getByText("1 hand needs source review");
   await expect(notice).toBeVisible();
+  await notice.scrollIntoViewIfNeeded();
   const noticeBox = await notice.boundingBox();
-  const railBox = await rail.boundingBox();
-  const controlsBox = await rail.locator(".handFilterControls").boundingBox();
-  const navigationBox = await rail.locator(".handFilterNavigation").boundingBox();
-  const headingCountBox = await rail.locator("h2 span").boundingBox();
+  const browser = page.getByRole("dialog", { name: "Browse all hands" });
+  const browserBox = await browser.boundingBox();
+  expect(noticeBox!.y).toBeGreaterThanOrEqual(browserBox!.y);
   expect(noticeBox!.y + noticeBox!.height).toBeLessThanOrEqual(
-    railBox!.y + railBox!.height,
+    browserBox!.y + browserBox!.height,
   );
-  expect(noticeBox!.x).toBeGreaterThanOrEqual(controlsBox!.x);
+  expect(noticeBox!.x).toBeGreaterThanOrEqual(browserBox!.x);
   expect(noticeBox!.x + noticeBox!.width).toBeLessThanOrEqual(
-    controlsBox!.x + controlsBox!.width,
+    browserBox!.x + browserBox!.width,
   );
-  expect(noticeBox!.y).toBeGreaterThanOrEqual(
-    headingCountBox!.y + headingCountBox!.height,
-  );
-  expect(noticeBox!.y + noticeBox!.height).toBeLessThanOrEqual(navigationBox!.y);
   expect(await tableGeometry(page)).toEqual(before);
   await screenshot(page, "unknown-390");
 });
@@ -203,7 +234,7 @@ for (const width of [1440, 1024, 768, 430, 390]) {
     await page.goto("/?route=tournaments");
     await importFile(page, 2);
     await openReplayer(page, "317697722");
-    const rail = page.locator(".importedHandRail");
+    const rail = await openBrowser(page, 28);
     const options = await rail.locator(".handFilterOptions").evaluate((element) => ({
       viewport: element.clientWidth,
       content: element.scrollWidth,
@@ -226,7 +257,7 @@ test("compact controls remain reachable at 200% zoom", async ({ page }) => {
   await importFile(page, 2);
   await openReplayer(page, "317697722");
   await page.evaluate(() => (document.documentElement.style.zoom = "2"));
-  const rail = page.locator(".importedHandRail");
+  const rail = await openBrowser(page, 28);
   await rail.getByRole("button", { name: "Postflop 5 / 28" }).click();
   await expect(rail.locator(".importedHandRow")).toHaveCount(5);
   await screenshot(page, "navigator-zoom-200");

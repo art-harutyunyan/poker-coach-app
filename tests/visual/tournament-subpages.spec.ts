@@ -42,68 +42,100 @@ for (const width of widths) {
       const references = JSON.parse(
         await readFile(`${legacy}/tab-styles.json`, "utf8"),
       ) as Record<number, TabStyles>;
-      const problems = await page.evaluate((reference) => {
-        const errors: string[] = [];
-        for (const [selector, expected] of Object.entries(reference)) {
-          const style = getComputedStyle(document.querySelector(selector)!);
-          for (const [property, value] of Object.entries(expected)) {
-            // The R1 rail changes workspace width, so tab widths can grow.
-            if (property === "width") continue;
-            if (style[property as keyof CSSStyleDeclaration] !== value)
-              errors.push(
-                `${selector}.${property}: ${style[property as keyof CSSStyleDeclaration]} instead of ${value}`,
-              );
+      const problems = await page.evaluate(
+        ({ reference, tab }) => {
+          const errors: string[] = [];
+          const replayerTabStyles: Record<string, Record<string, string>> = {
+            '.tabTrigger[data-state="active"]': {
+              color: "rgb(236, 237, 239)",
+              border: "0px none rgb(236, 237, 239)",
+              fontFamily: "Geist, Manrope, ui-sans-serif, system-ui, sans-serif",
+              fontSize: "14px",
+              lineHeight: "20px",
+            },
+            '.tabTrigger:not([data-state="active"])': {
+              color: "rgb(169, 174, 184)",
+              border: "0px none rgb(169, 174, 184)",
+              fontFamily: "Geist, Manrope, ui-sans-serif, system-ui, sans-serif",
+              fontSize: "14px",
+              lineHeight: "20px",
+            },
+          };
+          for (const [selector, expected] of Object.entries(reference)) {
+            const style = getComputedStyle(document.querySelector(selector)!);
+            for (const [property, value] of Object.entries(expected)) {
+              // The R1 rail changes workspace width, so tab widths can grow.
+              if (property === "width") continue;
+              const approvedR6 =
+                tab === "replayer" && selector === ".tabList"
+                  ? ((
+                      { padding: "0px 4px", margin: "0px 0px 8px" } as Record<
+                        string,
+                        string
+                      >
+                    )[property] ?? value)
+                  : value;
+              const approved =
+                tab === "replayer"
+                  ? (replayerTabStyles[selector]?.[property] ?? approvedR6)
+                  : approvedR6;
+              if (style[property as keyof CSSStyleDeclaration] !== approved)
+                errors.push(
+                  `${selector}.${property}: ${style[property as keyof CSSStyleDeclaration]} instead of ${approved}`,
+                );
+            }
           }
-        }
-        if (document.documentElement.scrollWidth > innerWidth + 1)
-          errors.push("page overflow");
-        const shell = getComputedStyle(document.querySelector(".appShell")!);
-        if (
-          shell.backgroundColor !== "rgb(14, 15, 18)" ||
-          shell.backgroundImage !== "none"
-        )
-          errors.push("old page background");
-        if (
-          !getComputedStyle(
-            document.querySelector(".mainSurface")!,
-          ).fontFamily.includes("Seat Inter")
-        )
-          errors.push("old typography");
-        for (const element of document.querySelectorAll<HTMLElement>(
-          ".topBar h1,.tabList,.tabTrigger,.overviewBand,.developmentBand,.stateBlock,.reviewQueue,.reviewItem,.reviewMain,.reviewMeta,.reviewItem > svg",
-        )) {
-          const rect = element.getBoundingClientRect();
-          if (rect.width && (rect.left < -1 || rect.right > innerWidth + 1))
-            errors.push(`${element.className || element.tagName} clipped`);
-        }
-        for (const element of document.querySelectorAll<HTMLElement>(
-          ".reviewMain small,.reviewMeta b,.dimensionRow p,.stateBlock span",
-        )) {
-          if (element.scrollWidth > element.clientWidth + 1)
-            errors.push(`${element.className} text clipped`);
-        }
-        for (const panel of document.querySelectorAll(
-          ".overviewBand,.developmentBand,.stateBlock,.reviewQueue",
-        )) {
-          const style = getComputedStyle(panel);
+          if (document.documentElement.scrollWidth > innerWidth + 1)
+            errors.push("page overflow");
+          const shell = getComputedStyle(document.querySelector(".appShell")!);
           if (
-            style.backgroundColor !== "rgb(25, 35, 30)" ||
-            style.backgroundImage !== "none" ||
-            style.boxShadow !== "none" ||
-            style.borderRadius !== "6px"
+            shell.backgroundColor !== "rgb(14, 15, 18)" ||
+            shell.backgroundImage !== "none"
           )
-            errors.push("old panel treatment");
-        }
-        for (const tick of document.querySelectorAll(
-          ".recharts-cartesian-axis-tick-value",
-        )) {
-          const rect = tick.getBoundingClientRect(),
-            svg = tick.closest("svg")!.getBoundingClientRect();
-          if (rect.left < svg.left - 1 || rect.right > svg.right + 1)
-            errors.push("chart label clipped");
-        }
-        return errors;
-      }, references[width]!);
+            errors.push("old page background");
+          if (
+            !getComputedStyle(
+              document.querySelector(".mainSurface")!,
+            ).fontFamily.includes("Seat Inter")
+          )
+            errors.push("old typography");
+          for (const element of document.querySelectorAll<HTMLElement>(
+            ".topBar h1,.tabList,.tabTrigger,.overviewBand,.developmentBand,.stateBlock,.reviewQueue,.reviewItem,.reviewMain,.reviewMeta,.reviewItem > svg",
+          )) {
+            const rect = element.getBoundingClientRect();
+            if (rect.width && (rect.left < -1 || rect.right > innerWidth + 1))
+              errors.push(`${element.className || element.tagName} clipped`);
+          }
+          for (const element of document.querySelectorAll<HTMLElement>(
+            ".reviewMain small,.reviewMeta b,.dimensionRow p,.stateBlock span",
+          )) {
+            if (element.scrollWidth > element.clientWidth + 1)
+              errors.push(`${element.className} text clipped`);
+          }
+          for (const panel of document.querySelectorAll(
+            ".overviewBand,.developmentBand,.stateBlock,.reviewQueue",
+          )) {
+            const style = getComputedStyle(panel);
+            if (
+              style.backgroundColor !== "rgb(25, 35, 30)" ||
+              style.backgroundImage !== "none" ||
+              style.boxShadow !== "none" ||
+              style.borderRadius !== "6px"
+            )
+              errors.push("old panel treatment");
+          }
+          for (const tick of document.querySelectorAll(
+            ".recharts-cartesian-axis-tick-value",
+          )) {
+            const rect = tick.getBoundingClientRect(),
+              svg = tick.closest("svg")!.getBoundingClientRect();
+            if (rect.left < svg.left - 1 || rect.right > svg.right + 1)
+              errors.push("chart label clipped");
+          }
+          return errors;
+        },
+        { reference: references[width]!, tab },
+      );
       expect(problems).toEqual([]);
 
       if (tab === "replayer") {
@@ -192,7 +224,7 @@ for (const width of [1440, 390]) {
   });
 }
 
-test("unchanged analysis, queue targets, chart data, assets, and mocks retain their hashes", async () => {
+test("protected queue targets, chart data, assets, and mocks retain their hashes", async () => {
   const files = JSON.parse(
     await readFile(`${legacy}/protected-files.json`, "utf8"),
   ) as Record<string, string>;
@@ -210,6 +242,8 @@ test("unchanged analysis, queue targets, chart data, assets, and mocks retain th
         "src/domain/replay.ts",
         "src/domain/schemas.ts",
         "src/styles/poker-seats.css",
+        // R9 approved the analysis panel's unavailable and illustrative states.
+        "src/ui/components/AnalysisPanel.tsx",
       ].includes(file)
     )
       continue;

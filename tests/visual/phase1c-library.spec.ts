@@ -16,7 +16,9 @@ async function openUpload(page: Page) {
 async function importFile(page: Page, index: number) {
   await openUpload(page);
   await page.getByLabel("Hand history file").setInputFiles(fixture(index));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Close dialog" }).click();
 }
 async function shot(page: Page, name: string) {
@@ -26,6 +28,11 @@ async function shot(page: Page, name: string) {
     fullPage: true,
     animations: "disabled",
   });
+}
+
+async function returnToLibraryFromReplayer(page: Page) {
+  await page.getByRole("button", { name: "Tournament overview" }).click();
+  await page.getByRole("button", { name: "Tournament Library" }).click();
 }
 
 test("four real tournaments coexist, duplicates and conflicts preserve entries, reload clears memory", async ({
@@ -46,7 +53,7 @@ test("four real tournaments coexist, duplicates and conflicts preserve entries, 
     mimeType: "text/plain",
     buffer: await readFile(fixture(0)),
   });
-  await expect(page.getByRole("heading", { name: "Already imported" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Show existing" })).toBeVisible();
   await expect(page.locator(".tournamentLibraryRow")).toHaveCount(4);
   await page.getByRole("button", { name: "Close dialog" }).click();
   await openUpload(page);
@@ -56,7 +63,7 @@ test("four real tournaments coexist, duplicates and conflicts preserve entries, 
     buffer: Buffer.from(fixtureHand(0, "TM6469820465")),
   });
   await expect(page.getByRole("alert")).toContainText(
-    "already imported with different contents",
+    "existing tournament is unchanged",
   );
   await page.getByRole("button", { name: "Close dialog" }).click();
   await expect(page.locator(".tournamentLibraryRow")).toHaveCount(4);
@@ -82,14 +89,14 @@ test("A and B restore independent hand, replay cursor, privacy and tab state", a
   await page.keyboard.press("Enter");
   await page.getByRole("tab", { name: "Replayer", exact: true }).click();
   const aHand = await page
-    .locator(".importedHandRail [data-hand-id]")
+    .locator(".noc-replayer-strip__item")
     .nth(1)
     .getAttribute("data-hand-id");
-  await page.locator(`.importedHandRail [data-hand-id="${aHand}"]`).click();
+  await page.locator(`.noc-replayer-strip__item[data-hand-id="${aHand}"]`).click();
   await page.getByRole("button", { name: "Forward", exact: true }).click();
   await page.getByRole("switch").click();
   await expect(page.getByRole("switch")).not.toBeChecked();
-  await page.getByRole("button", { name: "Tournament Library" }).click();
+  await returnToLibraryFromReplayer(page);
   await importFile(page, 3);
   const bRow = page.locator(".tournamentLibraryRow").filter({ hasText: "309704619" });
   await bRow.getByRole("button", { name: "Replayer" }).focus();
@@ -105,10 +112,10 @@ test("A and B restore independent hand, replay cursor, privacy and tab state", a
   await expect(page.locator(".decisionRibbon")).toContainText("Action 1 /");
   await expect(page.getByRole("switch")).not.toBeChecked();
   await expect(
-    page.locator(`.importedHandRail [data-hand-id="${aHand}"]`),
+    page.locator(`.noc-replayer-strip__item[data-hand-id="${aHand}"]`),
   ).toHaveAttribute("aria-current", "true");
   await shot(page, "restored-a-1440");
-  await page.getByRole("button", { name: "Tournament Library" }).click();
+  await returnToLibraryFromReplayer(page);
   await bRow.getByRole("button", { name: "Review Queue" }).focus();
   await page.keyboard.press("Space");
   await expect(
@@ -137,7 +144,7 @@ for (const width of widths) {
     await expect(page.locator(".player-seat")).toHaveCount(7);
     await expect(page.locator(".playingCard[data-card-variant]").first()).toBeVisible();
     if (width === 1440 || width === 390) await shot(page, `replayer-${width}`);
-    await page.getByRole("button", { name: "Tournament Library" }).click();
+    await returnToLibraryFromReplayer(page);
     await expect(page.locator(".tournamentLibraryRow")).toHaveCount(1);
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),

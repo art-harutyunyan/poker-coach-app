@@ -16,7 +16,7 @@ async function importHand(source: string) {
   fireEvent.change(screen.getByLabelText("Hand history file"), {
     target: { files: [new File([source], "history.txt", { type: "text/plain" })] },
   });
-  await screen.findByRole("heading", { name: "Import complete" });
+  await screen.findByRole("button", { name: "Open tournament" });
   fireEvent.click(screen.getByRole("button", { name: "Close dialog" }));
 }
 describe("session Library route", () => {

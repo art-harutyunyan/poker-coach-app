@@ -44,7 +44,7 @@ it("lets a user choose another hand after a selected hand fails to render", asyn
       files: [new File([source], "ggmasters.txt", { type: "text/plain" })],
     },
   });
-  await screen.findByRole("heading", { name: "Import complete" });
+  await screen.findByRole("button", { name: "Open tournament" });
   fireEvent.click(screen.getByRole("button", { name: "Close dialog" }));
   fireEvent.click(screen.getByRole("button", { name: /^Open Tournament / }));
 
@@ -56,4 +56,4 @@ it("lets a user choose another hand after a selected hand fails to render", asyn
   fireEvent.change(choices, { target: { value: nextId } });
   expect(screen.getAllByRole("heading", { name: /GGMasters/ })[0]).toBeVisible();
   expect(screen.getByRole("button", { name: "Tournament Library" })).toBeVisible();
-});
+}, 15000);

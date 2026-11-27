@@ -1,0 +1,145 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - navigation "Mobile navigation" [ref=e4]:
+      - strong [ref=e9]: The Study
+      - generic [ref=e10]:
+        - generic [ref=e11]: Screen
+        - combobox "Primary mobile screen" [ref=e12]:
+          - option "Dashboard" [selected]
+          - option "Tournaments"
+          - option "Development"
+          - option "Training"
+          - option "Playbook"
+          - option "Upload tournament"
+          - option "Settings & profile"
+    - main [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - paragraph [ref=e16]: Serious poker software with AI inside it
+          - heading "Dashboard" [level=1] [ref=e17]
+        - generic "Prototype status" [ref=e18]: Mock data only
+      - generic [ref=e20]:
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]:
+              - paragraph [ref=e25]: Current tournament
+              - heading "Daily Classic $5.40" [level=2] [ref=e26]
+              - generic [ref=e27]:
+                - generic [ref=e28]: 146 hands
+                - generic [ref=e29]: 34 / 612
+                - generic [ref=e30]: $18.42 result
+                - generic [ref=e31]: 9/4/2026
+            - generic "Overall tournament grade B, 81 of 100" [ref=e32]:
+              - generic [ref=e33]: Overall
+              - strong [ref=e34]: B
+              - generic [ref=e35]: 81 / 100
+          - generic [ref=e38]:
+            - generic [ref=e39]: Primary development target
+            - strong [ref=e40]: Convert more SB/BB 3-bet opportunities versus wide opens.
+          - generic [ref=e41]:
+            - button "Open review" [ref=e42] [cursor=pointer]
+            - button "Review queue" [ref=e46] [cursor=pointer]
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - generic [ref=e52]:
+              - paragraph [ref=e53]: Mock GGPoker tournament
+              - heading "Performance profile" [level=2] [ref=e54]
+            - generic [ref=e55]: Low-stakes MTT sample
+          - generic [ref=e56]:
+            - generic [ref=e57]:
+              - text: VPIP
+              - strong [ref=e58]: 24%
+            - generic [ref=e59]:
+              - text: PFR
+              - strong [ref=e60]: 18%
+            - generic [ref=e61]:
+              - text: 3-Bet
+              - strong [ref=e62]: 6.4%
+            - generic [ref=e63]:
+              - text: Hands
+              - strong [ref=e64]: "146"
+          - generic [ref=e65]:
+            - article [ref=e66]:
+              - generic [ref=e67]:
+                - heading "Preflop Discipline" [level=3] [ref=e68]
+                - paragraph [ref=e69]: Good opening discipline, several profitable pressure spots passed up.
+              - strong [ref=e71]: "76"
+            - article [ref=e74]:
+              - generic [ref=e75]:
+                - heading "3-Bet Conversion" [level=3] [ref=e76]
+                - paragraph [ref=e77]: Missed two high-priority reshove or 3-bet candidates.
+              - strong [ref=e79]: "58"
+            - article [ref=e82]:
+              - generic [ref=e83]:
+                - heading "Postflop Sizing" [level=3] [ref=e84]
+                - paragraph [ref=e85]: River sizings were mostly coherent with value targets.
+              - strong [ref=e87]: "72"
+            - article [ref=e90]:
+              - generic [ref=e91]:
+                - heading "Tournament Pressure" [level=3] [ref=e92]
+                - paragraph [ref=e93]: Strong late-position pressure when effective stacks were shallow.
+              - strong [ref=e95]: "81"
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - generic [ref=e100]: Strength
+              - strong [ref=e101]: Late-position steal discipline at 18-30 BB.
+            - generic [ref=e102]:
+              - generic [ref=e103]: Priority
+              - strong [ref=e104]: Convert more SB/BB 3-bet opportunities versus wide opens.
+        - generic [ref=e105]:
+          - generic [ref=e106]:
+            - generic [ref=e107]:
+              - paragraph [ref=e108]: Focused study queue
+              - heading "Next hands" [level=2] [ref=e109]
+            - generic [ref=e110]: 4 spots
+          - generic [ref=e111]:
+            - button "A5s SB vs BTN open Pressure candidate became an out-of-position flat. Missed 3-Bet MEDIUM / HIGH" [ref=e112] [cursor=pointer]:
+              - generic [ref=e118]:
+                - strong [ref=e119]: A5s SB vs BTN open
+                - generic [ref=e120]: Pressure candidate became an out-of-position flat.
+              - generic [ref=e121]:
+                - generic [ref=e122]: Missed 3-Bet
+                - generic [ref=e123]: MEDIUM / HIGH
+            - button "K9s BTN 22 BB Clean steal candidate selected with correct blockers. Excellent LOW / HIGH" [ref=e126] [cursor=pointer]:
+              - generic [ref=e131]:
+                - strong [ref=e132]: K9s BTN 22 BB
+                - generic [ref=e133]: Clean steal candidate selected with correct blockers.
+              - generic [ref=e134]:
+                - generic [ref=e135]: Excellent
+                - generic [ref=e136]: LOW / HIGH
+            - button "QJo CO first in Likely profitable open passed up at playable stack depth. Missed Open LOW / MEDIUM" [ref=e139] [cursor=pointer]:
+              - generic [ref=e145]:
+                - strong [ref=e146]: QJo CO first in
+                - generic [ref=e147]: Likely profitable open passed up at playable stack depth.
+              - generic [ref=e148]:
+                - generic [ref=e149]: Missed Open
+                - generic [ref=e150]: LOW / MEDIUM
+            - button "99 turn barrel spot Sizing line risks losing fold equity against capped range. Bet Sizing HIGH / MEDIUM" [ref=e153] [cursor=pointer]:
+              - generic [ref=e157]:
+                - strong [ref=e158]: 99 turn barrel spot
+                - generic [ref=e159]: Sizing line risks losing fold equity against capped range.
+              - generic [ref=e160]:
+                - generic [ref=e161]: Bet Sizing
+                - generic [ref=e162]: HIGH / MEDIUM
+        - generic [ref=e165]:
+          - generic [ref=e166]:
+            - generic [ref=e167]:
+              - paragraph [ref=e168]: Development signal
+              - heading "3-Bet Conversion Trend" [level=2] [ref=e169]
+            - generic [ref=e170]: Target 24%
+          - generic "3-Bet Opportunity Conversion" [ref=e171]:
+            - application [ref=e174]:
+              - generic [ref=e199]:
+                - generic [ref=e200]:
+                  - generic [ref=e201]: T-5
+                  - generic [ref=e203]: T-4
+                  - generic [ref=e205]: T-3
+                  - generic [ref=e207]: T-2
+                  - generic [ref=e209]: Current
+                - generic [ref=e211]:
+                  - generic [ref=e212]: 0%
+                  - generic [ref=e214]: 9%
+                  - generic [ref=e216]: 18%
+                  - generic [ref=e218]: 27%
+                  - generic [ref=e220]: 35%
+  - generic [aria-hidden] [ref=e222]: 0%

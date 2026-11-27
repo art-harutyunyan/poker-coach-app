@@ -1,0 +1,403 @@
+.appShell[data-replayer-screen="true"]
+  .tournamentTabs[data-active-screen="replayer"]
+  > .tabList {
+  border-bottom-color: var(--noc-line);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentTabs[data-active-screen="replayer"]
+  > .tabList
+  .tabTrigger {
+  color: var(--noc-text-2);
+  font: var(--noc-body);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentTabs[data-active-screen="replayer"]
+  > .tabList
+  .tabTrigger[data-state="active"] {
+  color: var(--noc-text);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentTabs[data-active-screen="replayer"]
+  > .tabList
+  .tabTrigger[data-state="active"]::after {
+  background: var(--noc-accent);
+}
+
+.appShell[data-replayer-screen="true"] :where(button, select, summary):focus-visible {
+  outline-color: var(--noc-accent);
+}
+
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .nocAnalysisPanel {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 220px);
+  min-height: 0;
+  padding: 0 18px 18px;
+  font: var(--noc-body);
+  color: var(--noc-text);
+  scrollbar-color: var(--noc-line) var(--noc-panel);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel:focus-visible {
+  outline: 2px solid var(--noc-accent);
+  outline-offset: -3px;
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel__header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  border-bottom: 1px solid var(--noc-line);
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel__state {
+  padding: 4px 9px;
+  border: 1px solid var(--noc-line);
+  border-radius: 999px;
+  color: var(--noc-text-2);
+  white-space: nowrap;
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel__empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 30px 12px;
+  text-align: center;
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel__empty
+  svg {
+  box-sizing: content-box;
+  padding: 14px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text-3);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel__empty
+  h2 {
+  margin: 0;
+  color: var(--noc-text);
+  font: var(--noc-heading);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel__empty
+  p {
+  max-width: 32ch;
+  margin: 0;
+  color: var(--noc-text-2);
+  font: var(--noc-body);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel__sourceNote {
+  flex: none;
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--noc-line);
+  color: var(--noc-text-3);
+  font: var(--noc-caption);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisTabs {
+  flex: none;
+  gap: 24px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--noc-line);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisTabs
+  button {
+  min-height: 44px;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisTabs
+  button[data-state="active"] {
+  color: var(--noc-text);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisTabs
+  button[data-state="active"]::after {
+  background: var(--noc-accent);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisTabs
+  button:focus-visible {
+  outline: 2px solid var(--noc-accent);
+  outline-offset: -2px;
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisDecisionHeading {
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisGrade {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--noc-mistake);
+  font: var(--noc-caption);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisGrade[data-grade="MAJOR_MISTAKE"] {
+  color: var(--noc-major);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisGrade[data-grade="INACCURATE"] {
+  color: var(--noc-inaccuracy);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisGrade[data-grade="GOOD"] {
+  color: var(--noc-good);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisGrade[data-grade="EXCELLENT"] {
+  color: var(--noc-best);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisSection,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisStatusGrid,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisFacts
+  > div,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .mutedBlock {
+  border-color: var(--noc-line);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .decisionCompare
+  span,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .decisionCompare
+  small,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisStatusCard
+  h3,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisStatusCard
+  > span,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisFacts
+  dt,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .frequencyHeader
+  > span,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .coachUnavailable,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .resultNote {
+  color: var(--noc-text-3);
+  font: var(--noc-caption);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .decisionCompare
+  strong,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .reasonBlock
+  h3,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .frequencyHeader
+  h3 {
+  color: var(--noc-text);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .decisionCompare
+  > div:last-child
+  strong,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisStatusCard[data-tone="confidence"]
+  strong {
+  color: var(--noc-best);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisStatusCard[data-grade="MISTAKE"]
+  strong {
+  color: var(--noc-mistake);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .reasonBlock
+  p,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisContext
+  p,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .analysisContext
+  li {
+  color: var(--noc-text-2);
+  font: var(--noc-body);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .frequencyTrack {
+  background: var(--noc-line);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .frequencyFill,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .frequencyRow:nth-child(n)
+  .frequencyFill {
+  background: var(--noc-best);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .provenanceCard {
+  border-top: 1px solid var(--noc-line);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .provenanceCard
+  strong {
+  color: var(--noc-text-2);
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .provenanceCard
+  span,
+.appShell[data-replayer-screen="true"]
+  .tournamentReviewScreen
+  .nocAnalysisPanel--illustrative
+  .provenanceCard
+  p {
+  color: var(--noc-text-3);
+  font: var(--noc-caption);
+}
+
+@media (max-width: 1100px) {
+  .appShell[data-replayer-screen="true"] .tournamentReviewScreen .nocAnalysisPanel {
+    height: auto;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .appShell[data-replayer-screen="true"] .tournamentReviewScreen .nocAnalysisPanel {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+}

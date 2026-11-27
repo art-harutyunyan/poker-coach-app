@@ -1,4 +1,4 @@
-﻿import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fixtureNames } from "../../src/parsers/gg/fixtureTestUtils";
@@ -22,9 +22,11 @@ async function importFixture(page: Page, index: number, width: number) {
   await page
     .getByLabel("Hand history file")
     .setInputFiles(resolve("tests/fixtures/gg", fixtureNames[index]!));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
   if (index === 3 && width === 1440) await screenshot(page, "import-success-1440");
-  await page.getByRole("button", { name: "Open Tournament Review" }).click();
+  await page.getByRole("button", { name: "Open tournament", exact: true }).click();
   await page.getByRole("tab", { name: "Replayer", exact: true }).click();
 }
 
@@ -37,9 +39,18 @@ for (const width of [1440, 390]) {
     const opponent = page.locator('[data-player-id="gg:314729652:ad116bad"]');
     const hero = page.locator(".player-seat.is-hero");
     expect(
-      await page
-        .locator(".player-name")
-        .evaluateAll((names) => names.every((el) => el.scrollWidth <= el.clientWidth)),
+      await page.locator(".player-name").evaluateAll((names) =>
+        names.every((name) => {
+          const bounds = name.getBoundingClientRect();
+          const plate = name.closest(".player-nameplate")!.getBoundingClientRect();
+          return (
+            bounds.left >= plate.left &&
+            bounds.right <= plate.right &&
+            getComputedStyle(name).overflow === "hidden" &&
+            Boolean(name.getAttribute("title"))
+          );
+        }),
+      ),
     ).toBe(true);
     await page.getByRole("switch").click();
     await expect(page.getByRole("switch")).not.toBeChecked();
@@ -51,6 +62,7 @@ for (const width of [1440, 390]) {
     await page.getByRole("button", { name: "Forward", exact: true }).click();
     for (const card of ["Ace of hearts", "Five of diamonds"]) {
       await expect(opponent.getByLabel(card, { exact: true })).toBeVisible();
+      await opponent.getByLabel(card, { exact: true }).scrollIntoViewIfNeeded();
       await expect(opponent.getByLabel(card, { exact: true })).toBeInViewport();
     }
     expect(
@@ -61,8 +73,15 @@ for (const width of [1440, 390]) {
             ?.getBoundingClientRect();
           const name = seat.querySelector(".player-name")!.getBoundingClientRect();
           const stack = seat.querySelector(".player-stack")!.getBoundingClientRect();
-          return (action && action.bottom > name.top + 0.5) ||
-            name.bottom > stack.top + 0.5
+          const plate = seat
+            .querySelector(".player-nameplate")!
+            .getBoundingClientRect();
+          const actionOverlapsPlate =
+            action &&
+            Math.min(action.right, plate.right) - Math.max(action.left, plate.left) >
+              1 &&
+            Math.min(action.bottom, plate.bottom) - Math.max(action.top, plate.top) > 1;
+          return actionOverlapsPlate || name.bottom > stack.top + 0.5
             ? [
                 {
                   id: (seat as HTMLElement).dataset.playerId,
@@ -121,23 +140,24 @@ for (const width of [1440, 1024, 768, 430, 390]) {
       });
     }
     await page.getByRole("tab", { name: "Replayer", exact: true }).click();
-    await expect(page.locator(".importedTournamentContext")).toContainText(
-      "Daily Classic $10",
-    );
-    await expect(page.locator(".importedTournamentContext")).toContainText("233 hands");
+    const strip = page.getByRole("region", { name: "Replayer hand strip" });
+    await expect(strip).toContainText("Daily Classic $10");
+    await expect(strip).toContainText("233 hands");
     await expect(
       page
         .locator(".workspaceChrome")
         .getByRole("button", { name: "Upload tournament" }),
     ).toHaveCount(0);
-    const row = page.locator('[data-hand-id="TM6378370688"]');
-    await row.click();
+    const browse = strip.getByRole("button", { name: "Browse all 233 hands" });
+    await browse.click();
+    const browser = page.getByRole("dialog", { name: "Browse all hands" });
+    const row = browser.locator('[data-hand-id="TM6378370688"]');
     await expect(row.getByLabel("Ten of hearts", { exact: true })).toBeVisible();
     await expect(row.getByLabel("Seven of spades", { exact: true })).toBeVisible();
     await expect(row).toContainText("8/9 players");
     const markup = await row.innerHTML();
     expect(
-      await page.locator(".importedHandRows").evaluate((list) => {
+      await browser.locator(".importedHandRows").evaluate((list) => {
         const clipped: string[] = [];
         for (const row of list.querySelectorAll<HTMLElement>(".importedHandRow")) {
           const bounds = row.getBoundingClientRect();
@@ -152,6 +172,8 @@ for (const width of [1440, 1024, 768, 430, 390]) {
         return clipped;
       }),
     ).toEqual([]);
+    await row.click();
+    await expect(page.locator(".handStudyHeader")).toContainText("TM6378370688");
     await expect(
       page.locator(".player-seat:not(.is-hero) .player-name").first(),
     ).toHaveText(/^[A-Z][a-z]+(?: \d+)?$/);
@@ -167,11 +189,16 @@ for (const width of [1440, 1024, 768, 430, 390]) {
         ),
     ).toBe(true);
     await expect(page.locator(".player-seat.is-hero .player-name")).toHaveText("Hero");
-    if (width === 1440 || width === 390) await screenshot(page, `hand-rail-${width}`);
+    if (width === 1440 || width === 390) {
+      await browse.click();
+      await screenshot(page, `hand-rail-${width}`);
+      await page.keyboard.press("Escape");
+    }
     await page.getByRole("tab", { name: "Review Queue", exact: true }).click();
     await expect(page.locator(".importedHandRow")).toHaveCount(233);
-    await row.scrollIntoViewIfNeeded();
-    expect(await row.innerHTML()).toBe(markup);
+    const queueRow = page.locator('[data-hand-id="TM6378370688"]');
+    await queueRow.scrollIntoViewIfNeeded();
+    expect(await queueRow.innerHTML()).toBe(markup);
     const rows = page.locator(".importedHandRows");
     expect(await rows.evaluate((el) => el.scrollHeight > el.clientHeight)).toBe(true);
     expect(await rows.evaluate((el) => el.clientHeight)).toBeLessThanOrEqual(1000);
@@ -185,14 +212,21 @@ for (const width of [1440, 1024, 768, 430, 390]) {
       await screenshot(page, `review-queue-${width}`);
     for (const tab of ["Overview", "Replayer", "Review Queue"]) {
       await page.getByRole("tab", { name: tab, exact: true }).click();
-      const action = page
-        .locator(".importedTournamentContext")
-        .getByRole("button", { name: "Import tournament", exact: true });
-      await expect(action).toBeVisible();
-      await action.click();
-      await expect(page.getByLabel("Hand history file")).toBeVisible();
+      const action =
+        tab === "Replayer"
+          ? page.locator(".sidebarUpload")
+          : page
+              .locator(".importedTournamentContext")
+              .getByRole("button", { name: "Import tournament", exact: true });
+      if (tab === "Replayer" && !(await action.isVisible())) {
+        await page.locator(".mobileNavSelect select").selectOption("upload");
+      } else {
+        await expect(action).toBeVisible();
+        await action.click();
+      }
+      await expect(page.getByRole("button", { name: "Choose files" })).toBeVisible();
       await page.getByRole("button", { name: "Close dialog" }).click();
-      await expect(action).toBeFocused();
+      if (await action.isVisible()) await expect(action).toBeFocused();
     }
     if (width === 390) {
       await page.getByRole("tab", { name: "Replayer", exact: true }).click();

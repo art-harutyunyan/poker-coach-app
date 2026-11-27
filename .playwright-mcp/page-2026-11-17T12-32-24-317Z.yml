@@ -1,0 +1,39 @@
+- generic [ref=f1e3]:
+  - complementary "Application rail" [ref=f1e4]:
+    - generic "The Study" [ref=f1e5]:
+      - generic [aria-hidden] [ref=f1e6]: S
+    - navigation "Primary navigation" [ref=f1e7]:
+      - button "Dashboard" [ref=f1e8] [cursor=pointer]:
+        - generic [aria-hidden] [ref=f1e12]: Dashboard
+      - button "Tournaments" [ref=f1e13] [cursor=pointer]:
+        - generic [aria-hidden] [ref=f1e20]: Events
+      - button "Development" [ref=f1e21] [cursor=pointer]:
+        - generic [aria-hidden] [ref=f1e24]: Develop
+      - button "Training" [ref=f1e25] [cursor=pointer]:
+        - generic [aria-hidden] [ref=f1e29]: Train
+      - button "Playbook" [ref=f1e30] [cursor=pointer]:
+        - generic [aria-hidden] [ref=f1e33]: Playbook
+    - button "Upload tournament" [ref=f1e34] [cursor=pointer]:
+      - generic [aria-hidden] [ref=f1e38]: Import
+    - button "Settings & profile" [ref=f1e39] [cursor=pointer]:
+      - generic [aria-hidden] [ref=f1e43]: Settings
+    - 'generic "Demo account: Jacob S." [ref=f1e44]':
+      - generic [aria-hidden] [ref=f1e45]: JS
+  - main [ref=f1e46]:
+    - generic [ref=f1e47]:
+      - generic [ref=f1e48]:
+        - paragraph [ref=f1e49]: Imported GG hand history
+        - heading "Tournament Review" [level=1] [ref=f1e50]
+      - generic "Prototype status" [ref=f1e51]: Local session
+    - region "Tournament Library" [ref=f1e53]:
+      - generic [ref=f1e54]:
+        - generic [ref=f1e55]:
+          - paragraph [ref=f1e56]: Imported GG hand histories
+          - heading "Tournament Library" [level=2] [ref=f1e57]
+          - paragraph [ref=f1e58]: 0 tournaments available in this session.
+          - paragraph [ref=f1e59]: Closing or refreshing this page clears imports.
+        - button "Import tournament" [ref=f1e60] [cursor=pointer]
+      - generic [ref=f1e61]:
+        - heading "No imported tournaments yet" [level=3] [ref=f1e62]
+        - paragraph [ref=f1e63]: Import a GG hand history to review its hands.
+    - button "View demo tournament" [ref=f1e64] [cursor=pointer]

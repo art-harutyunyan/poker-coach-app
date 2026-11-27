@@ -20,6 +20,10 @@ export interface SeatAnchor {
   betY: number;
   mbetX: number;
   mbetY: number;
+  actionX: number;
+  actionY: number;
+  mactionX: number;
+  mactionY: number;
 }
 
 export const positionSets: Record<number, readonly Player["position"][]> = {
@@ -29,71 +33,144 @@ export const positionSets: Record<number, readonly Player["position"][]> = {
   9: ["BTN", "SB", "BB", "UTG", "UTG_PLUS_1", "UTG_PLUS_2", "LJ", "HJ", "CO"],
 };
 
-// Each profile describes a plate center and an independent inward bet center.
-// Compact profiles stagger the rail seats vertically instead of shrinking poker data.
-type SeatPoint = readonly [x: number, y: number, betX: number, betY: number];
-function slot(desktop: SeatPoint, compact: SeatPoint = desktop): SeatAnchor {
-  const [x, y, betX, betY] = desktop;
-  const [mx, my, mbetX, mbetY] = compact;
+// The Hero-relative clockwise index follows the same ellipse at every table
+// size. Compact lower neighbors move upward so their plates clear Hero.
+function slot(tableSize: number, index: number): SeatAnchor {
+  const angle = Math.PI / 2 + (index * 2 * Math.PI) / tableSize;
+  const round = (value: number) => Math.round(value * 1000) / 1000;
+  const desktopX = 50 + 41 * Math.cos(angle);
+  const x = round(
+    tableSize === 9 && index === 1
+      ? desktopX + 2
+      : tableSize === 9 && index === tableSize - 1
+        ? desktopX - 2
+        : desktopX,
+  );
+  const desktopY = 54 + 34 * Math.sin(angle);
+  const y = round(
+    tableSize === 9 && (index === 1 || index === tableSize - 1)
+      ? desktopY + 4
+      : tableSize === 9 && (index === 2 || index === tableSize - 2)
+        ? desktopY + 2
+        : desktopY,
+  );
+  const mobileX = 50 + 35 * Math.cos(angle);
+  const mx = round(
+    tableSize === 9 && index === 2
+      ? 13
+      : tableSize === 9 && index === 7
+        ? 87
+        : tableSize === 9 && index === 4
+          ? 37
+          : tableSize === 9 && index === 5
+            ? 63
+            : index === 1
+              ? Math.min(mobileX, 22)
+              : index === tableSize - 1
+                ? Math.max(mobileX, 78)
+                : mobileX,
+  );
+  const mobileEllipseY = 55 + 36 * Math.sin(angle);
+  const my = round(
+    index === 1 || index === tableSize - 1
+      ? tableSize === 9
+        ? 80
+        : Math.min(mobileEllipseY, 73)
+      : tableSize === 9 && (index === 4 || index === 5)
+        ? 10
+        : tableSize === 9 && (index === 3 || index === 6)
+          ? 30
+          : tableSize === 6 && (index === 2 || index === 4)
+            ? 29
+            : mobileEllipseY,
+  );
+  const inward = (coordinate: number, center: number) =>
+    round(center + (coordinate - center) * 0.58);
+  const betX =
+    index === 0
+      ? tableSize === 9
+        ? 27
+        : 37
+      : index === 1
+        ? tableSize === 9
+          ? 36
+          : 32
+        : index === tableSize - 1
+          ? tableSize <= 7
+            ? 66
+            : 63
+          : inward(x, 50);
+  const betY = index === 0 ? (tableSize === 9 ? 61.5 : 76) : inward(y, 54);
+  const mbetX = index === 1 ? 25 : index === tableSize - 1 ? 75 : inward(mx, 50);
+  const mbetY =
+    index === 0 ? 37 : index === 1 || index === tableSize - 1 ? 39 : inward(my, 55);
+  const actionX =
+    index === 0
+      ? tableSize === 9
+        ? 27
+        : 36
+      : tableSize === 9 && index === 1
+        ? 36
+        : index === tableSize - 1
+          ? 65
+          : round(50 + (x - 50) * 0.32);
+  const actionY =
+    index === 0 || index === tableSize - 1
+      ? 50
+      : tableSize === 9 && index === 1
+        ? 60
+        : round(54 + (y - 54) * 0.4);
+  const mactionX = index === tableSize - 1 ? 50 : round(50 + (mx - 50) * 0.4);
+  const mactionY =
+    index === tableSize - 1
+      ? 65
+      : tableSize === 8 && index === 6
+        ? 64
+        : round(55 + (my - 55) * 0.4);
   const archetype: SeatArchetype =
-    y < 35
-      ? x === 50
-        ? "top-center"
-        : x < 50
-          ? "upper-left"
-          : "upper-right"
-      : y < 65
-        ? x < 50
-          ? "left-side"
-          : "right-side"
-        : x === 50
-          ? "hero"
+    index === 0
+      ? "hero"
+      : y < 35
+        ? x === 50
+          ? "top-center"
           : x < 50
-            ? "lower-left"
-            : "lower-right";
-  return { x, y, mx, my, betX, betY, mbetX, mbetY, archetype };
+            ? "upper-left"
+            : "upper-right"
+        : y < 65
+          ? x < 50
+            ? "left-side"
+            : "right-side"
+          : x === 50
+            ? "hero"
+            : x < 50
+              ? "lower-left"
+              : "lower-right";
+  return {
+    x,
+    y,
+    mx,
+    my,
+    betX,
+    betY,
+    mbetX,
+    mbetY,
+    actionX,
+    actionY,
+    mactionX,
+    mactionY,
+    archetype,
+  };
 }
 
-const hero = slot([50, 89, 50, 67], [50, 91, 50, 66]);
+function ellipseSlots(tableSize: number): readonly SeatAnchor[] {
+  return Array.from({ length: tableSize }, (_, index) => slot(tableSize, index));
+}
+
 export const seatLayouts: Record<number, readonly SeatAnchor[]> = {
-  6: [
-    hero,
-    slot([13, 70, 28, 60], [14, 76, 31, 65]),
-    slot([22, 25, 28, 38], [15, 30, 35, 37]),
-    slot([50, 15, 50, 28], [50, 15, 50, 28]),
-    slot([78, 25, 72, 38], [85, 30, 65, 37]),
-    slot([87, 70, 72, 60], [86, 76, 69, 65]),
-  ],
-  7: [
-    hero,
-    slot([17, 81, 28, 69], [14, 81, 27, 70]),
-    slot([10, 49, 24, 50], [13, 55, 26, 65]),
-    slot([32, 17, 35, 30], [31, 16, 34, 29]),
-    slot([68, 17, 65, 30], [69, 16, 66, 29]),
-    slot([90, 49, 76, 50], [87, 55, 74, 65]),
-    slot([83, 81, 72, 69], [86, 81, 73, 70]),
-  ],
-  8: [
-    hero,
-    slot([17, 81, 28, 69], [14, 82, 33, 71]),
-    slot([10, 51, 24, 53], [13, 58, 26, 68]),
-    slot([23, 23, 29, 36], [15, 31, 35, 37]),
-    slot([50, 15, 50, 28], [50, 14, 50, 27]),
-    slot([77, 23, 71, 36], [85, 31, 65, 37]),
-    slot([90, 51, 76, 53], [87, 58, 74, 68]),
-    slot([83, 81, 72, 69], [86, 82, 67, 71]),
-  ],
-  9: [
-    hero,
-    slot([17, 81, 28, 69], [14, 82, 33, 71]),
-    slot([10, 56, 24, 55], [13, 59, 26, 68]),
-    slot([18, 31, 27, 43], [13, 35, 35, 37]),
-    slot([39, 15, 39, 28], [36, 15, 36, 27]),
-    slot([61, 15, 61, 28], [64, 15, 64, 27]),
-    slot([82, 31, 73, 43], [87, 35, 65, 37]),
-    slot([90, 56, 76, 55], [87, 59, 74, 68]),
-    slot([83, 81, 72, 69], [86, 82, 67, 71]),
-  ],
+  6: ellipseSlots(6),
+  7: ellipseSlots(7),
+  8: ellipseSlots(8),
+  9: ellipseSlots(9),
 };
 
 export function heroRelativeCoords(

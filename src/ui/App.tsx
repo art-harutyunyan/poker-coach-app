@@ -3,7 +3,6 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import type { CSSProperties } from "react";
 import {
   AlertTriangle,
-  ChevronLeft,
   Gauge,
   Layers3,
   ListChecks,
@@ -11,7 +10,6 @@ import {
   Menu,
   PlayCircle,
   SearchX,
-  Upload,
   Check,
 } from "lucide-react";
 import { Suspense, lazy, useEffect, useMemo, useState } from "react";
@@ -29,7 +27,7 @@ import { AnalysisPanel } from "./components/AnalysisPanel";
 import { DevelopmentChart } from "./components/DevelopmentChart";
 import { PokerTable } from "./components/PokerTable";
 import { ReplayControls } from "./components/ReplayControls";
-import { KeyHandsRail } from "./components/KeyHandsRail";
+import { ReplayerHandStrip } from "./components/ReplayerHandStrip";
 import { PrototypeDialog } from "./components/PrototypeDialog";
 import { TournamentTabs, type TournamentTab } from "./components/TournamentTabs";
 import { TournamentUpload } from "./components/TournamentUpload";
@@ -131,12 +129,6 @@ function MainApp() {
     route === "tournaments" &&
     (imported.view.kind === "tournament" || demoOpen) &&
     activeTournamentTab === "replayer";
-  const completedAttempt = imported.attempt;
-  const completedEntry =
-    completedAttempt.status === "complete"
-      ? (imported.entries.find((entry) => entry.key === completedAttempt.key) ?? null)
-      : null;
-
   function openUpload() {
     imported.resetImportAttempt();
     setDialog("upload");
@@ -188,31 +180,6 @@ function MainApp() {
             route === "tournaments" && !demoOpen ? "tournamentLibraryPage" : ""
           }
         >
-          {replayerScreen && (
-            <header className="workspaceChrome">
-              <div>
-                <strong>Tournament review</strong>
-                <span>
-                  / {imported.activeEntry?.tournament.name ?? tournament.name}
-                </span>
-              </div>
-              <div>
-                <span className="demoBadge">
-                  {demoOpen ? "Illustrative prototype" : "Local hand history"}
-                </span>
-                {demoOpen && (
-                  <button
-                    className="iconButton"
-                    type="button"
-                    aria-label="Upload tournament"
-                    onClick={openUpload}
-                  >
-                    <Upload size={18} />
-                  </button>
-                )}
-              </div>
-            </header>
-          )}
           {!replayerScreen && (
             <header className="topBar">
               <button
@@ -357,10 +324,11 @@ function MainApp() {
           >
             {dialog === "upload" ? (
               <TournamentUpload
-                attempt={imported.attempt}
-                completedEntry={completedEntry}
+                fileResults={imported.fileResults}
+                entries={imported.entries}
                 onImport={imported.importFile}
                 onOpenReview={(key) => {
+                  imported.cancelPendingImport();
                   imported.openTournament(key);
                   setDemoOpen(false);
                   setDialog(null);
@@ -463,39 +431,19 @@ function TournamentWorkspace({
   onVisualPreviewChange: (preview: VisualPreviewSelection) => void;
 }) {
   const [reviewed, setReviewed] = useState(false);
+  const stripHands = useMemo(
+    () => [
+      {
+        id: hand.id,
+        handNumber: hand.handNumber,
+        spot: "SB vs BTN open",
+        cards: hand.heroHoleCards,
+      },
+    ],
+    [hand],
+  );
   return (
-    <TournamentTabs
-      value={activeTab}
-      onChange={onTabChange}
-      header={
-        activeTab === "replayer" && (
-          <header className="replayerPageHeader">
-            <div className="replayerTitleBlock">
-              <button
-                className="replayerBackLink"
-                type="button"
-                onClick={() => onTabChange("overview")}
-              >
-                <ChevronLeft size={16} aria-hidden="true" />
-                Tournament overview
-              </button>
-              <h1>{tournament.name}</h1>
-              <div className="tournamentMetaLine replayerMetaLine">
-                <span>Sep 4, 2026</span>
-                <span>{tournament.handsPlayed} hands</span>
-                <span>Regular MTT</span>
-              </div>
-            </div>
-            <div className="tournamentReviewGrade">
-              <strong>B</strong>
-              <div>
-                Decision quality<small>Mock heuristic review</small>
-              </div>
-            </div>
-          </header>
-        )
-      }
-    >
+    <TournamentTabs value={activeTab} onChange={onTabChange} header={null}>
       <Tabs.Content value="overview">
         <div className="pageGrid">
           <TournamentOverview />
@@ -506,12 +454,30 @@ function TournamentWorkspace({
 
       <Tabs.Content value="replayer">
         <div className="tournamentReviewScreen">
+          <ReplayerHandStrip
+            title={tournament.name}
+            context="Illustrative prototype · Regular MTT"
+            hands={stripHands}
+            selectedHandId={hand.id}
+            totalHands={1}
+            onSelectHand={() => onCursorChange(findActionCursor(hand, "a-hero-call"))}
+            onBack={() => onTabChange("overview")}
+            browseContent={(close) => (
+              <nav className="noc-replayer-strip__sample" aria-label="Sample hands">
+                <button
+                  type="button"
+                  onClick={() => {
+                    close();
+                    onCursorChange(findActionCursor(hand, "a-hero-call"));
+                  }}
+                >
+                  <strong>Hand #{hand.handNumber}</strong>
+                  <span>A5s · SB vs BTN open</span>
+                </button>
+              </nav>
+            )}
+          />
           <div className="replayerLayout">
-            <KeyHandsRail
-              hand={hand}
-              reviewed={reviewed}
-              onSelect={() => onCursorChange(findActionCursor(hand, "a-hero-call"))}
-            />
             <section className="tableSection">
               <div className="handStudyHeader">
                 <div>

@@ -17,6 +17,72 @@ function deferred() {
 }
 
 describe("session tournament controller", () => {
+  it("keeps one typed result per file without adding duplicates, conflicts or errors", async () => {
+    const { result } = renderHook(() => useTournamentImport());
+    let pending!: Promise<void>;
+    act(() => {
+      pending = result.current.importFile(file(0, "original.txt"));
+    });
+    expect(result.current.fileResults).toMatchObject([
+      { status: "processing", fileName: "original.txt" },
+    ]);
+    await act(() => pending);
+    const existing = result.current.entries[0]!;
+    expect(result.current.fileResults).toMatchObject([
+      { status: "success", key: existing.key, fileName: "original.txt" },
+    ]);
+    await act(() => result.current.importFile(file(0, "copy.txt")));
+    await act(() =>
+      result.current.importFile(
+        new File([fixtureHand(0, "TM6468725291")], "partial.txt"),
+      ),
+    );
+    await act(() => result.current.importFile(new File([""], "empty.txt")));
+    expect(result.current.fileResults).toMatchObject([
+      { status: "success", key: existing.key },
+      { status: "duplicate", key: existing.key, fileName: "copy.txt" },
+      {
+        status: "conflict",
+        key: existing.key,
+        tournamentId: existing.tournament.id,
+        fileName: "partial.txt",
+      },
+      { status: "error", fileName: "empty.txt", error: { code: "empty_file" } },
+    ]);
+    expect(result.current.entries).toHaveLength(1);
+    expect(result.current.entries[0]).toBe(existing);
+    act(() => result.current.resetImportAttempt());
+    expect(result.current.fileResults).toEqual([]);
+    expect(result.current.entries).toHaveLength(1);
+  }, 30000);
+
+  it("removes superseded processing rows and ignores their eventual success", async () => {
+    const first = deferred();
+    const read = vi
+      .fn()
+      .mockReturnValueOnce(first.promise)
+      .mockResolvedValueOnce({
+        ok: false,
+        error: { kind: "file", code: "empty_file", message: "Empty" },
+      });
+    const { result } = renderHook(() => useTournamentImport(read));
+    let pending!: Promise<void>;
+    act(() => {
+      pending = result.current.importFile(file(0, "first.txt"));
+    });
+    await act(() => result.current.importFile(new File([""], "second.txt")));
+    expect(result.current.fileResults).toMatchObject([
+      { status: "error", fileName: "second.txt" },
+    ]);
+    const accepted = await importTournamentFile(file(0));
+    await act(async () => {
+      first.resolve(accepted);
+      await pending;
+    });
+    expect(result.current.fileResults).toHaveLength(1);
+    expect(result.current.entries).toHaveLength(0);
+  });
+
   it("retains A and B and restores each hand, tab, cursor and privacy independently", async () => {
     const { result } = renderHook(() => useTournamentImport());
     expect(result.current.entries).toHaveLength(0);

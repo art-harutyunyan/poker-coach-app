@@ -1,0 +1,285 @@
+/* R8: one compact replay dock; the table and replay state remain unchanged. */
+.tournamentReviewScreen .pokerTableWrap {
+  gap: 8px;
+}
+
+.tournamentReviewScreen .replayerCommandDeck {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 760px);
+  min-width: 0;
+  margin: 2px auto 0;
+  padding: 12px 16px;
+  gap: 10px;
+  border: 1px solid var(--noc-line);
+  border-radius: 24px;
+  background: var(--noc-raised);
+  box-shadow: none;
+  color: var(--noc-text);
+}
+
+.tournamentReviewScreen .decisionRibbon {
+  display: flex;
+  flex-direction: row;
+  order: 0;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  gap: 16px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.tournamentReviewScreen .decisionRibbonMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  gap: 2px;
+}
+
+.tournamentReviewScreen .decisionRibbonMessage strong {
+  color: var(--noc-text);
+  font-family: var(--noc-font-body);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 20px;
+}
+
+.tournamentReviewScreen .decisionRibbonMessage p {
+  margin: 0;
+  color: var(--noc-text-2);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.tournamentReviewScreen .replayProgress {
+  display: flex;
+  flex: 0 0 126px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+}
+
+.tournamentReviewScreen .replayProgress span {
+  color: var(--noc-text-2);
+  font-family: var(--noc-font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.replayProgressTrack {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--noc-line);
+}
+
+.replayProgressTrack i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--noc-accent);
+}
+
+.tournamentReviewScreen .replayControls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  gap: 8px 12px;
+  border: 0;
+  background: transparent;
+}
+
+.replayTransport {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 2px;
+}
+
+.replayTransport button {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--noc-text);
+  cursor: pointer;
+}
+
+.replayTransport button:hover:not(:disabled) {
+  background: var(--noc-panel);
+}
+
+.replayTransport .replayTransportNext {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--noc-accent);
+  color: var(--noc-accent-ink);
+}
+
+.replayTransport .replayTransportNext:hover:not(:disabled) {
+  background: var(--noc-accent);
+  filter: brightness(1.08);
+}
+
+.replayTransport button:disabled,
+.streetNavigation button:disabled {
+  opacity: 1;
+  color: var(--noc-text-3);
+  cursor: not-allowed;
+}
+
+.replayTransport .replayTransportNext:disabled {
+  background: var(--noc-line);
+  color: var(--noc-text-3);
+}
+
+.tournamentReviewScreen .streetNavigation {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 999px;
+  background: var(--noc-bg);
+}
+
+.tournamentReviewScreen .streetNavigation button {
+  position: static;
+  flex: 0 1 auto;
+  min-height: 44px;
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--noc-text-2);
+  font-family: var(--noc-font-body);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.tournamentReviewScreen .streetNavigation button::after {
+  display: none;
+}
+
+.tournamentReviewScreen .streetNavigation button[aria-current="step"] {
+  background: var(--noc-line);
+  color: var(--noc-text);
+}
+
+.tournamentReviewScreen .streetNavigation button:disabled:not([aria-current]) {
+  color: var(--noc-text-3);
+}
+
+.tournamentReviewScreen
+  .streetNavigation
+  button:hover:not(:disabled):not([aria-current]) {
+  background: var(--noc-raised);
+  color: var(--noc-text);
+}
+
+.tournamentReviewScreen .switchLabel {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-height: 36px;
+  margin: 0;
+  gap: 7px;
+  color: var(--noc-text-2);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tournamentReviewScreen .switchRoot {
+  order: 0;
+  width: 36px;
+  height: 22px;
+  border: 1px solid var(--noc-line);
+  border-radius: 99px;
+  background: var(--noc-line);
+}
+
+.tournamentReviewScreen .switchRoot[data-state="checked"] {
+  border-color: var(--noc-accent);
+  background: var(--noc-accent);
+}
+
+.tournamentReviewScreen .switchThumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--noc-text);
+  transform: translateX(2px);
+}
+
+.tournamentReviewScreen .switchRoot[data-state="checked"] .switchThumb {
+  background: var(--noc-accent-ink);
+  transform: translateX(16px);
+}
+
+.tournamentReviewScreen .replayControls :is(button, [role="switch"]):focus-visible,
+.tournamentReviewScreen .actionHistory summary:focus-visible {
+  outline: 2px solid var(--noc-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 800px) {
+  .tournamentReviewScreen .replayerCommandDeck {
+    width: min(100%, 620px);
+    border-radius: 18px;
+  }
+
+  .tournamentReviewScreen .streetNavigation {
+    order: 3;
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+
+  .tournamentReviewScreen .streetNavigation button {
+    flex: 1 1 auto;
+    padding-inline: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tournamentReviewScreen .replayerCommandDeck {
+    padding: 11px 12px;
+  }
+
+  .tournamentReviewScreen .decisionRibbon {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .tournamentReviewScreen .replayProgress {
+    flex-basis: 100px;
+  }
+
+  .tournamentReviewScreen .replayControls {
+    justify-content: space-between;
+  }
+}

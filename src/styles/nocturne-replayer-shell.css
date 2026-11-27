@@ -1,0 +1,333 @@
+/* R6: the page shell only. PokerTable, seats and replay controls keep their own styles. */
+.appShell[data-replayer-screen="true"]
+  .tournamentLibraryPage:has(.tournamentTabs[data-active-screen="replayer"]) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.appShell[data-replayer-screen="true"]
+  .tournamentLibraryPage:has(.tournamentTabs[data-active-screen="replayer"])
+  > .tournamentLibrary {
+  display: none;
+}
+.appShell[data-replayer-screen="true"]
+  .tournamentLibraryPage:has(.tournamentTabs[data-active-screen="replayer"])
+  > .importedTournament {
+  grid-column: 1;
+  max-height: none;
+  overflow: visible;
+}
+
+.appShell[data-replayer-screen="true"]
+  .tournamentTabs[data-active-screen="replayer"]
+  > .tabList {
+  margin: 0 0 8px;
+  padding: 0 4px;
+}
+
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  font-family: var(--noc-font-body);
+}
+
+.noc-replayer-strip {
+  display: grid;
+  grid-template-rows: 36px minmax(0, 1fr);
+  gap: 6px;
+  min-width: 0;
+  height: 128px;
+  padding: 8px 12px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-lg);
+  background: var(--noc-panel);
+  color: var(--noc-text);
+}
+
+.noc-replayer-strip__header,
+.noc-replayer-strip__body,
+.noc-replayer-strip__item-top,
+.noc-replayer-strip__item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.noc-replayer-strip__header > div {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+
+.noc-replayer-strip__back {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 3px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+  cursor: pointer;
+}
+
+.noc-replayer-strip__back:hover {
+  color: var(--noc-accent);
+}
+.noc-replayer-strip__header h1 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--noc-text);
+  font: var(--noc-heading);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.noc-replayer-strip__header p,
+.noc-replayer-strip__count {
+  overflow: hidden;
+  margin: 0;
+  color: var(--noc-text-3);
+  font: var(--noc-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.noc-replayer-strip__count {
+  flex-shrink: 0;
+}
+
+.noc-replayer-strip__body {
+  position: relative;
+}
+.noc-replayer-strip__scroll {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+  height: 68px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+.noc-replayer-strip__item {
+  display: grid;
+  flex: 0 0 176px;
+  gap: 2px;
+  width: 176px;
+  min-width: 0;
+  height: 64px;
+  padding: 5px 8px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text);
+  text-align: left;
+  cursor: pointer;
+}
+.noc-replayer-strip__item:hover {
+  border-color: var(--noc-text-3);
+}
+.noc-replayer-strip__item[aria-current="true"] {
+  border-color: var(--noc-accent);
+  background: var(--noc-selected);
+}
+.noc-replayer-strip__item-top strong {
+  font: 600 12px/16px var(--noc-font-body);
+}
+.noc-replayer-strip__item-top > span,
+.noc-replayer-strip__grade {
+  overflow: hidden;
+  color: var(--noc-text-3);
+  font: 400 12px/14px var(--noc-font-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.noc-replayer-strip__cards {
+  display: inline-flex;
+  gap: 2px;
+}
+.noc-replayer-strip__browse {
+  display: grid;
+  flex: 0 0 112px;
+  place-content: center;
+  justify-items: center;
+  gap: 1px;
+  height: 64px;
+  border: 1px dashed var(--noc-text-3);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text);
+  cursor: pointer;
+}
+.noc-replayer-strip__browse strong {
+  font: 600 12px/14px var(--noc-font-body);
+}
+.noc-replayer-strip__browse span {
+  color: var(--noc-text-3);
+  font: var(--noc-caption);
+}
+.noc-replayer-strip__browse[aria-expanded="true"] {
+  border-color: var(--noc-accent);
+}
+.noc-replayer-strip :is(button, [tabindex]):focus-visible {
+  outline: 2px solid var(--noc-accent);
+  outline-offset: 2px;
+}
+
+.noc-replayer-strip__popover {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 18px);
+  right: 0;
+  width: min(640px, calc(100vw - 40px));
+  max-height: min(440px, calc(100dvh - 220px));
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-lg);
+  background: var(--noc-panel);
+  box-shadow: 0 24px 56px rgb(0 0 0 / 45%);
+}
+.noc-replayer-strip__popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  color: var(--noc-text);
+  font: var(--noc-heading);
+}
+.noc-replayer-strip__popover-header button {
+  padding: 4px 8px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text);
+  font: var(--noc-caption);
+  cursor: pointer;
+}
+.noc-replayer-strip__filter-context {
+  margin: 0 0 12px;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+.noc-replayer-strip__popover .importedHandRail {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.noc-replayer-strip__popover .importedHandRows {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-height: 310px;
+  overflow-y: auto;
+}
+.noc-replayer-strip__popover .handFilterControls {
+  height: auto;
+}
+.noc-replayer-strip__popover .handFilterOptions {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.noc-replayer-strip__sample button {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text);
+  cursor: pointer;
+}
+
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .replayerLayout,
+.appShell[data-replayer-screen="true"] .importedTournament .replayerLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 8px;
+  align-items: stretch;
+  min-width: 0;
+}
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .tableSection,
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .analysisPanel {
+  min-width: 0;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-lg);
+  background: var(--noc-panel);
+  color: var(--noc-text);
+  box-shadow: none;
+}
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .tableSection {
+  padding: 16px;
+}
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .analysisPanel {
+  grid-column: auto;
+  grid-row: auto;
+  width: auto;
+  max-height: calc(100dvh - 220px);
+  margin: 0;
+  overflow-y: auto;
+}
+.appShell[data-replayer-screen="true"] .tournamentReviewScreen .studyFooter {
+  margin-top: 8px;
+}
+
+@media (max-width: 1100px) {
+  .appShell[data-replayer-screen="true"] .tournamentReviewScreen .replayerLayout,
+  .appShell[data-replayer-screen="true"] .importedTournament .replayerLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .appShell[data-replayer-screen="true"] .tournamentReviewScreen .analysisPanel {
+    max-height: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .noc-replayer-strip {
+    padding: 8px;
+  }
+  .noc-replayer-strip__header > div {
+    flex-wrap: wrap;
+    gap: 0 8px;
+  }
+  .noc-replayer-strip__header h1 {
+    max-width: calc(100vw - 140px);
+    font-size: 14px;
+  }
+  .noc-replayer-strip__header p {
+    flex-basis: 100%;
+    font-size: 12px;
+    line-height: 14px;
+  }
+  .noc-replayer-strip__count {
+    display: none;
+  }
+  .noc-replayer-strip__item {
+    flex-basis: 150px;
+    width: 150px;
+  }
+  .noc-replayer-strip__browse {
+    flex-basis: 86px;
+  }
+  .noc-replayer-strip__popover .importedHandRows {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    overflow-x: hidden;
+  }
+  .noc-replayer-strip__popover .importedHandRow {
+    width: 100%;
+    min-width: 0;
+  }
+  .noc-replayer-strip__popover .handFilterOptions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .appShell[data-replayer-screen="true"] .tournamentReviewScreen .tableSection {
+    padding: 8px;
+  }
+}
