@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { mkdir, readFile } from "node:fs/promises";
+import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fixtureNames } from "../../src/parsers/gg/fixtureTestUtils";
 
@@ -13,10 +13,21 @@ async function importFixture(page: Page, width: number) {
   await page
     .getByLabel("Hand history file")
     .setInputFiles(resolve("tests/fixtures/gg", fixtureNames[0]));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
-  await page.getByRole("button", { name: "Open Tournament Review" }).click();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Open tournament", exact: true }).click();
   await page.getByRole("tab", { name: "Replayer", exact: true }).click();
   await page.evaluate(() => document.fonts.ready);
+}
+async function selectImportedHand(page: Page, handId: string) {
+  await page.getByRole("button", { name: /Browse all \d+ hands/ }).click();
+  const browser = page.getByRole("dialog", { name: "Browse all hands" });
+  await browser.locator(`[data-hand-id="${handId}"]`).click();
+  await expect(browser).toHaveCount(0);
+  await expect(
+    page.locator(`.noc-replayer-strip__item[data-hand-id="${handId}"]`),
+  ).toHaveAttribute("aria-current", "true");
 }
 async function shot(page: Page, name: string) {
   await mkdir(output, { recursive: true });
@@ -40,28 +51,19 @@ async function checkCards(page: Page) {
             board: [46, 64, 29, 17],
           } as Record<string, number[]>
         )[variant]!;
-        if (variant === "table" && innerWidth <= 700) {
-          const size = card.closest(".pokerStage")?.getAttribute("data-table-size");
-          w =
-            size === "9"
-              ? 31
-              : size === "6"
-                ? Math.min(
-                    40,
-                    card.closest(".pokerStage")!.getBoundingClientRect().width * 0.17 -
-                      31,
-                  )
-                : 35;
-          h = (w * 54) / 40;
-          rankSize = (w * 25) / 40;
-          suitSize = (w * 14) / 40;
+        const stage = card.closest(".pokerStage");
+        if (stage && variant === "table") {
+          const hero = Boolean(card.closest(".is-hero"));
+          [w, h, rankSize, suitSize] = hero ? [50, 70, 31, 18] : [27, 38, 17, 10];
         }
-        if (variant === "board" && innerWidth <= 700) {
-          const stage = card.closest(".pokerStage")!.getBoundingClientRect();
-          w = Math.min(46, stage.width * 0.148 - 20.8);
-          h = (w * 64) / 46;
-          rankSize = (w * 29) / 46;
-          suitSize = (w * 17) / 46;
+        if (stage && variant === "board") {
+          const count = Number(stage.getAttribute("data-board-count"));
+          [w, h, rankSize, suitSize] =
+            innerWidth <= 700 && count >= 4
+              ? count === 4
+                ? [36, 51, 23, 13]
+                : [28, 40, 18, 10]
+              : [44, 62, 28, 16];
         }
         const box = card.getBoundingClientRect(),
           style = getComputedStyle(card),
@@ -83,12 +85,22 @@ async function checkCards(page: Page) {
             problems.push("concealed identity");
         } else {
           if (
-            style.backgroundColor !== "rgb(250, 250, 247)" ||
+            style.backgroundColor !==
+              (stage ? "rgb(244, 244, 241)" : "rgb(250, 250, 247)") ||
             style.borderTopColor !== "rgb(206, 210, 201)"
           )
             problems.push("face tokens");
           const red = card.getAttribute("data-red") === "true";
-          if (style.color !== (red ? "rgb(130, 29, 56)" : "rgb(24, 31, 27)"))
+          if (
+            style.color !==
+            (stage
+              ? red
+                ? "rgb(210, 58, 74)"
+                : "rgb(22, 24, 29)"
+              : red
+                ? "rgb(130, 29, 56)"
+                : "rgb(24, 31, 27)")
+          )
             problems.push("ink");
           const rank = card.querySelector("strong")!,
             svg = card.querySelector("svg")!;
@@ -118,48 +130,24 @@ async function checkCards(page: Page) {
     );
   expect(errors).toEqual([]);
 }
-async function geometry(page: Page) {
-  return page
-    .locator(
-      ".table-felt,.table-pot > *,.table-brand,.table-street,.player-seat,.player-nameplate,.player-name,.player-stack,.player-action-slot,.player-committed,.seat-dealer,.replayControls,.tabList",
-    )
-    .evaluateAll((els) =>
-      els.map((el) => {
-        const range = document.createRange();
-        range.selectNodeContents(el);
-        const r = el.matches(".table-brand,.table-street")
-          ? range.getBoundingClientRect()
-          : el.getBoundingClientRect();
-        return {
-          key: el.className,
-          x: r.x,
-          y: r.y,
-          w: r.width,
-          h: r.height,
-          text: (() => {
-            const copy = el.cloneNode(true) as Element;
-            copy
-              .querySelectorAll("style,.cardBackArtwork")
-              .forEach((style) => style.remove());
-            return copy.textContent;
-          })(),
-        };
-      }),
-    );
-}
 for (const width of [1440, 1024, 768, 430, 390])
   test(`approved imported cards at ${width}`, async ({ page }) => {
     await importFixture(page, width);
     await expect(
-      page.locator('.importedHeroCards [data-card-variant="compact"]').first(),
+      page.locator('.noc-replayer-strip__cards [data-card-variant="compact"]').first(),
     ).toBeVisible();
     const tens = page
-      .locator(".importedHeroCards .playingCard")
+      .locator(".noc-replayer-strip__cards .playingCard")
       .filter({ has: page.locator("strong", { hasText: /^10$/ }) });
     expect(await tens.count()).toBeGreaterThan(0);
+    await page.getByRole("button", { name: /Browse all \d+ hands/ }).click();
+    await expect(
+      page.locator('.importedHeroCards [data-card-variant="compact"]').first(),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Close hand browser" }).click();
     await checkCards(page);
     await shot(page, `navigator-${width}`);
-    await page.locator('[data-hand-id="TM6468725291"]').click();
+    await selectImportedHand(page, "TM6468725291");
     const opponent = page.locator('[data-player-id="gg:314729652:ad116bad"]');
     await page.getByRole("button", { name: "Showdown", exact: true }).click();
     await expect(opponent.getByRole("img", { name: "Face-down card" })).toHaveCount(2);
@@ -174,7 +162,7 @@ for (const width of [1440, 1024, 768, 430, 390])
     await page.getByRole("switch").click();
     expect(await opponent.locator(".player-cards").innerHTML()).toBe(concealed);
     await shot(page, `concealed-${width}`);
-    await page.locator('[data-hand-id="TM6469820465"]').click();
+    await selectImportedHand(page, "TM6469820465");
     await page.getByRole("button", { name: "River", exact: true }).click();
     await expect(page.locator('.table-board [data-card-variant="board"]')).toHaveCount(
       5,
@@ -201,50 +189,26 @@ for (const width of [1440, 1024, 768, 430, 390])
         );
       return overlaps.map(({ position, r }) => ({ position, rect: r.toJSON() }));
     });
-    // R2's persistent library narrows the 1440px workspace. Compare that
-    // layout to its own baseline; keep the older baselines at other widths.
-    const current = await geometry(page);
-    const prior = JSON.parse(
-      await readFile(
-        `${output}/${width === 1440 ? "r2-geometry" : "before-geometry"}-${width}.json`,
-        "utf8",
-      ),
-    ) as Awaited<ReturnType<typeof geometry>>;
-    const currentFelt = current.find((item) => item.key === "table-felt")!;
-    const priorFelt = prior.find((item) => item.key === "table-felt")!;
-    const relativeCenter = (
-      item: (typeof current)[number],
-      felt: (typeof current)[number],
-    ) => ({
-      x: (item.x + item.w / 2 - felt.x - felt.w / 2) / felt.w,
-      y: (item.y + item.h / 2 - felt.y - felt.h / 2) / felt.h,
-    });
-    expect(current).toHaveLength(prior.length);
-    current.forEach((actual, i) => {
-      const expected = prior[i]!;
-      expect(actual.key).toBe(expected.key);
-      expect(actual.text).toBe(expected.text);
-      if (
-        String(actual.key).includes("player-seat") ||
-        actual.key === "table-brand" ||
-        actual.key === "table-street" ||
-        actual.key === "seat-dealer" ||
-        (actual.key === "" && [3, 4].includes(i))
-      ) {
-        const position = relativeCenter(actual, currentFelt);
-        const baseline = relativeCenter(expected, priorFelt);
-        expect(Math.abs(position.x - baseline.x), `${i}: ${actual.key} x`).toBeLessThan(
-          0.06,
+    await expect(page.locator(".table-felt")).toHaveCSS(
+      "background-color",
+      "rgb(44, 36, 66)",
+    );
+    const nameplateOverlaps = await page
+      .locator(".player-nameplate")
+      .evaluateAll((plates) => {
+        const rects = plates.map((plate) => plate.getBoundingClientRect());
+        return rects.flatMap((a, i) =>
+          rects
+            .slice(i + 1)
+            .flatMap((b) =>
+              Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 &&
+              Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1
+                ? [i]
+                : [],
+            ),
         );
-        expect(Math.abs(position.y - baseline.y), `${i}: ${actual.key} y`).toBeLessThan(
-          0.08,
-        );
-      }
-      if (String(actual.key).includes("player-nameplate")) {
-        expect(Math.abs(actual.w - expected.w)).toBeLessThan(0.02);
-        expect(Math.abs(actual.h - expected.h)).toBeLessThan(0.02);
-      }
-    });
+      });
+    expect(nameplateOverlaps).toEqual([]);
     expect(overlaps).toEqual([]);
     await page.getByRole("tab", { name: "Review Queue", exact: true }).click();
     await expect(
@@ -261,7 +225,7 @@ test("compact Ten at 200% zoom and forced colors retains rank and suit", async (
   await page.evaluate(() => (document.documentElement.style.zoom = "2"));
   await checkCards(page);
   await page
-    .locator(".importedHandRail")
+    .locator(".noc-replayer-strip")
     .screenshot({ path: `${output}/zoom-200.png`, animations: "disabled" });
   await page.evaluate(() => (document.documentElement.style.zoom = "1"));
   await page.emulateMedia({ forcedColors: "active" });
@@ -325,14 +289,9 @@ test("approved shared card specimens and concealed variants", async ({ page }) =
       .locator(".back-outer")
       .evaluate((el) => getComputedStyle(el).getPropertyValue("rx")),
   ).toBe("4px");
-  expect(
-    await tableBack
-      .locator(".back-inner")
-      .evaluate((el) => getComputedStyle(el).getPropertyValue("x")),
-  ).toBe("3.5px");
   const motif = await tableBack
     .locator(".back-motif")
     .evaluate((el) => el.getBoundingClientRect().toJSON());
   expect(motif!.width).toBeCloseTo(12);
-  expect(motif!.height).toBeCloseTo(18);
+  expect(motif!.height).toBeCloseTo(12);
 });

@@ -29,7 +29,7 @@ export function PrototypeDialog({
     >
       <header>
         <h2 id="prototype-dialog-title">
-          {kind === "upload" ? "Upload tournament" : "Settings & profile"}
+          {kind === "upload" ? "Import hand histories" : "Settings & profile"}
         </h2>
         <button
           className="iconButton"
@@ -56,7 +56,7 @@ export function PrototypeDialog({
           </>
         ))}
       <button className="secondaryButton" type="button" onClick={onClose}>
-        Return to review
+        {kind === "upload" ? "Close import" : "Return to review"}
       </button>
     </dialog>
   );

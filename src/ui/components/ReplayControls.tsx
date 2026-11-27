@@ -1,5 +1,5 @@
 import * as Switch from "@radix-ui/react-switch";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { RotateCcw, SkipBack, SkipForward } from "lucide-react";
 import { useEffect } from "react";
 import {
   currentNavigationTarget,
@@ -30,7 +30,8 @@ export function ReplayControls({
       if (
         event.target instanceof HTMLElement &&
         (event.target.isContentEditable ||
-          /^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(event.target.tagName))
+          /^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(event.target.tagName) ||
+          event.target.closest('[role="dialog"], dialog, [role="menu"]'))
       )
         return;
       if (event.key === "ArrowLeft") {
@@ -50,15 +51,36 @@ export function ReplayControls({
 
   return (
     <div className="replayControls">
-      <button
-        className="secondaryButton"
-        type="button"
-        disabled={cursor <= 0}
-        onClick={() => onCursorChange(Math.max(0, cursor - 1))}
-      >
-        <ChevronLeft size={18} aria-hidden="true" />
-        Back
-      </button>
+      <div className="replayTransport" role="group" aria-label="Replay actions">
+        <button
+          type="button"
+          aria-label="Start of hand"
+          title="Start of hand"
+          disabled={cursor <= 0}
+          onClick={() => onCursorChange(0)}
+        >
+          <RotateCcw size={17} aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          aria-label="Back"
+          title="Previous action"
+          disabled={cursor <= 0}
+          onClick={() => onCursorChange(Math.max(0, cursor - 1))}
+        >
+          <SkipBack size={18} aria-hidden="true" />
+        </button>
+        <button
+          className="replayTransportNext"
+          type="button"
+          aria-label="Forward"
+          title="Next action"
+          disabled={cursor >= totalActions}
+          onClick={() => onCursorChange(Math.min(totalActions, cursor + 1))}
+        >
+          <SkipForward size={18} aria-hidden="true" />
+        </button>
+      </div>
       <nav className="streetNavigation" aria-label="Replay streets and showdown">
         {(["PREFLOP", "FLOP", "TURN", "RIVER", "SHOWDOWN"] as const).map((street) => {
           const target =
@@ -82,17 +104,7 @@ export function ReplayControls({
           );
         })}
       </nav>
-      <button
-        className="primaryButton"
-        type="button"
-        disabled={cursor >= totalActions}
-        onClick={() => onCursorChange(Math.min(totalActions, cursor + 1))}
-      >
-        Forward
-        <ChevronRight size={18} aria-hidden="true" />
-      </button>
       <label className="switchLabel">
-        Hide result
         <Switch.Root
           checked={resultHidden}
           className="switchRoot"
@@ -100,6 +112,7 @@ export function ReplayControls({
         >
           <Switch.Thumb className="switchThumb" />
         </Switch.Root>
+        <span>Hide result</span>
       </label>
     </div>
   );

@@ -1,2 +1,4 @@
 # Keep raw GG hand-history fixtures byte-for-byte; their source includes trailing spaces.
-tests/fixtures/gg/*.txt -whitespace
+tests/fixtures/gg/*.txt -text -whitespace
+# This protected chart source has an audited LF byte hash on every platform.
+src/ui/components/DevelopmentChart.tsx text eol=lf

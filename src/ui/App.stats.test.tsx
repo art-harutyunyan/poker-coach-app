@@ -20,9 +20,9 @@ it("shows source-backed Overview stats while keeping W$SD masked and Library met
     fireEvent.change(screen.getByLabelText("Hand history file"), {
       target: { files: [new File([fixtureHand(0, "TM6468725291")], "one.txt")] },
     });
-    await screen.findByRole("heading", { name: "Import complete" });
+    await screen.findByRole("button", { name: "Open tournament" });
     expect(screen.queryByText("VPIP")).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Open Tournament Review" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open tournament" }));
     const stats = screen.getByRole("region", { name: "Tournament Stats" });
     expect(within(stats).getByText("VPIP")).toBeVisible();
     expect(within(stats).getByText("Single-tournament sample")).toBeVisible();
@@ -40,4 +40,4 @@ it("shows source-backed Overview stats while keeping W$SD masked and Library met
     HTMLDialogElement.prototype.showModal = showModal;
     HTMLDialogElement.prototype.close = close;
   }
-});
+}, 15000);

@@ -1,13 +1,15 @@
 import type { CSSProperties } from "react";
 import { Coins } from "lucide-react";
 import type { SeatSnapshot } from "../../domain/replay";
-import type { Hand } from "../../domain/schemas";
+import type { Hand, Street } from "../../domain/schemas";
 import type { ChipTheme, VisualPreviewSelection } from "../design/visualThemes";
 import { block52ChipUrl, block52DealerUrl } from "../design/visualThemes";
-import { formatChips, playerDisplayName } from "../format";
+import { playerDisplayName } from "../format";
 import { PlayingCard } from "./PlayingCard";
 import { positionLabel, type SeatAnchor } from "./seatLayout";
 import type { OpponentAliases } from "../opponentAliases";
+import { ActionChip } from "./ActionChip";
+import { SeatPlate, type SeatState } from "./SeatPlate";
 
 export function PlayerSeat({
   seat,
@@ -16,6 +18,8 @@ export function PlayerSeat({
   visualPreview,
   resultHidden = true,
   opponentAliases,
+  currentStreet,
+  lastActionId,
 }: {
   seat: SeatSnapshot;
   anchor: SeatAnchor;
@@ -23,6 +27,8 @@ export function PlayerSeat({
   visualPreview?: VisualPreviewSelection;
   resultHidden?: boolean;
   opponentAliases?: OpponentAliases;
+  currentStreet: Street;
+  lastActionId?: string;
 }) {
   const position = positionLabel(seat.position);
   const importedOpponent = hand.replayMode === "source-events" && !seat.isHero;
@@ -36,6 +42,10 @@ export function PlayerSeat({
     : name;
   const revealed = !resultHidden ? seat.revealedCards : undefined;
   const action = seat.displayAction;
+  // Replay retains terminal seat state; action chips describe the current street.
+  const showAction =
+    action?.street === currentStreet &&
+    (action.type !== "FOLD" || action.id === lastActionId);
   const allIn = seat.isAllIn && !seat.isFolded;
   const type = seat.isFolded
     ? "Fold"
@@ -70,13 +80,27 @@ export function PlayerSeat({
           .replace(/\.0$/, "")
       : undefined;
   const chipTheme = visualPreview?.chipTheme ?? "poker-coach";
-  const state = seat.isFolded
+  const state: SeatState = seat.isFolded
     ? "folded"
     : allIn
       ? "all-in"
       : seat.isActive
-        ? "current"
-        : "active";
+        ? "to-act"
+        : action
+          ? "active"
+          : "waiting";
+  const status =
+    state === "folded"
+      ? "Folded"
+      : state === "all-in"
+        ? "All-in"
+        : state === "to-act"
+          ? seat.isHero
+            ? "Your decision"
+            : "To act"
+          : state === "active"
+            ? "In hand"
+            : "Waiting";
   const style = {
     "--seat-x": `${anchor.x}%`,
     "--seat-y": `${anchor.y}%`,
@@ -86,6 +110,10 @@ export function PlayerSeat({
     "--bet-dy": `${anchor.betY - anchor.y}cqh`,
     "--bet-mdx": `${anchor.mbetX - anchor.mx}cqw`,
     "--bet-mdy": `${anchor.mbetY - anchor.my}cqh`,
+    "--action-dx": `${anchor.actionX - anchor.x}cqw`,
+    "--action-dy": `${anchor.actionY - anchor.y}cqh`,
+    "--action-mdx": `${anchor.mactionX - anchor.mx}cqw`,
+    "--action-mdy": `${anchor.mactionY - anchor.my}cqh`,
   } as CSSProperties;
 
   return (
@@ -96,62 +124,45 @@ export function PlayerSeat({
       data-position={position}
       data-state={state}
     >
-      <div
-        className="player-nameplate"
-        role="group"
-        aria-current={seat.isActive ? "true" : undefined}
-        title={`${identity} · ${formatChips(seat.stackChips)} chips`}
-        aria-label={`${position}, ${identity}, ${seat.stackBB.toFixed(1)} BB${seat.isHero ? ", Hero" : ""}${seat.isActive ? ", Current actor" : ""}${type ? `, ${type}${type === "Raise" ? " to" : ""}${amount ? ` ${amount} BB` : ""}` : ""}`}
-      >
-        {(!seat.isFolded || !!revealed?.length) && (
-          <span
-            className="player-cards"
-            aria-label={
-              seat.isHero
-                ? "Hero hole cards"
-                : `${name} ${revealed?.length ? "revealed" : "hidden"} cards`
-            }
-          >
-            {[0, 1].map((index) => (
-              <PlayingCard
-                key={index}
-                card={seat.isHero ? hand.heroHoleCards[index] : revealed?.[index]}
-                concealed={!seat.isHero && !revealed?.[index]}
-                variant="table"
-                context={seat.isHero ? "hero" : "compact"}
-                theme={visualPreview?.cardTheme}
-              />
-            ))}
-          </span>
-        )}
-        <span className="player-position-badge" aria-label={`Position ${position}`}>
-          {position}
-        </span>
-        <span className="player-action-slot">
-          {type && (
-            <span className={`player-action-text action-${type.toLowerCase()}`}>
-              <span>
-                {type}
-                {type === "Raise" && <span className="raise-to"> to</span>}
-              </span>
-              {amount && (
-                <b>
-                  {amount} <small>BB</small>
-                </b>
-              )}
-            </span>
-          )}
-        </span>
+      {!seat.isFolded && (
         <span
-          className={`player-name${importedOpponent ? " importedOpponentName" : ""}`}
-          title={identity}
+          className="player-cards"
+          aria-label={
+            seat.isHero
+              ? "Hero hole cards"
+              : name + (revealed?.length ? " revealed cards" : " hidden cards")
+          }
         >
-          {name}
+          {[0, 1].map((index) => (
+            <PlayingCard
+              key={index}
+              card={seat.isHero ? hand.heroHoleCards[index] : revealed?.[index]}
+              concealed={!seat.isHero && !revealed?.[index]}
+              variant="table"
+              context={seat.isHero ? "hero" : "compact"}
+              theme={visualPreview?.cardTheme}
+            />
+          ))}
         </span>
-        <b className="player-stack">
-          {seat.stackBB.toFixed(1)} <small>BB</small>
-        </b>
-      </div>
+      )}
+      <SeatPlate
+        name={name}
+        identity={identity}
+        position={seat.position}
+        stackBB={seat.stackBB}
+        stackChips={seat.stackChips}
+        status={status}
+        state={state}
+        hero={seat.isHero}
+        importedOpponent={importedOpponent}
+      />
+      {type && showAction && (
+        <ActionChip
+          kind={type.toLowerCase()}
+          label={type === "Raise" ? "Raise to" : type}
+          amount={amount}
+        />
+      )}
       {seat.position === "BTN" && (
         <span className="seat-dealer" aria-label="Dealer button">
           {chipTheme === "block52" ? <img alt="" src={block52DealerUrl()} /> : "D"}

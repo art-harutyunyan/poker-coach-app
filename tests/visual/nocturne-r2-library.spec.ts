@@ -22,7 +22,9 @@ async function importFixture(page: Page, index: number) {
   await page
     .getByLabel("Hand history file")
     .setInputFiles(resolve("tests/fixtures/gg", fixtureNames[index]!));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Close dialog" }).click();
 }
 

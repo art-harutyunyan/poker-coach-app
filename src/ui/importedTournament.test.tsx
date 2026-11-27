@@ -52,13 +52,80 @@ async function upload(text: string) {
   fireEvent.change(screen.getByLabelText("Hand history file"), {
     target: { files: [new File([text], "history.txt", { type: "text/plain" })] },
   });
-  return screen.findByRole("heading", { name: /Import complete|Already imported/ });
+  return screen.findByRole("button", { name: /Open tournament|Show existing/ });
 }
 function openReview() {
-  fireEvent.click(screen.getByRole("button", { name: "Open Tournament Review" }));
+  fireEvent.click(
+    screen.getByRole("button", { name: /Open tournament|Show existing/ }),
+  );
 }
 
 describe("real imported tournament app", () => {
+  it("shows a keyboard-accessible empty import entry with a multi-file picker", () => {
+    render(<App />);
+    openUpload();
+    const dialog = screen.getByRole("dialog");
+    expect(
+      within(dialog).getByRole("heading", { name: "Import hand histories" }),
+    ).toBeVisible();
+    expect(within(dialog).getByRole("button", { name: "Choose files" })).toBeVisible();
+    expect(
+      within(dialog).getByRole("group", { name: "Drop GG hand histories" }),
+    ).toBeVisible();
+    expect(within(dialog).getByLabelText("Hand history file")).toHaveAttribute(
+      "multiple",
+    );
+    expect(dialog).toHaveTextContent(".txt");
+    expect(dialog).not.toHaveTextContent("cloud upload");
+  });
+
+  it("reports a mixed batch per file and opens the unchanged existing tournament on conflict", async () => {
+    render(<App />);
+    openUpload();
+    const first = readFixture(0);
+    const partial = fixtureHand(0, "TM6468725291");
+    fireEvent.change(screen.getByLabelText("Hand history file"), {
+      target: {
+        files: [
+          new File([first], "first.txt"),
+          new File([fixtureHand(1, "TM6471062694")], "second.txt"),
+          new File([first], "copy.txt"),
+          new File([partial], "changed.txt"),
+          new File(["not GG"], "invalid.txt"),
+        ],
+      },
+    });
+    const dialog = screen.getByRole("dialog");
+    await waitFor(
+      () =>
+        expect(
+          [...dialog.querySelectorAll(".importResult")].map((row) =>
+            row.getAttribute("data-status"),
+          ),
+        ).toEqual(["success", "success", "duplicate", "conflict", "error"]),
+      { timeout: 20000 },
+    );
+    expect(dialog).toHaveTextContent("2 imported");
+    expect(dialog).toHaveTextContent("1 duplicate");
+    expect(dialog).toHaveTextContent("2 rejected/errors");
+    const conflict = dialog.querySelector('[data-status="conflict"]')!;
+    expect(conflict).toHaveTextContent("nothing was merged or replaced");
+    expect(
+      within(conflict as HTMLElement).queryByRole("button", {
+        name: /replace|merge|keep both/i,
+      }),
+    ).toBeNull();
+    fireEvent.click(
+      within(conflict as HTMLElement).getByRole("button", { name: "Show existing" }),
+    );
+    expect(
+      screen.getByRole("region", { name: "Tournament Library" }),
+    ).toHaveTextContent("2 tournaments");
+    expect(
+      screen.getByRole("region", { name: "Tournament overview" }),
+    ).toHaveTextContent("Daily Monster Stack");
+  }, 30000);
+
   it("shows a source-backed Nocturne overview above the compact hand browser and stats", async () => {
     render(<App />);
     openUpload();
@@ -147,6 +214,31 @@ describe("real imported tournament app", () => {
     expect(opponent()).toBeNull();
     expect(screen.getByText(/Action 0 \//)).toBeVisible();
   }, 15000);
+  it("keeps imported replay analysis unavailable after advancing the hand", async () => {
+    render(<App />);
+    openUpload();
+    await upload(fixtureHand(0, "TM6468725291"));
+    openReview();
+    tab("Replayer");
+
+    const analysis = screen.getByRole("complementary", { name: "Hand analysis" });
+    expect(
+      within(analysis).getByRole("heading", { name: "Analysis not available yet" }),
+    ).toBeVisible();
+    expect(analysis).toHaveTextContent(
+      "Decision grades, EV, recommendations, and strategy explanations",
+    );
+    expect(analysis).not.toHaveTextContent(
+      /Excellent|Strategy Mix|Illustrative mock|72%/,
+    );
+    expect(within(analysis).queryByRole("tab", { name: "Decision" })).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Forward" }));
+    expect(analysis).toHaveTextContent("Analysis not available yet");
+    expect(analysis).not.toHaveTextContent(
+      /Excellent|Strategy Mix|Illustrative mock|72%/,
+    );
+  }, 15000);
   it.each([0, 1, 2, 3])(
     "imports fixture %i through the UI with neutral metadata/navigation",
     async (index) => {
@@ -193,7 +285,7 @@ describe("real imported tournament app", () => {
     },
     30000,
   );
-  it("keeps import beside tournament context on every tab and shares the same hand-card pattern", async () => {
+  it("keeps import reachable and shares the same hand-card pattern across tabs", async () => {
     render(<App />);
     openUpload();
     await upload(fixtureHand(0, "TM6468725291"));
@@ -204,9 +296,16 @@ describe("real imported tournament app", () => {
       const context =
         name === "Overview"
           ? screen.getByRole("region", { name: "Tournament overview" })
-          : screen.getByRole("banner", { name: "Imported tournament" });
-      const button = context.querySelector("button.importedReimport")!;
-      expect(button).toHaveTextContent("Import tournament");
+          : name === "Replayer"
+            ? screen.getByRole("region", { name: "Replayer hand strip" })
+            : screen.getByRole("banner", { name: "Imported tournament" });
+      const button =
+        name === "Replayer"
+          ? document.querySelector<HTMLButtonElement>(".sidebarUpload")!
+          : context.querySelector<HTMLButtonElement>("button.importedReimport")!;
+      expect(button).toHaveAccessibleName(
+        name === "Replayer" ? "Upload tournament" : "Import tournament",
+      );
       expect(
         document.querySelector(
           '.workspaceChrome button[aria-label="Upload tournament"]',
@@ -217,10 +316,14 @@ describe("real imported tournament app", () => {
       );
       expect(document.querySelector(".sidebarUpload")).toHaveTextContent("Import");
       if (name !== "Overview") {
+        if (name === "Replayer")
+          fireEvent.click(screen.getByRole("button", { name: "Browse all 1 hand" }));
         const row = document.querySelector(".importedHandRow")!;
         expect(row.querySelectorAll(".playingCard")).toHaveLength(2);
         if (rowMarkup) expect(row.innerHTML).toBe(rowMarkup);
         rowMarkup = row.innerHTML;
+        if (name === "Replayer")
+          fireEvent.click(screen.getByRole("button", { name: "Close hand browser" }));
       }
       fireEvent.click(button);
       expect(screen.getByRole("dialog")).toHaveAttribute("open");
@@ -238,7 +341,7 @@ describe("real imported tournament app", () => {
     });
     expect(await screen.findByRole("alert")).toHaveTextContent(/empty/i);
     expect(
-      screen.queryByRole("button", { name: "Open Tournament Review" }),
+      screen.queryByRole("button", { name: "Open tournament" }),
     ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Close dialog" }));
     expect(

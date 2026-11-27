@@ -14,6 +14,12 @@ import "./ui/design/nocturne.css";
 import "./styles/nocturne-shell.css";
 import "./styles/nocturne-tournament-overview.css";
 import "./styles/nocturne-hand-browser.css";
+import "./styles/nocturne-tournament-import.css";
+import "./styles/nocturne-replayer-shell.css";
+import "./styles/nocturne-replay-controls.css";
+import "./styles/nocturne-replayer-analysis.css";
+import "./styles/nocturne-replayer-browse.css";
+import "./styles/nocturne-replayer-reconciliation.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

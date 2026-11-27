@@ -4,54 +4,38 @@
   <style>
     .study-card-back {
       --study-back-radius: 4px;
-      --study-back-inset: 3.5px;
-      --study-back-inner-radius: 3px;
-      --study-back-diamond-scale: 1 1;
+      --study-back-ring-scale: 1;
     }
     @media (max-width: 32px) {
       .study-card-back:not([data-variant]) {
         --study-back-radius: 3px;
-        --study-back-inset: 2.5px;
-        --study-back-inner-radius: 2px;
-        --study-back-diamond-scale: .666667 .666667;
+        --study-back-ring-scale: .75;
       }
     }
     @media (min-width: 43px) {
       .study-card-back:not([data-variant]) {
         --study-back-radius: 5px;
-        --study-back-inner-radius: 4px;
-        --study-back-diamond-scale: 1.166667 1.111111;
+        --study-back-ring-scale: 1.15;
       }
     }
     .study-card-back[data-variant="compact"] {
       --study-back-radius: 3px;
-      --study-back-inset: 2.5px;
-      --study-back-inner-radius: 2px;
-      --study-back-diamond-scale: .666667 .666667;
+      --study-back-ring-scale: .75;
     }
     .study-card-back[data-variant="board"] {
       --study-back-radius: 5px;
-      --study-back-inner-radius: 4px;
-      --study-back-diamond-scale: 1.166667 1.111111;
+      --study-back-ring-scale: 1.15;
     }
     .study-card-back > .back-outer {
-      width: calc(100% - 1px);
-      height: calc(100% - 1px);
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
       rx: var(--study-back-radius);
     }
-    .study-card-back > .back-inner {
-      x: var(--study-back-inset);
-      y: var(--study-back-inset);
-      width: calc(100% - 2 * var(--study-back-inset));
-      height: calc(100% - 2 * var(--study-back-inset));
-      rx: var(--study-back-inner-radius);
-    }
-    .study-card-back .back-motif { scale: var(--study-back-diamond-scale); }
+    .study-card-back .back-motif { scale: var(--study-back-ring-scale); }
   </style>
-  <rect class="back-outer" x=".5" y=".5" fill="#192C23" stroke="#D6BB87" stroke-width="1"/>
-  <rect class="back-inner" fill="none" stroke="#A88D5E" stroke-width="1"/>
+  <rect class="back-outer" x="1" y="1" fill="#1A2238" stroke="#F1EDE4" stroke-width="2"/>
   <svg x="50%" y="50%" width="1" height="1" overflow="visible">
-    <path class="back-motif" d="M0 -9 6 0 0 9 -6 0Z" fill="none" stroke="#D6BB87" stroke-width="1"
+    <circle class="back-motif" cx="0" cy="0" r="6" fill="none" stroke="#F1EDE4" stroke-width="1.5"
       vector-effect="non-scaling-stroke"/>
   </svg>
 </svg>

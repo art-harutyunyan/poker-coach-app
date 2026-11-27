@@ -1,0 +1,2 @@
+[     851ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://127.0.0.1:5180/node_modules/.vite/deps/react-dom-BOmCuuDs.js?v=89925030:17221
+[    2176ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5180/favicon.ico:0

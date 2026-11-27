@@ -17,6 +17,45 @@ function projected(index: number, id: string) {
   if (!result.ok) throw new Error("Invalid fixture");
   return toReplayHand(result.tournament.hands[0]!).hand;
 }
+
+it("keeps the current actor, controls, and real action progress in one replay dock", () => {
+  const hand = projected(0, "TM6469820465");
+  const state = buildReplayState(hand, 2);
+  const { rerender } = render(
+    <PokerTable
+      hand={hand}
+      replayState={state}
+      resultHidden
+      controls={
+        <ReplayControls
+          hand={hand}
+          cursor={state.cursor}
+          currentStreet={state.currentStreet}
+          totalActions={state.totalActions}
+          resultHidden
+          onCursorChange={vi.fn()}
+          setResultHidden={vi.fn()}
+        />
+      }
+    />,
+  );
+  const dock = screen.getByRole("group", { name: "Replay dock" });
+  expect(
+    within(dock).getByRole("navigation", { name: "Replay streets and showdown" }),
+  ).toBeVisible();
+  expect(
+    within(dock).getByRole("progressbar", { name: "Replay action progress" }),
+  ).toHaveAttribute("aria-valuenow", "2");
+  expect(dock).toHaveTextContent(`Action 2 / ${state.totalActions}`);
+  expect(dock).toHaveTextContent("Next to act:");
+
+  const next = buildReplayState(hand, 3);
+  rerender(<PokerTable hand={hand} replayState={next} resultHidden />);
+  expect(
+    screen.getByRole("progressbar", { name: "Replay action progress" }),
+  ).toHaveAttribute("aria-valuenow", "3");
+});
+
 describe("source replay rendering and privacy", () => {
   it("navigates before SHOW without consuming it and disables disallowed boundaries", () => {
     const hand = projected(0, "TM6468725291"),
@@ -143,7 +182,7 @@ describe("source replay rendering and privacy", () => {
     ).toHaveTextContent("Flop");
     expect(container.querySelectorAll(".is-acting")).toHaveLength(0);
   });
-  it("shows only consumed source reveals including a folded single card", () => {
+  it("keeps a folded seat card-free after a source single-card reveal", () => {
     const hand = projected(0, "TM6469819712");
     const player = hand.players.find((p) => p.name === "54df8316")!;
     const show = flattenActions(hand).find(
@@ -168,10 +207,8 @@ describe("source replay rendering and privacy", () => {
       />,
     );
     expect(seat()).toHaveClass("is-folded");
-    expect(within(seat() as HTMLElement).getByLabelText("Ten of spades")).toBeVisible();
-    expect(
-      within(seat() as HTMLElement).getByLabelText("Face-down card"),
-    ).toBeVisible();
+    expect(seat().querySelector(".player-cards")).toBeNull();
+    expect(seat().querySelector(".player-nameplate")).toHaveTextContent("Folded");
     rerender(
       <PokerTable
         hand={hand}

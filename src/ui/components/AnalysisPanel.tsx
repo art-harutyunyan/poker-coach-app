@@ -19,17 +19,49 @@ const gradeLabels = {
   MAJOR_MISTAKE: "Major Mistake",
 };
 
-export function AnalysisPanel({
-  analysis,
-  decision,
-  hand,
-}: {
-  analysis: HandAnalysis;
-  decision?: Action;
-  hand: Hand;
-}) {
+type AnalysisPanelProps =
+  | { analysis: HandAnalysis; decision?: Action; hand: Hand }
+  | { analysis?: undefined; decision?: never; hand?: never };
+
+export function AnalysisPanel(props: AnalysisPanelProps) {
+  if (!props.analysis) {
+    return (
+      <aside
+        className="analysisPanel nocAnalysisPanel nocAnalysisPanel--unavailable"
+        aria-label="Hand analysis"
+        tabIndex={0}
+      >
+        <header className="nocAnalysisPanel__header">
+          <span>Decision analysis</span>
+          <span className="nocAnalysisPanel__state">Unavailable</span>
+        </header>
+        <div className="nocAnalysisPanel__empty">
+          <BarChart3 size={24} aria-hidden="true" />
+          <h2>Analysis not available yet</h2>
+          <p>
+            This hand is ready for deterministic replay. Decision grades, EV,
+            recommendations, and strategy explanations will appear when analysis results
+            are available.
+          </p>
+        </div>
+        <p className="nocAnalysisPanel__sourceNote">
+          Opponent aliases are display labels. Exact GG source IDs are available on
+          player nameplates.
+        </p>
+      </aside>
+    );
+  }
+
+  const { analysis, decision, hand } = props;
   return (
-    <aside className="analysisPanel" aria-label="Hand analysis">
+    <aside
+      className="analysisPanel nocAnalysisPanel nocAnalysisPanel--illustrative"
+      aria-label="Hand analysis"
+    >
+      <div className="nocAnalysisPanel__header">
+        <span>Decision analysis</span>
+        <span className="nocAnalysisPanel__state">Illustrative analysis</span>
+      </div>
       <Tabs.Root defaultValue="decision">
         <Tabs.List className="analysisTabs" aria-label="Hand analysis views">
           <Tabs.Trigger value="decision">Decision</Tabs.Trigger>

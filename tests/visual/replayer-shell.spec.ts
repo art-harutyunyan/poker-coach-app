@@ -31,11 +31,12 @@ for (const width of [1600, 1440, 1280, 1024, 768, 430, 390, 375]) {
         table: table.toJSON(),
         analysis: analysis.toJSON(),
         font: getComputedStyle(document.querySelector(".handStudyHeader")!).fontFamily,
-        loaded: document.fonts.check('13px "Seat Inter"'),
+        loaded: document.fonts.check('13px "Manrope"'),
       };
     });
     expect(geometry.overflow).toBe(false);
-    expect(geometry.font).toContain("Seat Inter");
+    expect(geometry.font).toContain("Geist");
+    expect(geometry.font).toContain("Manrope");
     expect(geometry.loaded).toBe(true);
     if (width > 1250)
       expect(geometry.analysis.left).toBeGreaterThan(geometry.table.right);
@@ -100,7 +101,7 @@ test("shell navigation, local upload, and informational profile dialog remain us
     .first();
   await upload.click();
   await expect(page.getByRole("dialog")).toContainText(
-    "Processing stays on this device, in memory.",
+    "Files stay on this device and are cleared when you close or refresh the page.",
   );
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -124,7 +125,7 @@ test("shell navigation, local upload, and informational profile dialog remain us
   await page.getByRole("button", { name: "Close dialog" }).click();
   await page.getByLabel("Primary mobile screen").selectOption("upload");
   await expect(page.getByRole("dialog")).toContainText(
-    "Processing stays on this device, in memory.",
+    "Files stay on this device and are cleared when you close or refresh the page.",
   );
   await page.keyboard.press("Escape");
   await page.getByLabel("Primary mobile screen").selectOption("profile");
@@ -132,7 +133,7 @@ test("shell navigation, local upload, and informational profile dialog remain us
   await page.getByRole("button", { name: "Close dialog" }).click();
   await page.getByLabel("Primary mobile screen").selectOption("upload");
   await expect(page.getByRole("dialog")).toContainText(
-    "Processing stays on this device, in memory.",
+    "Files stay on this device and are cleared when you close or refresh the page.",
   );
   await page.keyboard.press("Escape");
 });

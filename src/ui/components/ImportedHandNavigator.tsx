@@ -10,6 +10,7 @@ export function ImportedHandNavigator({
   variant,
   controls,
   emptyMessage,
+  showHeading = true,
 }: {
   hands: readonly ImportedHand[];
   selectedHandId: string;
@@ -17,14 +18,20 @@ export function ImportedHandNavigator({
   variant: "rail" | "list";
   controls?: ReactNode;
   emptyMessage?: string;
+  showHeading?: boolean;
 }) {
   const rows = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    const list = rows.current;
     const selected = Array.from(
-      rows.current?.querySelectorAll<HTMLButtonElement>(".importedHandRow") ?? [],
+      list?.querySelectorAll<HTMLButtonElement>(".importedHandRow") ?? [],
     ).find((row) => row.dataset.handId === selectedHandId);
-    selected?.scrollIntoView?.({ block: "nearest", inline: "nearest" });
-  }, [selectedHandId]);
+    if (!list || !selected) return;
+    const viewport = list.getBoundingClientRect();
+    const item = selected.getBoundingClientRect();
+    if (item.top < viewport.top) list.scrollTop += item.top - viewport.top;
+    if (item.bottom > viewport.bottom) list.scrollTop += item.bottom - viewport.bottom;
+  }, [selectedHandId, hands]);
   return (
     <aside
       className={
@@ -32,9 +39,11 @@ export function ImportedHandNavigator({
       }
       aria-label="Imported hands"
     >
-      <h2>
-        Hands <span>({hands.length})</span>
-      </h2>
+      {showHeading && (
+        <h2>
+          Hands <span>({hands.length})</span>
+        </h2>
+      )}
       {controls}
       {hands.length === 0 && emptyMessage && (
         <p className="importedHandEmpty">{emptyMessage}</p>

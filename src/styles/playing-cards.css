@@ -163,3 +163,61 @@
 .cardBackArtwork > svg {
   display: block;
 }
+
+/* R7 table faces keep the existing card component and approved back artwork. */
+.pokerStage .playingCard[data-card-variant="table"] {
+  --card-width: 50px;
+  --card-height: 70px;
+  --card-rank-size: 31px;
+  --card-suit-size: 18px;
+  background: #f4f4f1;
+  color: #16181d;
+}
+.pokerStage .is-hero .playingCard[data-card-variant="table"] {
+  --card-width: 50px;
+  --card-height: 70px;
+  --card-rank-size: 31px;
+  --card-suit-size: 18px;
+}
+.pokerStage .player-seat:not(.is-hero) .playingCard[data-card-variant="table"] {
+  --card-width: 27px;
+  --card-height: 38px;
+  --card-rank-size: 17px;
+  --card-suit-size: 10px;
+  gap: 1px;
+  padding: 3px 2px;
+}
+.pokerStage .playingCard[data-card-variant="board"] {
+  --card-width: 44px;
+  --card-height: 62px;
+  --card-rank-size: 28px;
+  --card-suit-size: 16px;
+  background: #f4f4f1;
+  color: #16181d;
+}
+.pokerStage .playingCard[data-red="true"] {
+  color: #d23a4a;
+}
+.pokerStage .table-board:has(> [data-card-variant="board"]) {
+  height: 62px;
+}
+@media (max-width: 700px) {
+  .pokerStage[data-board-count="4"] .playingCard[data-card-variant="board"] {
+    --card-width: 36px;
+    --card-height: 51px;
+    --card-rank-size: 23px;
+    --card-suit-size: 13px;
+  }
+  .pokerStage[data-board-count="5"] .playingCard[data-card-variant="board"] {
+    --card-width: 28px;
+    --card-height: 40px;
+    --card-rank-size: 18px;
+    --card-suit-size: 10px;
+  }
+  .pokerStage[data-board-count="4"] .table-board:has(> [data-card-variant="board"]) {
+    height: 51px;
+  }
+  .pokerStage[data-board-count="5"] .table-board:has(> [data-card-variant="board"]) {
+    height: 40px;
+  }
+}

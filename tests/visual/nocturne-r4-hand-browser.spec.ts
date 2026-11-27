@@ -13,8 +13,10 @@ async function openFixture(page: Page, width: number) {
   await page
     .getByLabel("Hand history file")
     .setInputFiles(resolve("tests/fixtures/gg", fixtureNames[0]!));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
-  await page.getByRole("button", { name: "Open Tournament Review" }).click();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Open tournament", exact: true }).click();
 }
 
 async function capture(page: Page, name: string) {

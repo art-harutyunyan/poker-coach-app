@@ -11,8 +11,10 @@ for (const width of [1440, 1280, 1024]) {
     await page
       .getByLabel("Hand history file")
       .setInputFiles(resolve("tests/fixtures/gg", fixtureNames[0]!));
-    await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
-    await page.getByRole("button", { name: "Open Tournament Review" }).click();
+    await expect(
+      page.getByRole("button", { name: "Open tournament", exact: true }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Open tournament", exact: true }).click();
 
     const overview = page.getByRole("region", { name: "Tournament overview" });
     await expect(overview).toContainText("Daily Monster Stack");

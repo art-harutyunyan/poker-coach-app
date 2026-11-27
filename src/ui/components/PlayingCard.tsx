@@ -12,6 +12,7 @@ import {
   cardBackUrl,
   cardThemeCalibration,
 } from "../design/visualThemes";
+import { cardAccessibilityLabel } from "./cardAccessibilityLabel";
 
 const LeteleReplayerCard = import.meta.env.DEV
   ? lazy(() =>
@@ -22,22 +23,6 @@ const LeteleReplayerCard = import.meta.env.DEV
   : undefined;
 
 const suitArt = { s: spade, h: heart, d: diamond, c: club };
-const suitNames = { s: "spades", h: "hearts", d: "diamonds", c: "clubs" };
-const rankNames: Record<Card["rank"], string> = {
-  A: "Ace",
-  K: "King",
-  Q: "Queen",
-  J: "Jack",
-  T: "Ten",
-  "9": "Nine",
-  "8": "Eight",
-  "7": "Seven",
-  "6": "Six",
-  "5": "Five",
-  "4": "Four",
-  "3": "Three",
-  "2": "Two",
-};
 export type CardVariant = "compact" | "table" | "board";
 
 export function PlayingCard({
@@ -101,7 +86,7 @@ export function PlayingCard({
       data-red={isRed}
       role="img"
       aria-hidden={ariaHidden}
-      aria-label={ariaHidden ? undefined : `${rankNames[rank]} of ${suitNames[suit]}`}
+      aria-label={ariaHidden ? undefined : cardAccessibilityLabel({ rank, suit })}
     >
       <span className="cardCorner" aria-hidden="true">
         <strong>{rank === "T" ? "10" : rank}</strong>

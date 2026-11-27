@@ -1,0 +1,330 @@
+/* R5 import surface. Parser, library, and replay styles are unchanged. */
+.prototypeDialog:has(.tournamentImport) {
+  width: min(760px, calc(100vw - 24px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-lg);
+  background: var(--noc-panel);
+  color: var(--noc-text);
+  font-family: var(--noc-font-body);
+}
+
+.prototypeDialog:has(.tournamentImport)::backdrop {
+  background: rgb(0 0 0 / 75%);
+}
+
+.prototypeDialog:has(.tournamentImport) > header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: var(--noc-space-5) var(--noc-space-6);
+  border-bottom: 1px solid var(--noc-line);
+  background: var(--noc-panel);
+}
+
+.prototypeDialog:has(.tournamentImport) > header h2 {
+  margin: 0;
+  color: var(--noc-text);
+  font: var(--noc-heading);
+}
+
+.prototypeDialog:has(.tournamentImport) > header .iconButton {
+  color: var(--noc-text-2);
+}
+
+.prototypeDialog:has(.tournamentImport) > header .iconButton:focus-visible,
+.prototypeDialog:has(.tournamentImport) > .secondaryButton:focus-visible,
+.tournamentImport :is(button, summary):focus-visible {
+  outline: 2px solid var(--noc-accent);
+  outline-offset: 2px;
+}
+
+.prototypeDialog:has(.tournamentImport) > .secondaryButton {
+  display: block;
+  margin: 0 var(--noc-space-6) var(--noc-space-6) auto;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text);
+}
+
+.tournamentImport {
+  min-width: 0;
+  padding: var(--noc-space-6);
+  color: var(--noc-text);
+  font: var(--noc-body);
+}
+
+.tournamentImport .tournamentImportIntro p {
+  margin: 0 0 var(--noc-space-2);
+  color: var(--noc-text-2);
+  font: var(--noc-body);
+}
+
+.tournamentImport .tournamentImportIntro p + p {
+  color: var(--noc-text-3);
+  font: var(--noc-caption);
+}
+
+.tournamentImportDrop {
+  display: flex;
+  min-height: 225px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--noc-space-3);
+  margin-top: var(--noc-space-5);
+  padding: var(--noc-space-6);
+  border: 1px dashed var(--noc-text-3);
+  border-radius: var(--noc-lg);
+  background: var(--noc-bg);
+  text-align: center;
+}
+
+.tournamentImportDrop[data-dragging="true"] {
+  border-color: var(--noc-accent);
+  background: var(--noc-selected);
+}
+
+.tournamentImportDrop[aria-disabled="true"] {
+  cursor: not-allowed;
+  border-color: var(--noc-line);
+}
+
+.tournamentImportDropIcon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  color: var(--noc-text-2);
+}
+
+.tournamentImportDrop strong {
+  color: var(--noc-text);
+  font: var(--noc-heading);
+}
+
+.tournamentImport .tournamentImportDrop p {
+  margin: 0;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.tournamentImportFileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.tournamentImportResults {
+  margin-top: var(--noc-space-6);
+}
+
+.tournamentImportResultsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--noc-space-3);
+  margin-bottom: var(--noc-space-3);
+}
+
+.tournamentImportResultsHeader h3 {
+  margin: 0;
+  color: var(--noc-text);
+  font: var(--noc-heading);
+}
+
+.tournamentImportCounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--noc-space-2);
+}
+
+.tournamentImportCounts span {
+  padding: 4px 8px;
+  border: 1px solid var(--noc-line);
+  border-radius: 999px;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.tournamentImportResultList {
+  display: grid;
+  gap: var(--noc-space-2);
+}
+
+.importResult {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--noc-space-3);
+  min-width: 0;
+  padding: var(--noc-space-4);
+  border: 1px solid var(--noc-line);
+  border-radius: var(--noc-md);
+  background: var(--noc-raised);
+  color: var(--noc-text);
+}
+
+.importResult[data-status="success"] {
+  border-color: var(--noc-success);
+  background: var(--noc-success-tint);
+}
+
+.importResult[data-status="warning"] {
+  border-color: var(--noc-warning-line);
+  background: var(--noc-warning-tint);
+}
+
+.importResult[data-status="conflict"],
+.importResult[data-status="error"] {
+  border-color: var(--noc-error-line);
+  background: var(--noc-error-tint);
+}
+
+.importResultIcon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: var(--noc-md);
+  background: var(--noc-panel);
+  color: var(--noc-text-2);
+}
+
+.importResult[data-status="success"] .importResultIcon {
+  color: var(--noc-success);
+}
+
+.importResult[data-status="warning"] .importResultIcon {
+  color: var(--noc-warning);
+}
+
+.importResult[data-status="conflict"] .importResultIcon,
+.importResult[data-status="error"] .importResultIcon {
+  color: var(--noc-error);
+}
+
+.importResultSpinner {
+  animation: noc-spin 800ms linear infinite;
+}
+
+.importResultProgress {
+  height: 3px;
+  margin-top: var(--noc-space-3);
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--noc-line);
+}
+
+.importResultProgress span {
+  display: block;
+  width: 35%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--noc-accent);
+  animation: noc-import-indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes noc-import-indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(285%);
+  }
+}
+
+.importResultContent {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.importResultStatus {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.importResult h3 {
+  margin: 0;
+  color: var(--noc-text);
+  font: var(--noc-body-bold);
+}
+
+.tournamentImport .importResult p {
+  margin: 4px 0 0;
+  color: var(--noc-text-2);
+  font: var(--noc-caption);
+}
+
+.tournamentImport .importResult .importResultFile {
+  color: var(--noc-text-3);
+}
+
+.tournamentImport .importResult .importResultMessage {
+  color: var(--noc-text);
+}
+
+.importResultActions {
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+}
+
+.importResultActions .noc-button {
+  white-space: nowrap;
+}
+
+.tournamentImport .importResult .importStatus {
+  margin: var(--noc-space-3) 0 0;
+  padding-top: var(--noc-space-2);
+  border-top: 1px solid var(--noc-line);
+}
+
+.tournamentImport .importResult .importStatus h3,
+.tournamentImport .importResult .importStatus summary {
+  color: var(--noc-text-2);
+}
+
+@media (max-width: 600px) {
+  .prototypeDialog:has(.tournamentImport) {
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 16px);
+  }
+
+  .prototypeDialog:has(.tournamentImport) > header,
+  .tournamentImport {
+    padding: var(--noc-space-4);
+  }
+
+  .prototypeDialog:has(.tournamentImport) > .secondaryButton {
+    margin: 0 var(--noc-space-4) var(--noc-space-4) auto;
+  }
+
+  .tournamentImportDrop {
+    min-height: 200px;
+    padding: var(--noc-space-4);
+  }
+
+  .importResult {
+    grid-template-columns: 32px minmax(0, 1fr);
+  }
+
+  .importResultActions {
+    grid-column: 2;
+  }
+
+  .importResultActions .noc-button {
+    white-space: normal;
+  }
+}

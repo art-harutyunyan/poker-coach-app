@@ -28,6 +28,8 @@ import { TournamentStats } from "./TournamentStats";
 import { TournamentOverview } from "./TournamentOverview";
 import type { TournamentOverviewItem } from "../tournamentLibraryPresentation";
 import { TournamentHandBrowser } from "./TournamentHandBrowser";
+import { ReplayerHandStrip } from "./ReplayerHandStrip";
+import { AnalysisPanel } from "./AnalysisPanel";
 
 export function ImportedTournamentWorkspace({
   state,
@@ -104,6 +106,26 @@ export function ImportedTournamentWorkspace({
     () => tournament.hands.filter((hand) => filteredIds.has(hand.id)),
     [tournament, filteredIds],
   );
+  const stripHands = useMemo(
+    () =>
+      filteredHands.map((hand) => ({
+        id: hand.id,
+        handNumber: hand.handNumber,
+        spot: positionLabel(hand.players.find((player) => player.isHero)!.position),
+        cards: hand.heroHoleCards,
+      })),
+    [filteredHands],
+  );
+  const filterLabel =
+    activeFilter === "showdown"
+      ? "Showdown"
+      : activeFilter === "postflop"
+        ? "Postflop"
+        : "Played";
+  const stripContext =
+    activeFilter === "all"
+      ? `All hands · ID ${tournament.id} · ${tournament.game}`
+      : `${filterLabel} filter · ${filteredHands.length} of ${tournament.hands.length}${filteredIds.has(source.id) ? "" : " · Current hand outside filter"} · ID ${tournament.id}`;
   const auditRows = useMemo(() => {
     const rows: Partial<Record<MetricId, readonly MetricAuditRow[]>> = {};
     for (const metric of METRIC_IDS) {
@@ -119,7 +141,6 @@ export function ImportedTournamentWorkspace({
     ],
     [orderedFacts, activeFilter, source.id],
   );
-  const Heading = activeTab === "replayer" ? "h1" : "h2";
   const select = (id: string) => {
     onSelectHand(id);
     onTabChange("replayer");
@@ -136,21 +157,13 @@ export function ImportedTournamentWorkspace({
               onImport={onImport}
               onReturnToLibrary={onReturnToLibrary}
             />
-          ) : (
+          ) : activeTab === "replayer" ? null : (
             <header
-              className={`${activeTab === "replayer" ? "replayerPageHeader " : ""}importedTournamentContext`}
+              className="importedTournamentContext"
               aria-label="Imported tournament"
             >
               <div className="replayerTitleBlock">
-                {activeTab === "replayer" && (
-                  <button
-                    className="replayerBackLink"
-                    onClick={() => onTabChange("overview")}
-                  >
-                    Tournament overview
-                  </button>
-                )}
-                <Heading>{tournament.name}</Heading>
+                <h2>{tournament.name}</h2>
                 <div className="tournamentMetaLine replayerMetaLine">
                   <span>ID {tournament.id}</span>
                   <span>{tournament.handsPlayed} hands</span>
@@ -206,37 +219,63 @@ export function ImportedTournamentWorkspace({
         </Tabs.Content>
         <Tabs.Content value="replayer">
           <div className="tournamentReviewScreen">
-            <div className="replayerLayout">
-              <ImportedHandNavigator
-                hands={filteredHands}
-                selectedHandId={source.id}
-                onSelectHand={select}
-                variant="rail"
-                controls={
-                  <HandFilterControls
-                    result={filtered}
-                    filter={activeFilter}
-                    currentHandId={source.id}
-                    previousId={previousId}
-                    nextId={nextId}
-                    reviewHands={reviewHands}
-                    onFilterChange={onFilterChange}
-                    onNavigate={onFilteredNavigate}
-                    onOpenHand={select}
+            <ReplayerHandStrip
+              title={tournament.name}
+              context={stripContext}
+              hands={stripHands}
+              selectedHandId={source.id}
+              totalHands={tournament.hands.length}
+              onSelectHand={select}
+              onBack={() => onTabChange("overview")}
+              browseContent={(close) => (
+                <>
+                  {activeFilter !== "all" && (
+                    <p className="noc-replayer-strip__filter-context">
+                      Showing {filteredHands.length} of {tournament.hands.length} hands.
+                      Choose All to browse the full set.
+                    </p>
+                  )}
+                  <ImportedHandNavigator
+                    hands={filteredHands}
+                    selectedHandId={source.id}
+                    onSelectHand={(id) => {
+                      close();
+                      select(id);
+                    }}
+                    variant="rail"
+                    showHeading={false}
+                    controls={
+                      <HandFilterControls
+                        result={filtered}
+                        filter={activeFilter}
+                        currentHandId={source.id}
+                        previousId={previousId}
+                        nextId={nextId}
+                        reviewHands={reviewHands}
+                        onFilterChange={onFilterChange}
+                        onNavigate={onFilteredNavigate}
+                        onOpenHand={(id) => {
+                          close();
+                          select(id);
+                        }}
+                      />
+                    }
                   />
-                }
-              />
+                </>
+              )}
+            />
+            <div className="replayerLayout">
               <section className="tableSection">
                 <div className="handStudyHeader">
                   <div>
                     <h2>
-                      {source.heroHoleCards.map((c) => c.rank + c.suit).join(" ")}{" "}
+                      Hand #{source.handNumber}{" "}
                       <span>
-                        {positionLabel(source.players.find((p) => p.isHero)!.position)}
+                        of {tournament.hands.length} · {source.id}
                       </span>
                     </h2>
                     <p>
-                      Hand #{source.handNumber} · {source.id} ·{" "}
+                      {positionLabel(source.players.find((p) => p.isHero)!.position)} ·{" "}
                       {source.occupiedSeatCount}/{source.tableSize} players
                     </p>
                   </div>
@@ -304,14 +343,7 @@ export function ImportedTournamentWorkspace({
                   </section>
                 )}
               </section>
-              <aside className="analysisPanel importedEmpty">
-                <h2>Analysis not available yet</h2>
-                <p>This hand is available for deterministic replay.</p>
-                <p>
-                  Opponent aliases are display labels. Exact GG source IDs are available
-                  on player nameplates.
-                </p>
-              </aside>
+              <AnalysisPanel />
             </div>
             <footer className="studyFooter">
               <span>Poker Coach / Better decisions. A longer game.</span>

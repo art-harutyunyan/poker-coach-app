@@ -60,7 +60,9 @@ async function openUpload(page: Page) {
 async function importFile(page: Page, index: number) {
   await openUpload(page);
   await page.getByLabel("Hand history file").setInputFiles(fixture(index));
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Close dialog" }).click();
 }
 async function shot(page: Page, name: string) {
@@ -118,8 +120,10 @@ test("one-hand outcome stays masked until explicit reveal and Hide Result remask
     mimeType: "text/plain",
     buffer: Buffer.from(fixtureHand(0, "TM6468725291")),
   });
-  await expect(page.getByRole("heading", { name: "Import complete" })).toBeVisible();
-  await page.getByRole("button", { name: "Open Tournament Review" }).click();
+  await expect(
+    page.getByRole("button", { name: "Open tournament", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Open tournament", exact: true }).click();
   const wsd = page.locator('[data-metric="wsd"]');
   await expect(wsd).toContainText("Outcome stat hidden");
   await expect(wsd).not.toContainText("100.0%");
@@ -177,8 +181,12 @@ test("coverage links open the source hand and preserve the saved Replayer filter
     .locator(".tournamentLibraryRow")
     .getByRole("button", { name: "Replayer" })
     .click();
-  const rail = page.locator(".importedHandRail");
+  await page.getByRole("button", { name: "Browse all 233 hands" }).click();
+  const rail = page
+    .getByRole("dialog", { name: "Browse all hands" })
+    .locator(".importedHandRail");
   await rail.getByRole("button", { name: "Postflop 29 / 233" }).click();
+  await page.getByRole("button", { name: "Close hand browser" }).click();
   await page.getByRole("tab", { name: "Overview", exact: true }).click();
   const vpip = page.locator('[data-metric="vpip"]');
   await expect(vpip).toContainText("48 / 232");
@@ -194,6 +202,7 @@ test("coverage links open the source hand and preserve the saved Replayer filter
     page.getByRole("tab", { name: "Replayer", exact: true }),
   ).toHaveAttribute("data-state", "active");
   await expect(page.locator(".handStudyHeader")).toContainText("TM6377256916");
+  await page.getByRole("button", { name: "Browse all 233 hands" }).click();
   await expect(rail.getByRole("button", { name: "Postflop 29 / 233" })).toHaveAttribute(
     "aria-pressed",
     "true",
